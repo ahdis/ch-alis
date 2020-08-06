@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <StructureDefinition xmlns="http://hl7.org/fhir">
-    <id value="ch-ig-patient"/>
-    <url value="http://fhir.ch/ig/ch-ig/StructureDefinition/ch-ig-patient"/>
+    <id value="ch-alis-patient"/>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-patient"/>
     <version value="0.1.0"/>
-    <name value="CHIGPatient"/>
-    <title value="CH IG Patient Profile"/>
+    <name value="ChAlisPatient"/>
+    <title value="CH ALIS Patient Profile"/>
     <status value="draft"/>
-    <date value="2018-10-15T00:00:00+10:00"/>
-    <publisher value="HL7 Switzerland"/>
+    <date value="2020-08-06"/>
+    <publisher value="ALIS-Connect"/>
     <contact>
-        <name value="HL7 Switzerland"/>
+        <name value="ALIS-Connect"/>
         <telecom>
             <system value="url"/>
-            <value value="https://www.hl7.ch/"/>
+            <value value="https://www.alis-connect.ch/"/>
         </telecom>
     </contact>
-    <description value="IG patient definition is just an example!"/>
+    <description value="Patient"/>
     <jurisdiction>
         <coding>
             <system value="urn:iso:std:iso:3166"/>
@@ -31,7 +31,7 @@
     <differential>
         <element id="Patient">
             <path value="Patient"/>
-            <short value="CH IG Patient"/>
+            <short value="CH ALIS Patient"/>
         </element>
     </differential>
 </StructureDefinition>

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <ImplementationGuide xmlns="http://hl7.org/fhir">
-  <id value="ch.fhir.ig.ch-ig"/>
+  <id value="ch.fhir.ig.ch-alis"/>
   <text>
     <status value="additional"/>
     <div xmlns="http://www.w3.org/1999/xhtml">
-      Implementation Guide for CH IG (R4)
+      Implementation Guide for ALIS-Connect (R4)
     </div>
   </text>
-  <url value="http://fhir.ch/ig/ch-ig/ImplementationGuide/ch.fhir.ig.ch-ig"/>
+  <url value="http://fhir.ch/ig/ch-alis/ImplementationGuide/ch.fhir.ig.ch-alis"/>
   <version value="0.1.0"/>
-  <name value="CH_IG"/>
-  <title value="CH IG (R4)"/>
+  <name value="CH_ALIS"/>
+  <title value="CH ALIS (R4)"/>
   <status value="active"/>
   <experimental value="false"/>
-  <date value="2019-07-02"/>
-  <publisher value="HL7 Switzerland"/>
+  <date value="2020-08-06"/>
+  <publisher value="ALIS-Connect"/>
   <contact>
-    <name value="HL7 Switzerland"/>
+    <name value="ALIS-Connect"/>
     <telecom>
       <system value="url"/>
-      <value value="https://www.hl7.ch/"/>
+      <value value="https://www.alis-connect.ch/"/>
     </telecom>
   </contact>
   <jurisdiction>
@@ -30,7 +30,7 @@
     </coding>
   </jurisdiction>
   <copyright value="CC-BY-SA-4.0"/>
-  <packageId value="ch.fhir.ig.ch-ig"/>
+  <packageId value="ch.fhir.ig.ch-alis"/>
   <license value="CC-BY-SA-4.0"/>
   <fhirVersion value="4.0.1"/>
   <definition>
@@ -41,7 +41,7 @@
       </reference>
       <name value="Zuweisung"/>
       <description value="Example for Composition"/>
-      <exampleCanonical value="http://fhir.ch/ig/ch-ig/StructureDefinition/ch-ig-composition"/>
+      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-composition"/>
     </resource>
     <resource>
       <reference>
@@ -49,35 +49,19 @@
       </reference>
       <name value="FranzMuster"/>
       <description value="Example for Patient"/>
-      <exampleCanonical value="http://fhir.ch/ig/ch-ig/StructureDefinition/ch-ig-patient"/>
-    </resource>
-
-    <!-- References to code systems -->
-    <resource>
-      <reference>
-        <reference value="CodeSystem/ig-example"/>
-      </reference>
-      <exampleBoolean value="false"/>
+      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-patient"/>
     </resource>
 
     <!-- References to structure definitions -->
     <resource>
       <reference>
-        <reference value="StructureDefinition/ch-ig-composition"/>
+        <reference value="StructureDefinition/ch-alis-composition"/>
       </reference>
       <exampleBoolean value="false"/>
     </resource>
     <resource>
       <reference>
-        <reference value="StructureDefinition/ch-ig-patient"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-
-    <!-- References to value sets -->
-    <resource>
-      <reference>
-        <reference value="ValueSet/ig-example"/>
+        <reference value="StructureDefinition/ch-alis-patient"/>
       </reference>
       <exampleBoolean value="false"/>
     </resource>

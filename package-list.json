@@ -1,22 +1,22 @@
 {
-  "package-id": "ch.fhir.ig.ch-ig",
-  "title": "CH IG (R4)",
-  "canonical": "http://fhir.ch/ig/ch-ig",
-  "introduction": "Implementation guide for ...",
+  "package-id": "ch.fhir.ig.ch-alis",
+  "title": "CH ALIS (R4)",
+  "canonical": "http://fhir.ch/ig/ch-alis",
+  "introduction": "FHIR implementation guide for ALIS-Connect",
   "list": [
     {
       "version": "dev",
       "desc": "Continuous Integration Build (latest in version control)",
-      "path": "http://build.fhir.org/ig/ahdis/ch-ig",
+      "path": "http://build.fhir.org/ig/ahdis/ch-alis",
       "status": "ci-build",
       "fhirversion": "4.0.1",
       "current" : true
     },
     {
       "version": "0.1.0",
-      "date": "2020-06-18",
+      "date": "2020-08-06",
       "desc": "e.g. STU 1 Ballot",
-      "path": "http://fhir.ch/ig/ch-ig/0.1.0",
+      "path": "http://fhir.ch/ig/ch-alis/0.1.0",
       "status": "trial-use",
       "sequence" : "STU 1",
       "fhirversion": "4.0.1"
