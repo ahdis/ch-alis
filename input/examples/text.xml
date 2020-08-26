@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="LeistungsschnittstelleV43.xsd" Version="4.3">
+	<ReceivingApplication>Name des empfangenden Systems</ReceivingApplication>
+</Header>

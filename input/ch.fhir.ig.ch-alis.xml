@@ -39,7 +39,13 @@
     <!-- References to structure definitions -->
     <resource>
       <reference>
-        <reference value="StructureDefinition/ch-alis-leistungsschnittstelle"/>
+        <reference value="StructureDefinition/Header"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/Text"/>
       </reference>
       <exampleBoolean value="false"/>
     </resource>
