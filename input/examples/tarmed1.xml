@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Mit XMLSpy v2014 sp1 (x64) (http://www.altova.com) von Matthias Seelhofer (WigaSoft AG) bearbeitet -->
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="WigALIS_4.1.xsd" Version="4.1">
+	<ReceivingApplication>SAP</ReceivingApplication>
+	<ReceivingFacility>soH</ReceivingFacility>
+	<ReceivingServiceCode>DO</ReceivingServiceCode>
+	<SendingApplication>VANADIUM</SendingApplication>
+	<SendingFacility>soH</SendingFacility>
+	<SendingServiceCode>DO</SendingServiceCode>
+	<MessageControlID/>
+	<SoftwareReleaseNumber>5.12.0</SoftwareReleaseNumber>
+	<FileCreationDate>2020-08-20T02:57:08+01:00</FileCreationDate>
+	<Visit>
+		<VisitNumber>4466333</VisitNumber>
+		<PatientID>2314039</PatientID>
+		<PatientName>Muster</PatientName>
+		<Service>
+			<ServiceDate>2020-08-14T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0146</ServiceItem>
+			<EnteredDateTime>2020-08-19T14:50:26+01:00</EnteredDateTime>
+			<ProviderID>313450</ProviderID>
+			<EnteredBy>max.muster</EnteredBy>
+			<ItemNumber>70163659</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>5</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7001806</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001807.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="ReasonIncreasedTreatment">
+				<ParamValue>-</ParamValue>
+			</ParameterV40>
+		</Service>
+	</Visit>
+</Header>

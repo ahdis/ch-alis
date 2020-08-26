@@ -35,33 +35,11 @@
   <fhirVersion value="4.0.1"/>
   <definition>
     <!-- References to examples -->
-    <resource>
-      <reference>
-        <reference value="Composition/Zuweisung"/>
-      </reference>
-      <name value="Zuweisung"/>
-      <description value="Example for Composition"/>
-      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-composition"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="Patient/FranzMuster"/>
-      </reference>
-      <name value="FranzMuster"/>
-      <description value="Example for Patient"/>
-      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-patient"/>
-    </resource>
 
     <!-- References to structure definitions -->
     <resource>
       <reference>
-        <reference value="StructureDefinition/ch-alis-composition"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/ch-alis-patient"/>
+        <reference value="StructureDefinition/ch-alis-leistungsschnittstelle"/>
       </reference>
       <exampleBoolean value="false"/>
     </resource>
@@ -77,18 +55,8 @@
         <generation value="markdown"/>
       </page>
       <page>
-        <nameUrl value="profiles.html"/>
-        <title value="Profiles"/>
-        <generation value="html"/>
-      </page>
-      <page>
-        <nameUrl value="extensions.html"/>
-        <title value="Extensions"/>
-        <generation value="html"/>
-      </page>
-      <page>
-        <nameUrl value="terminology.html"/>
-        <title value="Terminology"/>
+        <nameUrl value="logicalmodel.html"/>
+        <title value="Logical Model"/>
         <generation value="html"/>
       </page>
     </page>

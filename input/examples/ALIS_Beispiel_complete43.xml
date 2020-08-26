@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!-- # = nicht zertifizierungsrelevant, allfällige Lieferung/Inhalte sind zwischen Sender/Empfänger zu vereinbaren -->
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="LeistungsschnittstelleV43.xsd" Version="4.3">
+	<ReceivingApplication>Name des empfangenden Systems</ReceivingApplication>
+	<ReceivingFacility>Mandant</ReceivingFacility>
+	<ReceivingServiceCode>Code im empfangenden System</ReceivingServiceCode>
+	<SendingApplication>Name des senden Systems</SendingApplication>
+	<SendingFacility>Mandant</SendingFacility>
+	<SendingServiceCode>Code im sendenden System</SendingServiceCode>
+	<MessageControlID>1</MessageControlID><!-- z.B. forlaufend nummeriert, Batch-ID o.ä. -->
+	<HeaderErrorCode>999</HeaderErrorCode><!-- #, Fehlercode im senden System -->
+	<SoftwareReleaseNumber>Version der sendenden Software</SoftwareReleaseNumber>
+	<FileCreationDate>2017-08-30T11:23:05-01:00</FileCreationDate>
+	<Visit>
+		<VisitNumber>eindeutige Fall-Identifikation</VisitNumber>
+		<PatientID>Patienten-ID</PatientID>
+		<PatientName>Patienten-Name</PatientName>
+		<PatientGivenName>Patienten-Vorname</PatientGivenName>
+		<PatientBirthDate>1950-01-01</PatientBirthDate>
+		<PatientGender>M</PatientGender>
+		<TerminationVisit>2017-08-31</TerminationVisit><!-- #, ermöglicht die Übermittlung einer Fallabschlussmeldung -->
+		<TerminationReason>Grund für Fallabschluss</TerminationReason><!-- # -->
+		<DiagGroup DiagCode="99.99"><!-- #, ermöglicht die Übermittlung von Diagnosen an  den Empfänger -->
+			<DiagType>Eintrittsdiagnose</DiagType>
+			<DiagCatType>ICD10</DiagCatType>
+		</DiagGroup>
+		<Service Transaction="insert"><!-- #, Angabe Transaction optional, nur bei allfälligen delete zwingend -->
+			<ServiceDate>2017-08-30T00:00:00-01:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<OrderID>16595790-A8C1-43E1-B785-BC81F3926482</OrderID>
+			<ReferrerID>ABCD</ReferrerID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0010</ServiceItem>
+			<Form>a1b2c3</Form><!-- #  -->
+			<EnteredDateTime>2017-08-30T10:17:37-01:00</EnteredDateTime><!-- #  -->
+			<ProviderID>1012</ProviderID>
+			<EnteredBy>Kennung erfassender Benutzer im senden System</EnteredBy><!-- #  -->
+			<ItemNumber>8C85D1E4-182F-4905-93CC-4BA5C041755F</ItemNumber><!-- eindeutige ID des Datensatzes, so dass Mutationsmeldungen/Duplikatsprüfungen möglich sind -->
+			<Quantity>1</Quantity>
+			<ServiceItemErrorCode>OK</ServiceItemErrorCode><!-- #  -->
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>ID der Person</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>ID der Person</PersonID>
+			</PersonV40>
+			<ParameterV40 ParamTyp="Duration">
+				<ParamValue>25</ParamValue>
+			</ParameterV40>
+			<ParameterV40 ParamTyp="individuell vereinbart"><!-- #, ALIS gibt ein Set von Parameter-Typen vor, welche nach Möglichkeit verwendet werden sollen, es können für individuelle Bedürfnisse weitere Parameter zwischen Sender/Empfänger vereinbart werden  -->
+				<ParamValue>beliebige Information</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2017-08-30T00:00:00-01:00</ServiceDate>
+			<ServiceItem>00.0030</ServiceItem>
+			<ItemNumber>2536B891-13B7-4EDB-B00C-25D8F8C6BF23</ItemNumber>
+			<RefItemNumber>8C85D1E4-182F-4905-93CC-4BA5C041755F</RefItemNumber><!-- Referenz auf ItemNumber der Bezugsleistung, z.B. bei Zuschlägen -->
+			<Quantity>1</Quantity>
+		</Service>
+	</Visit>
+</Header>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Mit XMLSpy v2014 sp1 (x64) (http://www.altova.com) von Matthias Seelhofer (WigaSoft AG) bearbeitet -->
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="WigALIS_4.1.xsd" Version="4.1">
+	<ReceivingApplication>SAP</ReceivingApplication>
+	<ReceivingFacility>soH</ReceivingFacility>
+	<ReceivingServiceCode>OL</ReceivingServiceCode>
+	<SendingApplication>VANADIUM</SendingApplication>
+	<SendingFacility>soH</SendingFacility>
+	<SendingServiceCode>OL</SendingServiceCode>
+	<MessageControlID/>
+	<SoftwareReleaseNumber>5.12.0</SoftwareReleaseNumber>
+	<FileCreationDate>2020-08-20T10:36:05+01:00</FileCreationDate>
+	<Visit>
+		<VisitNumber>4562309</VisitNumber>
+		<PatientID>565964</PatientID>
+		<PatientName>Muster</PatientName>
+		<Service>
+			<ServiceDate>2020-08-18T00:00:01</ServiceDate>
+			<SessionID>0</SessionID>
+			<ServiceType>MA_EINWEG</ServiceType>
+			<ServiceItem>423231.ST</ServiceItem>
+			<EnteredDateTime>2020-08-18T15:11:37+01:00</EnteredDateTime>
+			<ProviderID>212300</ProviderID>
+			<EnteredBy>max.muster</EnteredBy>
+			<ItemNumber>70147907</ItemNumber>
+			<Quantity>1</Quantity>
+			<ServiceItemErrorCode/>
+		</Service>
+	</Visit>
+</Header>

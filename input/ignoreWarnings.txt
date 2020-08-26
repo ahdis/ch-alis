@@ -1,1 +1,4 @@
 == Suppressed Messages ==
+
+# Upper case for logical model
+eld-20: Element names should be simple alphanumerics with a max of 64 characters, or code generation tools may be broken [path.matches('[A-Za-z][A-Za-z0-9]*(\\.[a-z][A-Za-z0-9]*(\\[x])?)*')]

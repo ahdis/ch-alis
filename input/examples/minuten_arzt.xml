@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Mit XMLSpy v2014 sp1 (x64) (http://www.altova.com) von Matthias Seelhofer (WigaSoft AG) bearbeitet -->
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="LeistungsschnittstelleV41.xsd" Version="4.1">
+	<ReceivingApplication>OPALE</ReceivingApplication>
+	<ReceivingFacility>1</ReceivingFacility>
+	<ReceivingServiceCode>10</ReceivingServiceCode>
+	<SendingApplication>WICARE</SendingApplication>
+	<SendingFacility>Salina</SendingFacility>
+	<SendingServiceCode>WiTransC_Arzt</SendingServiceCode>
+	<MessageControlID>723</MessageControlID>
+	<SoftwareReleaseNumber>6.2.2</SoftwareReleaseNumber>
+	<FileCreationDate>2020-08-12T02:00:02.587</FileCreationDate>
+	<Visit>
+		<VisitNumber>3942400</VisitNumber>
+		<PatientID>84612</PatientID>
+		<PatientName>Muster</PatientName>
+		<PatientGivenName>Max</PatientGivenName>
+		<PatientBirthDate>1949-03-18</PatientBirthDate>
+		<Service>
+			<ServiceDate>2020-08-03T00:00:00</ServiceDate>
+			<ServiceType>OPALE</ServiceType>
+			<ServiceItem>ST7</ServiceItem>
+			<ProviderID>SALI</ProviderID>
+			<ItemNumber>CEF3FEE4-EDA8-46FC-BBBB-5C2613B4D380</ItemNumber>
+			<Quantity>18</Quantity>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-06T00:00:00</ServiceDate>
+			<ServiceType>OPALE</ServiceType>
+			<ServiceItem>ST7</ServiceItem>
+			<ProviderID>SALI</ProviderID>
+			<ItemNumber>E67B4615-A5F1-4811-BFE1-62B7000C11EA</ItemNumber>
+			<Quantity>12</Quantity>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-07T00:00:00</ServiceDate>
+			<ServiceType>OPALE</ServiceType>
+			<ServiceItem>ST7</ServiceItem>
+			<ProviderID>SALI</ProviderID>
+			<ItemNumber>4C1FEB5F-7F96-408B-941E-079D111C4381</ItemNumber>
+			<Quantity>82</Quantity>
+		</Service>
+	</Visit>
+</Header>

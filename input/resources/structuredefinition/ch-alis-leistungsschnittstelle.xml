@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StructureDefinition xmlns="http://hl7.org/fhir">
+    <id value="ch-alis-leistungsschnittstelle"/>
+    <!--<extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace">
+        <valueUri value="test"/>
+    </extension>-->
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-leistungsschnittstelle"/>
+    <version value="0.1.0"/>
+    <name value="ChAlisLeistungsschnittstelle"/>
+    <title value="CH ALIS Leistungsschnittstelle"/>
+    <status value="draft"/>
+    <date value="2020-08-13"/>
+    <publisher value="ALIS-Connect"/>
+    <contact>
+        <name value="ALIS-Connect"/>
+        <telecom>
+            <system value="url"/>
+            <value value="https://www.alis-connect.ch/"/>
+        </telecom>
+    </contact>
+    <description value="Leistungsschnittstelle ALIS Version 4.3"/>
+    <jurisdiction>
+        <coding>
+            <system value="urn:iso:std:iso:3166"/>
+            <code value="CH"/>
+        </coding>
+    </jurisdiction>
+    <fhirVersion value="4.0.1"/>
+    <kind value="logical"/>
+    <abstract value="false"/>
+    <type value="Header"/>
+    <baseDefinition value="http://hl7.org/fhir/StructureDefinition/Base"/>
+    <derivation value="specialization"/>
+    <differential>
+        <!-- 1 HeaderInformation -->
+        <element id="Header">
+            <path value="Header"/>
+            <definition value="1, HeaderInformation"/>
+            <min value="1"/>
+            <max value="1"/>
+        </element>
+        <!-- 1 Version -->
+        <element id="Header.Version">
+            <path value="Header.Version"/>
+            <representation value="xmlAttr"/>
+            <short value="Optional according to specification, and required according to XSD"/>
+            <definition value="1, Header-Attribut Version"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="decimal"/>
+            </type>
+        </element>
+        <!-- 1.1 -->
+        <element id="Header.ReceivingApplication">
+            <path value="Header.ReceivingApplication"/>
+            <definition value="1.1, Empfänger, Alphanum. (30), Text, 3 stufig"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 1.2 -->
+        <element id="Header.ReceivingFacility">
+            <path value="Header.ReceivingFacility"/>
+            <definition value="1.2, MandantenNr, Alphanum. (10), Mandantennummer des. Empfängers, 3 stufig"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 1.3 -->
+        <element id="Header.ReceivingServiceCode">
+            <path value="Header.ReceivingServiceCode"/>
+            <definition value="1.3, Einrichtung, Alphanum. (30), Einrichtung des. Empfänger, 3 stufig"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 1.4 -->
+        <element id="Header.SendingApplication">
+            <path value="Header.SendingApplication"/>
+            <definition value="1.4, Sender, Alphanum. (30), Text, 3 stufig"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 1.5 -->
+        <element id="Header.SendingFacility">
+            <path value="Header.SendingFacility"/>
+            <definition value="1.5, MandantenNr, Alphanum. (10), Mandantennummer des Senders, 3 stufig"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 1.6 -->
+        <element id="Header.SendingServiceCode">
+            <path value="Header.SendingServiceCode"/>
+            <definition value="1.6, Einrichtung, Alphanum. (30), Einrichtung des Sender, 3 stufig"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 1.7 -->
+        <element id="Header.MessageControlID">
+            <path value="Header.MessageControlID"/>
+            <definition value="1.7, Auftrags-ID, Numerisch, z.B. Batch- oder Stapelnummer"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="unsignedInt"/>
+            </type>
+        </element>
+        <!-- 1.8 -->
+        <element id="Header.HeaderErrorCode">
+            <path value="Header.HeaderErrorCode"/>
+            <definition value="1.8, Fehlercode, Alphanum., Fehlertabelle bei unbekanntem Feldinhalt, inkorrekten Werten etc., Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 1.9 -->
+        <element id="Header.SoftwareReleaseNumber">
+            <path value="Header.SoftwareReleaseNumber"/>
+            <short value="Optional according to specification, and required according to XSD"/>
+            <definition value="1.9, Version Standardschnittstelle des exportierendes Systems, Alphanum. (30), Version der betriebenen Software des Senders, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 1.10 -->
+        <element id="Header.FileCreationDate">
+            <path value="Header.FileCreationDate"/>
+            <definition value="1.10, Fileerstellungs-datum, Gem. XML-Standard datetime, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="dateTime"/>
+            </type>
+        </element>
+
+        <!-- 2 Patient -->
+        <element id="Header.Visit">
+            <path value="Header.Visit"/>
+            <definition value="2, Patient"/>
+            <min value="1"/>
+            <max value="*"/>
+        </element>
+        <!-- 2.1 -->
+        <element id="Header.Visit.VisitNumber">
+            <path value="Header.Visit.VisitNumber"/>
+            <definition value="2.1, Fall, Alphanum. Max. 40 Zeichen, FID = eindeutiger Schlüssel (ev. Kombination aus PID und lfd. Nr.), der FID ist eindeutig, Obligatorisch"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 2.2 -->
+        <element id="Header.Visit.PatientID">
+            <path value="Header.Visit.PatientID"/>
+            <definition value="2.2, Patient.PID, Numerisch, Max. 20 Zeichen, PID, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 2.3 -->
+        <element id="Header.Visit.PatientName">
+            <path value="Header.Visit.PatientName"/>
+            <definition value="2.3, Patient.Name, 50 Zeichen, Name, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 2.4 -->
+        <element id="Header.Visit.PatientGivenName">
+            <path value="Header.Visit.PatientGivenName"/>
+            <definition value="2.4, Patient.Vorname, 50 Zeichen, Vorname, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 2.5 -->
+        <element id="Header.Visit.PatientBirthDate">
+            <path value="Header.Visit.PatientBirthDate"/>
+            <definition value="2.5, Patient.GebDat, XML-Format date, Geb.Datum, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="date"/>
+            </type>
+        </element>
+        <!-- 2.6 -->
+        <element id="Header.Visit.PatientGender">
+            <path value="Header.Visit.PatientGender"/>
+            <short value="M|F"/>
+            <definition value="2.6, Patient Geschlecht, 1 Zeichen, Geschlecht, Optional M,F"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 2.7 -->
+        <element id="Header.Visit.TerminationVisit">
+            <path value="Header.Visit.TerminationVisit"/>
+            <definition value="2.7, Fall Abschluss, XML-Format date, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="date"/>
+            </type>
+        </element>
+        <!-- 2.8 -->
+        <element id="Header.Visit.TerminationReason">
+            <path value="Header.Visit.TerminationReason"/>
+            <definition value="2.8, Fall Abschlussgrund, Alphanum., Grunde des Fallabschlusses, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+
+        <!-- 2.9 Diagnosegruppe-->
+        <element id="Header.Visit.DiagGroup">
+            <path value="Header.Visit.DiagGroup"/>
+            <definition value="2.9, Diagnosegruppe, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+        </element>
+        <!-- 2.9.1 -->
+        <element id="Header.Visit.DiagGroup.DiagCode">
+            <path value="Header.Visit.DiagGroup.DiagCode"/>
+            <representation value="xmlAttr"/>
+            <definition value="2.9.1, Diagnosecode, Alphanum., Diagnosecode [mind. 2 Zeichen, ICDx 5 Zeichen - abhängig von vereinbarter Codeversion, Originalschreibweise mit Punkten etc.], Obligatorisch"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 2.9.2 -->
+        <element id="Header.Visit.DiagGroup.DiagType">
+            <path value="Header.Visit.DiagGroup.DiagType"/>
+            <definition value="2.9.2, Diagnosetyp, Alphanum., Art der Diagnose: Einweisungs-, Behandlungs-, Aufnahme-...., Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 2.9.3 -->
+        <element id="Header.Visit.DiagGroup.DiagCatType">
+            <path value="Header.Visit.DiagGroup.DiagCatType"/>
+            <definition value="2.9.3, Katalogtyp, Alphanum., Katalogtyp: ICDx, HK (Hauskatalog), Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+
+        <!-- 3 Leistung-->
+        <element id="Header.Visit.Service">
+            <path value="Header.Visit.Service"/>
+            <definition value="3, Leistung, Leistungen stehen zum Patient im Verhltnis 1:N"/>
+            <min value="1"/>
+            <max value="*"/>
+        </element>
+        <!-- 3 Transaction-->
+        <element id="Header.Visit.Service.Transaction">
+            <path value="Header.Visit.Service.Transaction"/>
+            <representation value="xmlAttr"/>
+            <short value="Optional, only required for possible value delete"/>
+            <definition value="3, Transaktion, Alphanum., Attribut im Knoten „Leistung“, Kennzeichen der Transaktion (insert, update, delete), Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.1 -->
+        <element id="Header.Visit.Service.ServiceDate">
+            <path value="Header.Visit.Service.ServiceDate"/>
+            <definition value="3.1, Leistungs - Datum, XML-Format Datetime, Datum, Zeit der Leistungserbringung"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="dateTime"/>
+            </type>
+        </element>
+        <!-- 3.2 -->
+        <element id="Header.Visit.Service.SessionID">
+            <path value="Header.Visit.Service.SessionID"/>
+            <definition value="3.2, Sitzung, Alphanum. Max. 64 Zeichen, SAP max. 2 Zeichen, 1 – n / Tag"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.3 -->
+        <element id="Header.Visit.Service.OrderID">
+            <path value="Header.Visit.Service.OrderID"/>
+            <definition value="3.3, Auftragsnummer, Max. 64 Zeichen, GUID (global universal identification) Alphanum., jeweils auf ebene Leistung mitsenden), Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.4 -->
+        <element id="Header.Visit.Service.ReferrerID">
+            <path value="Header.Visit.Service.ReferrerID"/>
+            <definition value="3.4, Auftraggebende Kostenstelle, Max. 50 Zeichen, Der Empfänger bestimmt die auftraggebende Kostenstelle, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.5 -->
+        <element id="Header.Visit.Service.ServiceType">
+            <path value="Header.Visit.Service.ServiceType"/>
+            <definition value="3.5, Katalog, 10 Zeichen, Spezifikation, Zwischen den Partnern zu vereinbaren"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.6 -->
+        <element id="Header.Visit.Service.ServiceItem">
+            <path value="Header.Visit.Service.ServiceItem"/>
+            <definition value="3.6, Tarifposition, Alphanum. 20 Zeichen, Nummer (Identifikation der Leistung, TARMED, SLK, interner Katalog), Obligatorisch"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.7 -->
+        <element id="Header.Visit.Service.Form">
+            <path value="Header.Visit.Service.Form"/>
+            <definition value="3.7, Formular, Alphanum. 20 Zeichen, Text, Formularbezeichnung, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.8 -->
+        <element id="Header.Visit.Service.EnteredDateTime">
+            <path value="Header.Visit.Service.EnteredDateTime"/>
+            <definition value="3.8, Erfassungsdatum, XML-Format Datetime, Datum, Zeit der Erfassung der Leistungserfassung, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="dateTime"/>
+            </type>
+        </element>
+        <!-- 3.9 -->
+        <element id="Header.Visit.Service.ProviderID">
+            <path value="Header.Visit.Service.ProviderID"/>
+            <definition value="3.9, Erbringende Organisation, Kostenstelle / Organisation; Text oder ID, Zwischen den Partnern zu vereinbaren"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.10 -->
+        <element id="Header.Visit.Service.EnteredBy">
+            <path value="Header.Visit.Service.EnteredBy"/>
+            <definition value="3.10, Erfasser, Text oder ID, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.11 -->
+        <element id="Header.Visit.Service.ItemNumber">
+            <path value="Header.Visit.Service.ItemNumber"/>
+            <definition value="3.11, Laufnummer, Alphanum. Max. 64 Zeichen, Wird jeder erbrachten Leistung mitgegeben, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.12 -->
+        <element id="Header.Visit.Service.RefItemNumber">
+            <path value="Header.Visit.Service.RefItemNumber"/>
+            <definition value="3.12, Referenz Laufnummer zu Hauptleistung, Format von Pos. 3.11, Nur bei Nebenleistungen notwendig, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.13 -->
+        <element id="Header.Visit.Service.Quantity">
+            <path value="Header.Visit.Service.Quantity"/>
+            <definition value="3.13, Anzahl, Numerisch mit Floatingpoint, (d.h. Nachkommastellen sind möglich), eine negative Leistung ist möglich (+ / -), gebrochene Werte müssen beim Import in Systeme die nur ganzzahlige Mengen akzeptieren mit dem Wert aus dem Parameter &#x3c;NumberofParticipants&#x3e; auf eine ganze Zahl umgerechnet werden, Obligat; negative Werte sind zu vereinbaren"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="decimal"/>
+            </type>
+        </element>
+        <!-- 3.14 -->
+        <element id="Header.Visit.Service.ServiceItemErrorCode">
+            <path value="Header.Visit.Service.ServiceItemErrorCode"/>
+            <definition value="3.14, Fehlercode, Alphanum., Fehlertabelle bei unbekanntem Feldinhalt, inkorrekten Werten etc., Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+
+        <!-- 3.15 PersonV40 -->
+        <element id="Header.Visit.Service.PersonV40">
+            <path value="Header.Visit.Service.PersonV40"/>
+            <definition value="3.15, PersonV40, Optional (0,N)"/>
+            <min value="0"/>
+            <max value="*"/>
+        </element>
+        <!-- 3.15.1 -->
+        <element id="Header.Visit.Service.PersonV40.PersonTyp">
+            <path value="Header.Visit.Service.PersonV40.PersonTyp"/>
+            <representation value="xmlAttr"/>
+            <definition value="3.15.1, PersonTyp, Alphanum., Obligatorisch"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 3.15.2 -->
+        <element id="Header.Visit.Service.PersonV40.PersonID">
+            <path value="Header.Visit.Service.PersonV40.PersonID"/>
+            <definition value="3.15.2, PersonID, Alphanum., Obligatorisch"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+
+        <!-- 4 ParamterV40 -->
+        <element id="Header.Visit.Service.ParameterV40">
+            <path value="Header.Visit.Service.ParameterV40"/>
+            <definition value="4, ParameterV40, Optional (0,N)"/>
+            <min value="0"/>
+            <max value="*"/>
+        </element>
+        <!-- 4.1 -->
+        <element id="Header.Visit.Service.ParameterV40.ParamTyp">
+            <path value="Header.Visit.Service.ParameterV40.ParamTyp"/>
+            <representation value="xmlAttr"/>
+            <definition value="4.1, ParamTyp, Alphanum., Obligatorisch"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 4.2 -->
+        <element id="Header.Visit.Service.ParameterV40.ParamValue">
+            <path value="Header.Visit.Service.ParameterV40.ParamValue"/>
+            <definition value="4.2, ParamValue, Alphanum., Obligatorisch"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+
+    </differential>
+</StructureDefinition>

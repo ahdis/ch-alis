@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Mit XMLSpy v2014 sp1 (x64) (http://www.altova.com) von Matthias Seelhofer (WigaSoft AG) bearbeitet -->
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="WigALIS_4.1.xsd" Version="4.1">
+	<ReceivingApplication>SAP</ReceivingApplication>
+	<ReceivingFacility>soH</ReceivingFacility>
+	<ReceivingServiceCode>SO</ReceivingServiceCode>
+	<SendingApplication>VANADIUM</SendingApplication>
+	<SendingFacility>soH</SendingFacility>
+	<SendingServiceCode>SO</SendingServiceCode>
+	<MessageControlID/>
+	<SoftwareReleaseNumber>5.12.0</SoftwareReleaseNumber>
+	<FileCreationDate>2020-08-20T02:55:08+01:00</FileCreationDate>
+	<Visit>
+		<VisitNumber>4410714</VisitNumber>
+		<PatientID>569196</PatientID>
+		<PatientName>Muster</PatientName>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0010</ServiceItem>
+			<EnteredDateTime>2020-08-19T13:16:23+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70161256</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001980.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="ReasonIncreasedTreatment">
+				<ParamValue>-</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0030</ServiceItem>
+			<EnteredDateTime>2020-08-19T13:16:23+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70161258</ItemNumber>
+			<RefItemNumber>70161256</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001980.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0020</ServiceItem>
+			<EnteredDateTime>2020-08-19T13:16:23+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70161259</ItemNumber>
+			<RefItemNumber>70161256</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001980.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>22.1140</ServiceItem>
+			<EnteredDateTime>2020-08-19T13:16:59+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70161267</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001980.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+	</Visit>
+	<Visit>
+		<VisitNumber>4412510</VisitNumber>
+		<PatientID>545388</PatientID>
+		<PatientName>Muster</PatientName>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0010</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:58:24+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70168144</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7000127.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="ReasonIncreasedTreatment">
+				<ParamValue>-</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0030</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:58:24+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70168145</ItemNumber>
+			<RefItemNumber>70168144</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7000127.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0020</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:58:24+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70168146</ItemNumber>
+			<RefItemNumber>70168144</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7000127.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0141</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:58:30+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70168148</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>5</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7000127.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="ReasonIncreasedTreatment">
+				<ParamValue>-</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>22.0050</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:58:31+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70168149</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7000127.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3340</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:58:34+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70168150</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7000127.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3800</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:58:35+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70168151</ItemNumber>
+			<RefItemNumber>70168150</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7000127.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.0020</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:58:35+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70168152</ItemNumber>
+			<RefItemNumber>70168150</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7000127.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+	</Visit>
+	<Visit>
+		<VisitNumber>4553614</VisitNumber>
+		<PatientID>977554</PatientID>
+		<PatientName>Muster</PatientName>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0161</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:37+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167791</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>10</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="ReasonIncreasedTreatment">
+				<ParamValue>1</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0010</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:46+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167793</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="ReasonIncreasedTreatment">
+				<ParamValue>1</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0030</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:46+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167794</ItemNumber>
+			<RefItemNumber>70167793</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0026</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:47+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167795</ItemNumber>
+			<RefItemNumber>70167793</RefItemNumber>
+			<Quantity>2</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>23.0010</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:47+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167797</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3430</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:48+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167798</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3800</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:49+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167800</ItemNumber>
+			<RefItemNumber>70167798</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.0020</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:50+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167801</ItemNumber>
+			<RefItemNumber>70167798</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3445</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:51+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167802</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="Side">
+				<ParamValue>l</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3800</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:52+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167803</ItemNumber>
+			<RefItemNumber>70167802</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3445</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:36:55+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167805</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="Side">
+				<ParamValue>r</ParamValue>
+			</ParameterV40>
+		</Service>
+	</Visit>
+	<Visit>
+		<VisitNumber>4561682</VisitNumber>
+		<PatientID>1022730</PatientID>
+		<PatientName>Muster</PatientName>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0161</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:40+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167930</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>5</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="ReasonIncreasedTreatment">
+				<ParamValue>1</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0010</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:43+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167932</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="ReasonIncreasedTreatment">
+				<ParamValue>1</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>00.0030</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:44+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167933</ItemNumber>
+			<RefItemNumber>70167932</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>23.0010</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:45+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167934</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3430</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:45+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167935</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3800</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:46+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167936</ItemNumber>
+			<RefItemNumber>70167935</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.0020</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:46+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167937</ItemNumber>
+			<RefItemNumber>70167935</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3445</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:48+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167939</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="Side">
+				<ParamValue>l</ParamValue>
+			</ParameterV40>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3800</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:49+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167942</ItemNumber>
+			<RefItemNumber>70167939</RefItemNumber>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+		</Service>
+		<Service>
+			<ServiceDate>2020-08-19T23:59:00</ServiceDate>
+			<SessionID>1</SessionID>
+			<ServiceType>TARMED</ServiceType>
+			<ServiceItem>39.3445</ServiceItem>
+			<EnteredDateTime>2020-08-19T17:44:52+01:00</EnteredDateTime>
+			<ProviderID>113490</ProviderID>
+			<ItemNumber>70167943</ItemNumber>
+			<RefItemNumber/>
+			<Quantity>1</Quantity>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7000174</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7001629.00</PersonID>
+			</PersonV40>
+			<ServiceItemErrorCode/>
+			<ParameterV40 ParamTyp="Side">
+				<ParamValue>r</ParamValue>
+			</ParameterV40>
+		</Service>
+	</Visit>
+</Header>
