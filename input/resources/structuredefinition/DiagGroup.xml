@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StructureDefinition xmlns="http://hl7.org/fhir">
+    <id value="DiagGroup"/>
+    <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace">
+        <valueUri value="default"/>
+    </extension>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup"/>
+    <version value="0.1.0"/>
+    <name value="ChAlisLeistungsschnittstelleDiagGroup"/>
+    <title value="CH ALIS Leistungsschnittstelle - DiagGroup"/>
+    <status value="draft"/>
+    <date value="2020-09-01"/>
+    <publisher value="ALIS-Connect"/>
+    <contact>
+        <name value="ALIS-Connect"/>
+        <telecom>
+            <system value="url"/>
+            <value value="https://www.alis-connect.ch/"/>
+        </telecom>
+    </contact>
+    <description value="Leistungsschnittstelle ALIS Version 4.3 - DiagGroup"/>
+    <jurisdiction>
+        <coding>
+            <system value="urn:iso:std:iso:3166"/>
+            <code value="CH"/>
+        </coding>
+    </jurisdiction>
+    <fhirVersion value="4.0.1"/>
+    <kind value="logical"/>
+    <abstract value="false"/>
+    <type value="DiagGroup"/>
+    <baseDefinition value="http://hl7.org/fhir/StructureDefinition/Base"/>
+    <derivation value="specialization"/>
+    <differential>
+        <!-- 2.9 Diagnosegruppe -->
+        <element id="DiagGroup">
+            <path value="DiagGroup"/>
+            <definition value="2.9, Diagnosegruppe, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+        </element>
+        <!-- 2.9.1 -->
+        <element id="DiagGroup.DiagCode">
+            <path value="DiagGroup.DiagCode"/>
+            <representation value="xmlAttr"/>
+            <definition value="2.9.1, Diagnosecode, Alphanum., Diagnosecode [mind. 2 Zeichen, ICDx 5 Zeichen - abhängig von vereinbarter Codeversion, Originalschreibweise mit Punkten etc.], Obligatorisch"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="string"/>
+            </type>
+        </element>
+        <!-- 2.9.2 -->
+        <element id="DiagGroup.DiagType">
+            <path value="DiagGroup.DiagType"/>
+            <definition value="2.9.2, Diagnosetyp, Alphanum., Art der Diagnose: Einweisungs-, Behandlungs-, Aufnahme-...., Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Text"/>
+            </type>
+        </element>
+        <!-- 2.9.3 -->
+        <element id="DiagGroup.DiagCatType">
+            <path value="DiagGroup.DiagCatType"/>
+            <definition value="2.9.3, Katalogtyp, Alphanum., Katalogtyp: ICDx, HK (Hauskatalog), Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Text"/>
+            </type>
+        </element>
+    </differential>
+</StructureDefinition>

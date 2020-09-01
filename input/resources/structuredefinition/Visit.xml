@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StructureDefinition xmlns="http://hl7.org/fhir">
+    <id value="Visit"/>
+    <extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace">
+        <valueUri value="default"/>
+    </extension>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Visit"/>
+    <version value="0.1.0"/>
+    <name value="ChAlisLeistungsschnittstelleVisit"/>
+    <title value="CH ALIS Leistungsschnittstelle - Visit"/>
+    <status value="draft"/>
+    <date value="2020-09-01"/>
+    <publisher value="ALIS-Connect"/>
+    <contact>
+        <name value="ALIS-Connect"/>
+        <telecom>
+            <system value="url"/>
+            <value value="https://www.alis-connect.ch/"/>
+        </telecom>
+    </contact>
+    <description value="Leistungsschnittstelle ALIS Version 4.3 - Visit"/>
+    <jurisdiction>
+        <coding>
+            <system value="urn:iso:std:iso:3166"/>
+            <code value="CH"/>
+        </coding>
+    </jurisdiction>
+    <fhirVersion value="4.0.1"/>
+    <kind value="logical"/>
+    <abstract value="false"/>
+    <type value="Visit"/>
+    <baseDefinition value="http://hl7.org/fhir/StructureDefinition/Base"/>
+    <derivation value="specialization"/>
+    <differential>
+        <!-- 2 Patient --> 
+        <element id="Visit">
+            <path value="Visit"/>
+            <definition value="2, Patient"/>
+            <min value="1"/>
+            <max value="*"/>
+        </element>
+        <!-- 2.1 -->
+        <element id="Visit.VisitNumber">
+            <path value="Visit.VisitNumber"/>
+            <definition value="2.1, Fall, Alphanum. Max. 40 Zeichen, FID = eindeutiger Schlüssel (ev. Kombination aus PID und lfd. Nr.), der FID ist eindeutig, Obligatorisch"/>
+            <min value="1"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Text"/>
+            </type>
+        </element>
+        <!-- 2.2 -->
+        <element id="Visit.PatientID">
+            <path value="Visit.PatientID"/>
+            <definition value="2.2, Patient.PID, Numerisch, Max. 20 Zeichen, PID, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Text"/>
+            </type>
+        </element>
+        <!-- 2.3 -->
+        <element id="Visit.PatientName">
+            <path value="Visit.PatientName"/>
+            <definition value="2.3, Patient.Name, 50 Zeichen, Name, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Text"/>
+            </type>
+        </element>
+        <!-- 2.4 -->
+        <element id="Visit.PatientGivenName">
+            <path value="Visit.PatientGivenName"/>
+            <definition value="2.4, Patient.Vorname, 50 Zeichen, Vorname, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Text"/>
+            </type>
+        </element>
+        <!-- 2.5 -->
+        <element id="Visit.PatientBirthDate">
+            <path value="Visit.PatientBirthDate"/>
+            <definition value="2.5, Patient.GebDat, XML-Format date, Geb.Datum, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Date"/>
+            </type>
+        </element>
+        <!-- 2.6 -->
+        <element id="Visit.PatientGender">
+            <path value="Visit.PatientGender"/>
+            <short value="M|F"/>
+            <definition value="2.6, Patient Geschlecht, 1 Zeichen, Geschlecht, Optional M,F"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Text"/>
+            </type>
+        </element>
+        <!-- 2.7 -->
+        <element id="Visit.TerminationVisit">
+            <path value="Visit.TerminationVisit"/>
+            <definition value="2.7, Fall Abschluss, XML-Format date, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Date"/>
+            </type>
+        </element>
+        <!-- 2.8 -->
+        <element id="Visit.TerminationReason">
+            <path value="Visit.TerminationReason"/>
+            <definition value="2.8, Fall Abschlussgrund, Alphanum., Grunde des Fallabschlusses, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Text"/>
+            </type>
+        </element>
+
+        <!-- 2.9 Diagnosegruppe -->
+        <element id="Visit.DiagGroup">
+            <path value="Visit.DiagGroup"/>
+            <definition value="2.9, Diagnosegruppe, Optional"/>
+            <min value="0"/>
+            <max value="1"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup"/>
+            </type>
+        </element>
+
+        <!--  3 Leistung -->
+        <element id="Visit.Service">
+            <path value="Visit.Service"/>
+            <definition value="3, Leistung, Leistungen stehen zum Patient im Verhltnis 1:N"/>
+            <min value="1"/>
+            <max value="*"/>
+            <type>
+                <code value="http://fhir.ch/ig/ch-alis/StructureDefinition/Service"/>
+            </type>
+        </element>
+    </differential>
+</StructureDefinition>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <StructureDefinition xmlns="http://hl7.org/fhir">
-	<id value="Text" />
+	<id value="Decimal" />
 	<extension url="http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace">
 		<valueUri value="default"/>
 	</extension>
-	<url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Text" />
+	<url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Decimal" />
 	<version value="0.1.0" />
-	<name value="ChAlisDataTypeText" />
-	<title value="CH ALIS Data Type Text" />
+	<name value="ChAlisDataTypeDecimal" />
+	<title value="CH ALIS Data Type Decimal" />
 	<status value="draft" />
-	<date value="2020-08-13" />
+	<date value="2020-09-01" />
 	<publisher value="ALIS-Connect" />
 	<contact>
 		<name value="ALIS-Connect" />
@@ -18,7 +18,7 @@
 			<value value="https://www.alis-connect.ch/" />
 		</telecom>
 	</contact>
-	<description value="Data Type Text" />
+	<description value="Data Type Decimal" />
 	<jurisdiction>
 		<coding>
 			<system value="urn:iso:std:iso:3166" />
@@ -28,24 +28,24 @@
 	<fhirVersion value="4.0.1" />
 	<kind value="logical" />
 	<abstract value="false" />
-	<type value="Text" />
+	<type value="Decimal" />
 	<baseDefinition value="http://hl7.org/fhir/StructureDefinition/Base" />
 	<derivation value="specialization" />
 	<differential>
-		<element id="Text">
-			<path value="Text"/>
-			<definition value="Text"/>
+		<element id="Decimal">
+			<path value="Decimal"/>
+			<definition value="Decimal"/>
 			<min value="1"/>
 			<max value="1"/>
 		</element>
-		<element id="Text.data">
-			<path value="Text.data"/>
-			<representation value="xmlText"/>
-			<definition value="Text"/>
+		<element id="Decimal.data">
+			<path value="Decimal.data"/>
+			<representation value="xmlText" />
+			<definition value="Decimal"/>
 			<min value="1"/>
 			<max value="1"/>
 			<type>
-				<code value="string"/>
+				<code value="decimal"/>
 			</type>
 		</element>
 	</differential>
