@@ -1,0 +1,160 @@
+{
+  "resourceType": "Header",
+  "Version": 4.3,
+  "ReceivingApplication": {
+    "data": "Name des empfangenden Systems"
+  },
+  "ReceivingFacility": {
+    "data": "Mandant"
+  },
+  "ReceivingServiceCode": {
+    "data": "Code im empfangenden System"
+  },
+  "SendingApplication": {
+    "data": "Name des senden Systems"
+  },
+  "SendingFacility": {
+    "data": "Mandant"
+  },
+  "SendingServiceCode": {
+    "data": "Code im sendenden System"
+  },
+  "MessageControlID": {
+    "data": 1
+  },
+  "HeaderErrorCode": {
+    "data": "999"
+  },
+  "SoftwareReleaseNumber": {
+    "data": "Version der sendenden Software"
+  },
+  "FileCreationDate": {
+    "data": "2017-08-30T11:23:05-01:00"
+  },
+  "Visit": [
+    {
+      "VisitNumber": {
+        "data": "eindeutige Fall-Identifikation"
+      },
+      "PatientID": {
+        "data": "Patienten-ID"
+      },
+      "PatientName": {
+        "data": "Patienten-Name"
+      },
+      "PatientGivenName": {
+        "data": "Patienten-Vorname"
+      },
+      "PatientBirthDate": {
+        "data": "1950-01-01"
+      },
+      "PatientGender": {
+        "data": "M"
+      },
+      "TerminationVisit": {
+        "data": "2017-08-31"
+      },
+      "TerminationReason": {
+        "data": "Grund für Fallabschluss"
+      },
+      "DiagGroup": {
+        "DiagCode": "99.99",
+        "DiagType": {
+          "data": "Eintrittsdiagnose"
+        },
+        "DiagCatType": {
+          "data": "ICD10"
+        }
+      },
+      "Service": [
+        {
+          "Transaction": "insert",
+          "ServiceDate": {
+            "data": "2017-08-30T00:00:00-01:00"
+          },
+          "SessionID": {
+            "data": "1"
+          },
+          "OrderID": {
+            "data": "16595790-A8C1-43E1-B785-BC81F3926482"
+          },
+          "ReferrerID": {
+            "data": "ABCD"
+          },
+          "ServiceType": {
+            "data": "TARMED"
+          },
+          "ServiceItem": {
+            "data": "00.0010"
+          },
+          "Form": {
+            "data": "a1b2c3"
+          },
+          "EnteredDateTime": {
+            "data": "2017-08-30T10:17:37-01:00"
+          },
+          "ProviderID": {
+            "data": "1012"
+          },
+          "EnteredBy": {
+            "data": "Kennung erfassender Benutzer im senden System"
+          },
+          "ItemNumber": {
+            "data": "8C85D1E4-182F-4905-93CC-4BA5C041755F"
+          },
+          "Quantity": {
+            "data": 1
+          },
+          "ServiceItemErrorCode": {
+            "data": "OK"
+          },
+          "PersonV40": [
+            {
+              "PersonTyp": "ResponsiblePhysician",
+              "PersonID": {
+                "data": "ID der Person"
+              }
+            },
+            {
+              "PersonTyp": "ProvidingPhysician",
+              "PersonID": {
+                "data": "ID der Person"
+              }
+            }
+          ],
+          "ParameterV40": [
+            {
+              "ParamTyp": "Duration",
+              "ParamValue": {
+                "data": "25"
+              }
+            },
+            {
+              "ParamTyp": "individuell vereinbart",
+              "ParamValue": {
+                "data": "beliebige Information"
+              }
+            }
+          ]
+        },
+        {
+          "ServiceDate": {
+            "data": "2017-08-30T00:00:00-01:00"
+          },
+          "ServiceItem": {
+            "data": "00.0030"
+          },
+          "ItemNumber": {
+            "data": "2536B891-13B7-4EDB-B00C-25D8F8C6BF23"
+          },
+          "RefItemNumber": {
+            "data": "8C85D1E4-182F-4905-93CC-4BA5C041755F"
+          },
+          "Quantity": {
+            "data": 1
+          }
+        }
+      ]
+    }
+  ]
+}

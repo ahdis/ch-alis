@@ -35,6 +35,14 @@
   <fhirVersion value="4.0.1"/>
   <definition>
     <!-- References to examples -->
+    <resource>
+      <reference>
+        <reference value="Bundle/AlisBeispielComplete43"/>
+      </reference>
+      <name value="Example ALIS Beispiel complete43"/>
+      <description value="Example for Bundle"/>
+      <!--<exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-bundle"/>-->
+    </resource>
 
     <!-- References to structure definitions -->
     <resource>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Bundle xmlns="http://hl7.org/fhir">
+    <id value="AlisBeispielComplete43"/>
+    <type value="message"/>
+
+    <!-- 1.10 Fileerstellungsdatum (FileCreationDate) -->
+    <timestamp value="2017-08-30T11:23:05-01:00"/>
+
+    <entry>
+        <fullUrl value="http://fhir.ch/ig/ch-alis/MessageHeader/1"/>
+        <resource>
+            <MessageHeader>
+                <!-- 1.7 Auftrags-ID (MessageControlId) -->
+                <id value="1"/>
+
+                <!--TBD-->
+                <eventUri value="http://fhir.ch/ig/ch-alis-43"/>
+
+                <destination>
+                    <!-- 1.1 Empfänger (ReceivingApplication) -->
+                    <!-- 1.2 MandantenNr (ReceivingFacility) -->
+                    <!-- 1.3 Einrichtung (ReceivingServiceCode) -->
+                    <!-- URL je nach Implementation -->
+                    <endpoint value="http://fhir.ch/ig/ch-alis/{ReceivingApplication}/{ReceivingFacility}/{ReceivingServiceCode}"/>
+                </destination>
+
+                <source>
+                    <!-- 1.9 Version Standardschnittstelle (SoftwareReleaseNumber) -->
+                    <version value="Version der sendenden Software, z.B. 5.12.0"/>
+
+                    <!-- 1.4 Sender (SendingApplication) -->
+                    <!-- 1.5 MandatenNr (SendingFacility) -->
+                    <!-- 1.6 Einrichtung (SendingServiceCode) -->
+                    <!-- URL je nach Implementation -->
+                    <endpoint value="http://fhir.ch/ig/ch-alis/{SendingApplication}/{SendingFacility}/{SendingServiceCode}"/>
+                </source>
+
+                <!-- 1.8 Fehlercode (HeaderErrorCode) -->
+                <response>
+                    <identifier value="MessageHeaderRequest"/>
+                    <code value="fatal-error"/>
+                    <details>
+                        <reference value="OperationOutcome/OpOutcome1"/>
+                    </details>
+                </response>
+
+                <focus>
+                    <reference value="ChargeItem/16595790-a8c1-43e1-b785-bc81f3926482"/>
+                </focus>
+                <focus>
+                    <reference value="ChargeItem/Nebenleistung"/>
+                </focus>
+
+            </MessageHeader>
+        </resource>
+    </entry>
+
+    <entry>
+        <fullUrl value="http://fhir.ch/ig/ch-alis/OperationOutcome/OpOutcome1"/>
+        <resource>
+            <OperationOutcome>
+                <id value="OpOutcome1"/>
+                <!-- 1.8 Fehlercode (HeaderErrorCode) -->
+                <issue>
+                    <severity value="error"/>
+                    <code value="invalid"/>
+                    <details>
+                        <coding>
+                            <system value="http://fhir.ch/ig/ch-alis/codesystem/tbd"/>
+                            <code value="999"/>
+                        </coding>
+                        <text value="999"/>
+                    </details>
+                </issue>
+            </OperationOutcome>
+        </resource>
+    </entry>
+
+    <entry>
+        <fullUrl value="http://fhir.ch/ig/ch-alis/ChargeItem/16595790-a8c1-43e1-b785-bc81f3926482"/>
+        <resource>
+            <ChargeItem>
+                <!-- 3.3 Auftragsnummer (OrderId)-->
+                <id value="16595790-a8c1-43e1-b785-bc81f3926482"/>
+
+                <!-- 3.2 Sitzung (SessionID) -->
+                <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
+                    <valueString value="1"/>
+                </extension>
+
+                <!-- 3.7 Formularbezeichnung (Form) -->
+                <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form">
+                    <valueString value="a1b2c3"/>
+                </extension>
+
+                <!-- 3.11 Laufnummer (ItemNumber) -->
+                <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-itemnumber">
+                    <valueString value="8C85D1E4-182F-4905-93CC-4BA5C041755F"/>
+                </extension>
+
+                <!-- 4.15 Parameter: Verrechenbar (Billable) -> nicht im Beispiel, aber von FHIR verlangt -->
+                <status value="billable"/>
+
+                <code>
+                    <coding>
+                        <!-- 3.5 Katalog (ServiceType) -->
+                        <system value="http://fhir.ch/ig/ch-alis/codesystem/tbd"/>
+                        <!-- 3.6 Tarifposition (ServiceItem) -->
+                        <code value="00.0010"/>
+                    </coding>
+                </code>
+
+                <!-- 2 Patient (Visit) -->
+                <subject>
+                    <reference value="Patient/MaxComplete"/>
+                </subject>
+
+                <!-- 2.1 Fall (VisitNumber) -->
+                <context>
+                    <reference value="Encounter/Visit"/>
+                </context>
+
+                <!-- 3.1 Leistungsdatum (ServiceDate) -->
+                <occurrenceDateTime value="2017-08-30T00:00:00-01:00"/>
+
+                <!-- 3.15 PersonV40 (PersonV40) -->
+                <performer>
+                    <!-- 3.15.1 PersonTyp (PersonTyp)-->
+                    <function>
+                        <coding>
+                            <system value="http://fhir.ch/ig/ch-alis/codesystem/tbd"/>
+                            <code value="ResponsiblePhysician"/>
+                        </coding>
+                    </function>
+
+                    <!-- 3.15.2. PersonID (PersonID) -->
+                    <actor>
+                        <display value="ID der Person"/>
+                    </actor>
+                </performer>
+
+                <!-- 3.15 PersonV40 (PersonV40) -->
+                <performer>
+                    <!-- 3.15.1 PersonTyp (PersonTyp)-->
+                    <function>
+                        <coding>
+                            <system value="http://fhir.ch/ig/ch-alis/codesystem/tbd"/>
+                            <code value="ProvidingPhysician"/>
+                        </coding>
+                    </function>
+
+                    <!-- 3.15.2. PersonID (PersonID) -->
+                    <actor>
+                        <display value="ID der Person"/>
+                    </actor>
+                </performer>
+
+                <!-- 3.9 Erbringende Organization (ProviderID) -->
+                <performingOrganization>
+                    <display value="1012"/>
+                </performingOrganization>
+
+                <!-- 3.4 Auftraggebende Kostenstelle (ReferrerID) -->
+                <costCenter>
+                    <display value="ABCD"/>
+                </costCenter>
+
+                <!-- 3.13 Anzahl (Quantity> -->
+                <quantity>
+                    <value value="1"/>
+                </quantity>
+
+                <!-- 3.10 Erfasser (EnteredBy) -->
+                <enterer>
+                    <display value="Kennung erfassender Benutzer im senden System"/>
+                </enterer>
+
+                <!-- 3.8 Erfassungsdatum (EnteredDateTime) -->
+                <enteredDate value="2017-08-30T10:17:37-01:00"/>
+
+            </ChargeItem>
+        </resource>
+    </entry>
+
+    <entry>
+        <fullUrl value="http://fhir.ch/ig/ch-alis/ChargeItem/Nebenleistung"/>
+        <resource>
+            <ChargeItem>
+                <id value="Nebenleistung"/>
+
+                <!-- 3.11 Laufnummer (ItemNumber) -->
+                <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-itemnumber">
+                    <valueString value="2536B891-13B7-4EDB-B00C-25D8F8C6BF23"/>
+                </extension>
+
+                <!-- 4.15 Parameter: Verrechenbar (Billable) -> nicht im Beispiel, aber von FHIR verlangt -->
+                <status value="billable"/>
+
+                <!-- 3.12 Referenz zu Hauptleistung (RefItemNumber) - 8C85D1E4-182F-4905-93CC-4BA5C041755F -->
+                <partOf>
+                    <reference value="ChargeItem/16595790-a8c1-43e1-b785-bc81f3926482"/>
+                </partOf>
+
+                <!-- 3.6 Tarifposition (ServiceItem) -->
+                <code>
+                    <coding>
+                        <!-- 3.5 Katalog (ServiceType) -->
+                        <system value="http://fhir.ch/ig/ch-alis/codesystem/tbd"/>
+                        <!-- 3.6 Tarifposition (ServiceItem) -->
+                        <code value="00.0030"/>
+                    </coding>
+                </code>
+
+                <!-- 2 Patient (Visit) -->
+                <subject>
+                    <reference value="Patient/MaxComplete"/>
+                </subject>
+
+                <!-- 3.1 Leistungsdatum (ServiceDate) -->
+                <occurrenceDateTime value="2017-08-30T00:00:00-01:00"/>
+
+                <!-- 3.13 Anzahl (Quantity) -->
+                <quantity>
+                    <value value="1"/>
+                </quantity>
+
+            </ChargeItem>
+        </resource>
+    </entry>
+
+    <entry>
+        <fullUrl value="http://fhir.ch/ig/ch-alis/Patient/MaxComplete"/>
+        <resource>
+            <Patient>
+                <id value="MaxComplete"/>
+
+                <!-- 2.2 Patient.PID (PatientID) -->
+                <identifier>
+                    <type>
+                        <coding>
+                            <system value="http://terminology.hl7.org/CodeSystem/v2-0203" />
+                            <code value="MR" />
+                        </coding>
+                    </type>
+                    <system value="http://www.example.ch/patienteniddomain"/>
+                    <value value="Patienten-ID"/>
+                </identifier>
+
+                <name>
+                    <!-- 2.3 Patient.Name (PatientName) -->
+                    <family value="Patienten-Name"/>
+                    <!-- 2.4 Patient.Vorname (PatientGivenName) -->
+                    <given value="Patienten-Vorname"/>
+                </name>
+
+                <!-- 2.6 Patient.Geschlecht (PatientGender) -->
+                <gender value="male"/>
+
+                <!-- 2.5 Patient.GebDatum (PatientBirthDate) -->
+                <birthDate value="1950-01-01"/>
+
+            </Patient>
+        </resource>
+    </entry>
+
+    <entry>
+        <fullUrl value="http://fhir.ch/ig/ch-alis/Encounter/Visit"/>
+        <resource>
+            <Encounter>
+                <id value="Visit"/>
+
+                <contained>
+                    <Condition>
+                        <id value="Cond1"/>
+
+                        <code>
+                            <coding>
+                                <!-- 2.9.3 Katalogtyp (DiagCatType) -->
+                                <system value="http://fhir.de/CodeSystem/dimdi/icd-10-gm"/>
+                                <!-- 2.9.1 Diagnosecode (DiagCode) -->
+                                <code value="99.99"/>
+                            </coding>
+                        </code>
+
+                        <subject>
+                            <reference value="Patient/MaxComplete"/>
+                        </subject>
+
+                    </Condition>
+                </contained>
+
+                <!-- 2.8 Fall Abschlussgrund (TerminationReason) -->
+                <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-terminationreason">
+                    <valueString value="Grund für Fallabschluss"/>
+                </extension>
+
+                <!-- 2.1 Fall (VisitNumber) -->
+                <identifier>
+                    <system value="http://www.example.ch/fallnummerdomain"/>
+                    <value value="eindeutige Fall-Identifikation"/>
+                </identifier>
+
+                <status value="finished"/>
+
+                <class>
+                    <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+                    <code value="IMP"/>
+                    <display value="inpatient encounter"/>
+                </class>
+
+                <subject>
+                    <reference value="Patient/MaxComplete"/>
+                </subject>
+
+                <!-- 2.7 Fall Abschluss (TerminationVisit) -->
+                <period>
+                    <end value="2017-08-31"/>
+                </period>
+
+                <!-- 2.9 DiagnoseGruppe (DiagGroup) -->
+                <diagnosis>
+                    <condition>
+                        <reference value="#Cond1"/>
+                    </condition> 
+
+                    <!-- 2.9.2 Diagnosetyp (DiagType)-->
+                    <use>
+                        <text value="Eintrittsdiagnose"/>
+                    </use>
+                </diagnosis>
+
+            </Encounter>
+        </resource>
+    </entry>
+
+</Bundle>
