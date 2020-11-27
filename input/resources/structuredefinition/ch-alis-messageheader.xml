@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StructureDefinition xmlns="http://hl7.org/fhir">
+	<id value="ch-alis-messageheader" />
+	<url value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-messageheader" />
+	<version value="0.1.0" />
+	<name value="ChAlisMessageHeader" />
+	<title value="CH ALIS MessageHeader Profile" />
+	<status value="draft" />
+	<date value="2020-11-26" />
+	<publisher value="ALIS-Connect" />
+	<contact>
+		<name value="ALIS-Connect" />
+		<telecom>
+			<system value="url" />
+			<value value="https://www.alis-connect.ch/" />
+		</telecom>
+	</contact>
+	<description value="This profile constrains the MessageHeader resource to represent the header of a message for service transmission." />
+	<jurisdiction>
+		<coding>
+			<system value="urn:iso:std:iso:3166" />
+			<code value="CH" />
+		</coding>
+	</jurisdiction>
+	<fhirVersion value="4.0.1" />
+	<kind value="resource" />
+	<abstract value="false" />
+	<type value="MessageHeader" />
+	<baseDefinition value="http://hl7.org/fhir/StructureDefinition/MessageHeader" />
+	<derivation value="constraint" />
+	<differential>
+		<element id="MessageHeader">
+			<path value="MessageHeader"/>
+			<short value="CH ALIS MessageHeader"/>
+		</element>
+
+		<!-- 1.7 Auftrags-ID (MessageControlId) -->
+		<element id="MessageHeader.id">
+			<path value="MessageHeader.id"/>
+			<short value="MessageControlID"/>
+			<min value="1"/>
+		</element>
+
+		<element id="MessageHeader.eventUri">
+			<path value="MessageHeader.eventUri"/>
+			<short value="Header Attribute Version"/>
+		</element>
+
+		<element id="MessageHeader.destination">
+			<path value="MessageHeader.destination"/>
+			<min value="1"/>
+			<max value="1"/>
+		</element>
+		<!-- 1.1 Empfänger (ReceivingApplication) -->
+        <!-- 1.2 MandantenNr (ReceivingFacility) -->
+        <!-- 1.3 Einrichtung (ReceivingServiceCode) -->
+        <!-- URL je nach Implementation -->
+		<element id="MessageHeader.destination.endpoint">
+			<path value="MessageHeader.destination.endpoint"/>
+			<short value="http://fhir.ch/ig/ch-alis/{ReceivingApplication}/{ReceivingFacility}/{ReceivingServiceCode}"/>
+		</element>
+
+		<element id="MessageHeader.source">
+			<path value="MessageHeader.source"/>
+		</element>
+		<!-- 1.9 Version Standardschnittstelle (SoftwareReleaseNumber) -->
+		<element id="MessageHeader.source.version">
+			<path value="MessageHeader.source.version"/>
+			<short value="SoftwareReleaseNumber"/>
+		</element>
+		<!-- 1.4 Sender (SendingApplication) -->
+        <!-- 1.5 MandatenNr (SendingFacility) -->
+        <!-- 1.6 Einrichtung (SendingServiceCode) -->
+        <!-- URL je nach Implementation -->
+		<element id="MessageHeader.source.endpoint">
+			<path value="MessageHeader.source.endpoint"/>
+			<short value="http://fhir.ch/ig/ch-alis/{SendingApplication}/{SendingFacility}/{SendingServiceCode}"/>
+		</element>
+
+		<element id="MessageHeader.response">
+			<path value="MessageHeader.response"/>
+			<short value="HeaderErrorCode"/>
+		</element>
+        
+		<element id="MessageHeader.focus">
+			<path value="MessageHeader.focus"/>
+			<short value="Transaction"/>
+			<type>
+                <code value="Reference"/>
+                <targetProfile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-transaction"/>
+            </type>
+			<min value="1"/>
+			<max value="1"/>
+		</element>
+		<element id="MessageHeader.focus.reference">
+        	<path value="MessageHeader.focus.reference"/>
+			<min value="1"/>
+      	</element>
+
+	</differential>
+</StructureDefinition>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StructureDefinition xmlns="http://hl7.org/fhir">
+	<id value="ch-alis-chargeitem" />
+	<url value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-chargeitem" />
+	<version value="0.1.0" />
+	<name value="ChAlisChargeItem" />
+	<title value="CH ALIS ChargeItem Profile" />
+	<status value="draft" />
+	<date value="2020-11-26" />
+	<publisher value="ALIS-Connect" />
+	<contact>
+		<name value="ALIS-Connect" />
+		<telecom>
+			<system value="url" />
+			<value value="https://www.alis-connect.ch/" />
+		</telecom>
+	</contact>
+	<description value="This profile constrains the ChargeItem resource to represent the service itself for service transmission." />
+	<jurisdiction>
+		<coding>
+			<system value="urn:iso:std:iso:3166" />
+			<code value="CH" />
+		</coding>
+	</jurisdiction>
+	<fhirVersion value="4.0.1" />
+	<kind value="resource" />
+	<abstract value="false" />
+	<type value="ChargeItem" />
+	<baseDefinition value="http://hl7.org/fhir/StructureDefinition/ChargeItem" />
+	<derivation value="constraint" />
+	<differential>
+		<element id="ChargeItem">
+			<path value="ChargeItem"/>
+			<short value="CH ALIS ChargeItem"/>
+		</element>
+
+		<!-- 3.11 Laufnummer (ItemNumber) -->
+		<element id="ChargeItem.id">
+			<path value="ChargeItem.id"/>
+			<short value="ItemNumber"/>
+		</element>
+
+		<element id="ChargeItem.contained">
+			<path value="ChargeItem.contained"/>
+			<short value="Contained Resources (Patient, Encounter, Condition)"/>
+			<min value="2"/>
+		</element>
+
+		<element id="ChargeItem.extension">
+            <path value="ChargeItem.extension" />
+            <slicing>
+                <discriminator>
+                    <type value="value" />
+                    <path value="url" />
+                </discriminator>
+                <rules value="open" />
+            </slicing>
+        </element>
+		<!-- 3.2 Sitzung (SessionID) -->
+        <element id="ChargeItem.extension:SessionID">
+            <path value="ChargeItem.extension" />
+            <sliceName value="SessionID" />
+            <short value="SessionID"/>
+            <max value="1"/>
+            <type>
+                <code value="Extension" />
+                <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid" />
+            </type>
+        </element>
+		<!-- 3.3 Auftragsnummer (OrderId)-->
+		<element id="ChargeItem.extension:OrderID">
+            <path value="ChargeItem.extension" />
+            <sliceName value="OrderID" />
+            <short value="OrderID"/>
+            <max value="1"/>
+            <type>
+                <code value="Extension" />
+                <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid" />
+            </type>
+        </element>
+		<!-- 3.7 Formularbezeichnung (Form) -->
+		<element id="ChargeItem.extension:Form">
+            <path value="ChargeItem.extension" />
+            <sliceName value="Form" />
+            <short value="Form"/>
+            <max value="1"/>
+            <type>
+                <code value="Extension" />
+                <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form" />
+            </type>
+        </element>
+
+		<!-- 4.15 Parameter: Verrechenbar (Billable) -> nicht im Beispiel, aber von FHIR verlangt -->
+		<element id="ChargeItem.status">
+			<path value="ChargeItem.status"/>
+			<short value="billable | not-billable"/>
+		</element>
+
+		<!-- 3.12 Referenz zu Hauptleistung (RefItemNumber) -->
+		<element id="ChargeItem.partOf">
+			<path value="ChargeItem.partOf"/>
+			<short value="RefItemNumber"/>
+			<max value="1"/>
+			<type>
+				<code value="Reference"/>
+				<targetProfile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-chargeitem"/>
+				<aggregation value="bundled"/>
+			</type>
+		</element>
+		<element id="ChargeItem.partOf.reference">
+			<path value="ChargeItem.partOf.reference"/>
+			<min value="1"/>
+		</element>
+
+		<element id="ChargeItem.code">
+			<path value="ChargeItem.code"/>
+			<binding>
+				<strength value="required"/>
+				<valueSet value="http://fhir.ch/ig/ch-alis/ValueSet/tbd"/>
+			</binding>
+		</element>
+		<element id="ChargeItem.code.coding">
+			<path value="ChargeItem.code.coding"/>
+			<min value="1"/>
+		</element>
+		<!-- 3.5 Katalog (ServiceType) -->
+		<element id="ChargeItem.code.coding.system">
+			<path value="ChargeItem.code.coding.system"/>
+			<short value="ServiceType"/>
+			<min value="1"/>
+		</element>
+		<!-- 3.6 Tarifposition (ServiceItem) -->
+		<element id="ChargeItem.code.coding.code">
+			<path value="ChargeItem.code.coding.code"/>
+			<short value="ServiceItem"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 2 Patient (Visit) -->
+		<element id="ChargeItem.subject">
+			<path value="ChargeItem.subject"/>
+			<short value="Patient"/>
+			<type>
+				<code value="Reference"/>
+				<targetProfile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-patient"/>
+				<aggregation value="contained"/>
+			</type>
+		</element>
+		<element id="ChargeItem.subject.reference">
+			<path value="ChargeItem.subject.reference"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 2.1 Fall (VisitNumber) -->
+		<element id="ChargeItem.context">
+			<path value="ChargeItem.context"/>
+			<short value="Encounter"/>
+			<type>
+				<code value="Reference"/>
+				<targetProfile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-encounter"/>
+				<aggregation value="contained"/>
+			</type>
+			<min value="1"/>
+		</element>
+		<element id="ChargeItem.context.reference">
+			<path value="ChargeItem.context.reference"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 3.1 Leistungsdatum (ServiceDate) -->
+		<element id="ChargeItem.occurrenceDateTime">
+			<path value="ChargeItem.occurrenceDateTime"/>
+			<short value="ServiceDate"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 3.15 PersonV40 (PersonV40) -->
+		<element id="ChargeItem.performer">
+			<path value="ChargeItem.performer"/>
+			<short value="PersonV40"/>
+		</element>
+		<!-- 3.15.1 PersonTyp (PersonTyp)-->
+		<element id="ChargeItem.performer.function">
+			<path value="ChargeItem.performer.function"/>
+			<min value="1"/>
+			<binding>
+				<strength value="required"/>
+				<valueSet value="http://fhir.ch/ig/ch-alis/ValueSet/ch-alis-persontyp"/>
+			</binding>
+		</element>
+		<element id="ChargeItem.performer.function.coding">
+			<path value="ChargeItem.performer.function.coding"/>
+			<min value="1"/>
+		</element>
+		<element id="ChargeItem.performer.function.coding.system">
+			<path value="ChargeItem.performer.function.coding.system"/>
+			<min value="1"/>
+		</element>
+		<element id="ChargeItem.performer.function.coding.code">
+			<path value="ChargeItem.performer.function.coding.code"/>
+			<short value="PersonTyp"/>
+			<min value="1"/>
+		</element>
+		<!-- 3.15.2. PersonID (PersonID) -->
+		<element id="ChargeItem.performer.actor">
+			<path value="ChargeItem.performer.actor"/>
+		</element>
+		<element id="ChargeItem.performer.actor.display">
+			<path value="ChargeItem.performer.actor.display"/>
+			<short value="PersonID"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 3.9 Erbringende Organization (ProviderID) -->
+		<element id="ChargeItem.performingOrganization">
+			<path value="ChargeItem.performingOrganization"/>
+		</element>
+		<element id="ChargeItem.performingOrganization.display">
+			<path value="ChargeItem.performingOrganization.display"/>
+			<short value="ProviderID"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 3.4 Auftraggebende Kostenstelle (ReferrerID) -->
+		<element id="ChargeItem.costCenter">
+			<path value="ChargeItem.costCenter"/>
+		</element>
+		<element id="ChargeItem.costCenter.display">
+			<path value="ChargeItem.costCenter.display"/>
+			<short value="ReferrerID"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 3.13 Anzahl (Quantity) -->
+		<element id="ChargeItem.quantity">
+			<path value="ChargeItem.quantity"/>
+			<min value="1"/>
+		</element>
+		<element id="ChargeItem.quantity.value">
+			<path value="ChargeItem.quantity.value"/>
+			<short value="Quantity"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 3.10 Erfasser (EnteredBy) -->
+		<element id="ChargeItem.enterer">
+			<path value="ChargeItem.enterer"/>
+		</element>
+		<element id="ChargeItem.enterer.display">
+			<path value="ChargeItem.enterer.display"/>
+			<short value="EnteredBy"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 3.8 Erfassungsdatum (EnteredDateTime) -->
+		<element id="ChargeItem.enteredDate">
+			<path value="ChargeItem.enteredDate"/>
+			<short value="EnteredDateTime"/>
+		</element>
+
+	</differential>
+</StructureDefinition>

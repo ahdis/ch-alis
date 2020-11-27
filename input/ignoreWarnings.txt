@@ -1,4 +1,8 @@
 == Suppressed Messages ==
 
-# Upper case for logical model
+# Allow upper case for logical model
 eld-20: Element names should be simple alphanumerics with a max of 64 characters, or code generation tools may be broken [path.matches('[A-Za-z][A-Za-z0-9]*(\\.[a-z][A-Za-z0-9]*(\\[x])?)*')]
+
+# The examples of the contained resources are shown in the resources they contain
+The Implementation Guide contains no explicitly linked examples for this profile
+The Implementation Guide contains no examples for this profile

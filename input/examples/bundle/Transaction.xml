@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Bundle xmlns="http://hl7.org/fhir">
+    <id value="Transaction"/>
+    <meta>
+        <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-transaction"/>
+    </meta>
+    <type value="transaction"/>
+    <entry>
+        <fullUrl value="http://fhir.ch/ig/ch-alis/ChargeItem/8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
+        <resource>
+            <ChargeItem>
+                <id value="8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
+                <contained>
+                    <Patient>
+                        <id value="MaxComplete"/>
+                        <identifier>
+                            <type>
+                                <coding>
+                                    <system value="http://terminology.hl7.org/CodeSystem/v2-0203" />
+                                    <code value="MR" />
+                                    <display value="Medical record number"/>
+                                </coding>
+                            </type>
+                            <system value="http://www.example.ch/patienteniddomain"/>
+                            <value value="Patienten-ID"/>
+                        </identifier>
+                        <name>
+                            <family value="Patienten-Name"/>
+                            <given value="Patienten-Vorname"/>
+                        </name>
+                        <gender value="male"/>
+                        <birthDate value="1950-01-01"/>
+                    </Patient>
+                </contained>
+                <contained>
+                    <Encounter>
+                        <id value="Visit"/>
+                        <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination">
+                            <extension url="TerminationVisit">
+                                <valueDate value="2017-08-31"/>
+                            </extension>
+                            <extension url="TerminationReason">
+                                <valueString value="Grund für Fallabschluss"/>
+                            </extension>
+                        </extension>
+                        <identifier>
+                            <type>
+                                <coding>
+                                    <system value="http://terminology.hl7.org/CodeSystem/v2-0203" />
+                                    <code value="VN" />
+                                    <display value="Visit number"/>
+                                </coding>
+                            </type>
+                            <system value="http://www.example.ch/fallnummerdomain"/>
+                            <value value="eindeutige Fall-Identifikation"/>
+                        </identifier>
+                        <status value="finished"/>
+                        <class>
+                            <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+                            <code value="IMP"/>
+                            <display value="inpatient encounter"/>
+                        </class>
+                        <subject>
+                            <reference value="#MaxComplete"/>
+                        </subject>
+                        <diagnosis>
+                            <condition>
+                                <reference value="#Diagnosis"/>
+                            </condition>
+                            <use>
+                                <text value="Eintrittsdiagnose"/>
+                            </use>
+                        </diagnosis>
+                    </Encounter>
+                </contained>
+                <contained>
+                    <Condition>
+                        <id value="Diagnosis"/>
+                        <code>
+                            <coding>
+                                <!-- TBD -->
+                                <system value="http://www.example.com/CHOP"/>
+                                <code value="99.99"/>
+                            </coding>
+                        </code>
+                        <subject>
+                            <reference value="#MaxComplete"/>
+                        </subject>
+                    </Condition>
+                </contained>
+                <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
+                    <valueString value="1"/>
+                </extension>
+                <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid">
+                    <valueString value="16595790-a8c1-43e1-b785-bc81f3926482"/>
+                </extension>
+                <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form">
+                    <valueString value="a1b2c3"/>
+                </extension>
+                <status value="billable"/>
+                <code>
+                    <coding>
+                        <system value="http://fhir.ch/ig/ch-alis/CodeSystem/tbd"/>
+                        <code value="00.0010"/>
+                    </coding>
+                </code>
+                <subject>
+                    <reference value="#MaxComplete"/>
+                </subject>
+                <context>
+                    <reference value="#Visit"/>
+                </context>
+                <occurrenceDateTime value="2017-08-30T00:00:00-01:00"/>
+                <performer>
+                    <function>
+                        <coding>
+                            <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp"/>
+                            <code value="ResponsiblePhysician"/>
+                        </coding>
+                    </function>
+                    <actor>
+                        <display value="ID der Person"/>
+                    </actor>
+                </performer>
+                <performer>
+                    <function>
+                        <coding>
+                            <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp"/>
+                            <code value="ProvidingPhysician"/>
+                        </coding>
+                    </function>
+                    <actor>
+                        <display value="ID der Person"/>
+                    </actor>
+                </performer>
+                <performingOrganization>
+                    <display value="1012"/>
+                </performingOrganization>
+                <costCenter>
+                    <display value="ABCD"/>
+                </costCenter>
+                <quantity>
+                    <value value="1"/>
+                </quantity>
+                <enterer>
+                    <display value="Kennung erfassender Benutzer im senden System"/>
+                </enterer>
+                <enteredDate value="2017-08-30T10:17:37-01:00"/>
+            </ChargeItem>
+        </resource>
+        <request>
+            <method value="POST"/>
+            <url value="ChargeItem"/>
+        </request>
+    </entry>
+    <entry>
+        <fullUrl value="http://fhir.ch/ig/ch-alis/ChargeItem/2536b891-13b7-4edb-b00c-25d8f8c6bf23"/>
+        <resource>
+            <ChargeItem>
+                <id value="2536b891-13b7-4edb-b00c-25d8f8c6bf23"/>
+                <contained>
+                    <Patient>
+                        <id value="MaxComplete"/>
+                        <identifier>
+                            <type>
+                                <coding>
+                                    <system value="http://terminology.hl7.org/CodeSystem/v2-0203" />
+                                    <code value="MR" />
+                                    <display value="Medical record number"/>
+                                </coding>
+                            </type>
+                            <system value="http://www.example.ch/patienteniddomain"/>
+                            <value value="Patienten-ID"/>
+                        </identifier>
+                        <name>
+                            <family value="Patienten-Name"/>
+                            <given value="Patienten-Vorname"/>
+                        </name>
+                        <gender value="male"/>
+                        <birthDate value="1950-01-01"/>
+                    </Patient>
+                </contained>
+                <contained>
+                    <Encounter>
+                        <id value="Visit"/>
+                        <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination">
+                            <extension url="TerminationVisit">
+                                <valueDate value="2017-08-31"/>
+                            </extension>
+                            <extension url="TerminationReason">
+                                <valueString value="Grund für Fallabschluss"/>
+                            </extension>
+                        </extension>
+                        <identifier>
+                            <type>
+                                <coding>
+                                    <system value="http://terminology.hl7.org/CodeSystem/v2-0203" />
+                                    <code value="VN" />
+                                    <display value="Visit number"/>
+                                </coding>
+                            </type>
+                            <system value="http://www.example.ch/fallnummerdomain"/>
+                            <value value="eindeutige Fall-Identifikation"/>
+                        </identifier>
+                        <status value="finished"/>
+                        <class>
+                            <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+                            <code value="IMP"/>
+                            <display value="inpatient encounter"/>
+                        </class>
+                        <subject>
+                            <reference value="#MaxComplete"/>
+                        </subject>
+                        <diagnosis>
+                            <condition>
+                                <reference value="#Diagnosis"/>
+                            </condition>
+                            <use>
+                                <text value="Eintrittsdiagnose"/>
+                            </use>
+                        </diagnosis>
+                    </Encounter>
+                </contained>
+                <contained>
+                    <Condition>
+                        <id value="Diagnosis"/>
+                        <code>
+                            <coding>
+                                <!-- TBD -->
+                                <system value="http://www.example.com/CHOP"/>
+                                <code value="99.99"/>
+                            </coding>
+                        </code>
+                        <subject>
+                            <reference value="#MaxComplete"/>
+                        </subject>
+                    </Condition>
+                </contained>
+                <status value="billable"/>
+                <partOf>
+                    <reference value="ChargeItem/8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
+                </partOf>
+                <code>
+                    <coding>
+                        <system value="http://fhir.ch/ig/ch-alis/CodeSystem/tbd"/>
+                        <code value="00.0030"/>
+                    </coding>
+                </code>
+                <subject>
+                    <reference value="#MaxComplete"/>
+                </subject>
+                <context>
+                    <reference value="#Visit"/>
+                </context>
+                <occurrenceDateTime value="2017-08-30T00:00:00-01:00"/>
+                <quantity>
+                    <value value="1"/>
+                </quantity>
+            </ChargeItem>
+        </resource>
+        <request>
+            <method value="POST"/>
+            <url value="ChargeItem"/>
+        </request>
+    </entry>
+</Bundle>

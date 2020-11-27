@@ -33,18 +33,40 @@
   <packageId value="ch.fhir.ig.ch-alis"/>
   <license value="CC-BY-SA-4.0"/>
   <fhirVersion value="4.0.1"/>
+  <dependsOn id="cheprterm">
+    <uri value="http://fhir.ch/ig/ch-core/ImplementationGuide/ch.fhir.ig.ch-core"/>
+    <packageId value="ch.fhir.ig.ch-core"/>
+    <version value="1.0.x"/>
+  </dependsOn>
   <definition>
+
     <!-- References to examples -->
     <resource>
       <reference>
         <reference value="Bundle/AlisBeispielComplete43"/>
       </reference>
-      <name value="Example ALIS Beispiel complete43"/>
-      <description value="Example for Bundle"/>
-      <!--<exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-bundle"/>-->
+      <name value="ALIS Beispiel complete43"/>
+      <description value="Example for Message (Bundle)"/>
+      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="Bundle/Transaction"/>
+      </reference>
+      <name value="Transaction"/>
+      <description value="Example for Transaction (Bundle)"/>
+      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-transaction"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="MessageHeader/1"/>
+      </reference>
+      <name value="Message Header of ALIS Beispiel complete43"/>
+      <description value="Example for MessageHeader"/>
+      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-messageheader"/>
     </resource>
 
-    <!-- References to structure definitions -->
+    <!-- References to structure definitions for Logical Model-->
     <resource>
       <reference>
         <reference value="StructureDefinition/Date"/>
@@ -112,6 +134,90 @@
       <exampleBoolean value="false"/>
     </resource>
 
+    <!-- References to structure definitions for Profiles-->
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-chargeitem"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-condition"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-encounter"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-ext-form"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-ext-orderid"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-ext-sessionid"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-ext-termination"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-message"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-messageheader"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-patient"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-transaction"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+
+    <!-- code systems -->
+    <resource>
+      <reference>
+        <reference value="CodeSystem/ch-alis-persontyp"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+
+    <!-- valuesets -->
+    <resource>
+      <reference>
+        <reference value="ValueSet/ch-alis-persontyp"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+
     <!-- pages -->
     <page>
       <nameUrl value="toc.html"/>
@@ -125,6 +231,21 @@
       <page>
         <nameUrl value="logicalmodel.html"/>
         <title value="Logical Model"/>
+        <generation value="html"/>
+      </page>
+      <page>
+        <nameUrl value="profiles.html"/>
+        <title value="Profiles"/>
+        <generation value="html"/>
+      </page>
+      <page>
+        <nameUrl value="extensions.html"/>
+        <title value="Extensions"/>
+        <generation value="html"/>
+      </page>
+      <page>
+        <nameUrl value="terminology.html"/>
+        <title value="Terminology"/>
         <generation value="html"/>
       </page>
     </page>

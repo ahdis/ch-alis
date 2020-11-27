@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValueSet xmlns="http://hl7.org/fhir">
+    <id value="ch-alis-persontyp"/>
+    <url value="http://fhir.ch/ig/ch-alis/ValueSet/ch-alis-persontyp"/>
+    <version value="0.1.0" />
+    <name value="ChAlisPersonTyp"/>
+    <title value="CH ALIS PersonTyp"/>
+    <status value="draft"/>
+    <date value="2020-11-26" />
+    <publisher value="ALIS-Connect" />
+    <contact>
+        <name value="ALIS-Connect" />
+        <telecom>
+            <system value="url" />
+            <value value="https://www.alis-connect.ch/" />
+        </telecom>
+    </contact>
+    <description value="This value set defines the PersonTyp." />
+    <jurisdiction>
+        <coding>
+            <system value="urn:iso:std:iso:3166"/>
+            <code value="CH"/>
+        </coding>
+    </jurisdiction>
+    <compose>
+        <include>
+            <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp"/>
+            <concept>
+                <code value="ResponsiblePhysician"/>
+            </concept>
+            <concept>
+                <code value="ProvidingPhysician"/>
+            </concept>
+            <concept>
+                <code value="TreatingPhysician"/>
+            </concept>
+            <concept>
+                <code value="FeePhysician"/>
+            </concept>
+            <concept>
+                <code value="AssistingPhysician1"/>
+            </concept>
+            <concept>
+                <code value="AssistingPhysician2"/>
+            </concept>
+            <concept>
+                <code value="AssistingPhysician3"/>
+            </concept>
+            <concept>
+                <code value="AssistingPhysician4"/>
+            </concept>
+            <concept>
+                <code value="AssistingPhysician5"/>
+            </concept>
+            <concept>
+                <code value="AssistingPhysician6"/>
+            </concept>
+            <concept>
+                <code value="AssistingPhysician7"/>
+            </concept>
+            <concept>
+                <code value="AssistingPhysician8"/>
+            </concept>
+            <concept>
+                <code value="AssistingPhysician9"/>
+            </concept>
+        </include>
+    </compose>
+</ValueSet>

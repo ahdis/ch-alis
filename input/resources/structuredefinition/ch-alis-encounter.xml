@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StructureDefinition xmlns="http://hl7.org/fhir">
+	<id value="ch-alis-encounter" />
+	<url value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-encounter" />
+	<version value="0.1.0" />
+	<name value="ChAlisEncounter" />
+	<title value="CH ALIS Encounter Profile" />
+	<status value="draft" />
+	<date value="2020-11-26" />
+	<publisher value="ALIS-Connect" />
+	<contact>
+		<name value="ALIS-Connect" />
+		<telecom>
+			<system value="url" />
+			<value value="https://www.alis-connect.ch/" />
+		</telecom>
+	</contact>
+	<description value="This profile constrains the Encounter resource to represent the visit for service transmission." />
+	<jurisdiction>
+		<coding>
+			<system value="urn:iso:std:iso:3166" />
+			<code value="CH" />
+		</coding>
+	</jurisdiction>
+	<fhirVersion value="4.0.1" />
+	<kind value="resource" />
+	<abstract value="false" />
+	<type value="Encounter" />
+	<baseDefinition value="http://fhir.ch/ig/ch-core/StructureDefinition/ch-core-encounter" />
+	<derivation value="constraint" />
+	<differential>
+		<element id="Encounter">
+			<path value="Encounter"/>
+			<short value="CH ALIS Encounter"/>
+		</element>
+
+		<element id="Encounter.extension">
+            <path value="Encounter.extension" />
+            <slicing>
+                <discriminator>
+                    <type value="value" />
+                    <path value="url" />
+                </discriminator>
+                <rules value="open" />
+            </slicing>
+        </element>
+        <element id="Encounter.extension:Termination">
+            <path value="Encounter.extension" />
+            <sliceName value="Termination" />
+            <max value="1"/>
+            <type>
+                <code value="Extension" />
+                <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination" />
+            </type>
+        </element>
+
+		<!-- 2.1 Fall (VisitNumber) -->
+		<element id="Encounter.identifier">
+            <path value="Encounter.identifier"/>
+            <slicing>
+                <discriminator>
+                    <type value="pattern" />
+                    <path value="$this" />
+                </discriminator>
+                <rules value="open" />
+            </slicing>
+			<min value="1"/>
+        </element>
+        <element id="Encounter.identifier:VisitNumber">
+            <path value="Encounter.identifier" />
+            <sliceName value="VisitNumber" />
+            <patternIdentifier>
+                <type>
+                    <coding>
+                        <system value="http://terminology.hl7.org/CodeSystem/v2-0203" />
+                        <code value="VN" />
+                    </coding>
+                </type>
+            </patternIdentifier>
+			<min value="1"/>
+			<max value="1"/>
+        </element>
+        <element id="Encounter.identifier.system:VisitNumber">
+            <path value="Encounter.identifier.system" />
+            <min value="1" />
+        </element>
+        <element id="Encounter.identifier.value:VisitNumber">
+            <path value="Encounter.identifier.value" />
+			<short value="VisitNumber"/>
+            <min value="1" />
+        </element>
+
+		<element id="Encounter.status">
+            <path value="Encounter.status" />
+			<short value="finished"/>
+			<fixedCode value="finished"/>
+        </element>
+
+		<element id="Encounter.class">
+            <path value="Encounter.class"/>
+			<short value="Inpatient encounter"/>
+			<patternCoding>
+				<system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+                <code value="IMP"/>
+			</patternCoding>
+        </element>
+
+		<element id="Encounter.subject">
+			<path value="Encounter.subject"/>
+			<short value="Patient"/>
+			<type>
+				<code value="Reference"/>
+				<targetProfile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-patient"/>
+				<aggregation value="contained"/>
+			</type>
+		</element>
+		<element id="Encounter.subject.reference">
+			<path value="Encounter.subject.reference"/>
+			<min value="1"/>
+		</element>
+
+		<!-- 2.9 DiagnoseGruppe (DiagGroup) -->
+        <element id="Encounter.diagnosis">
+			<path value="Encounter.diagnosis"/>
+			<short value="DiagGroup"/>
+			<max value="1"/>
+		</element>
+		<element id="Encounter.diagnosis.condition">
+			<path value="Encounter.diagnosis.condition"/>
+			<type>
+				<code value="Reference"/>
+				<targetProfile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-condition"/>
+				<aggregation value="contained"/>
+			</type>
+		</element>
+		<element id="Encounter.diagnosis.condition.reference">
+			<path value="Encounter.diagnosis.condition.reference"/>
+			<min value="1"/>
+		</element>
+		<!-- 2.9.2 Diagnosetyp (DiagType)-->
+		<element id="Encounter.diagnosis.use">
+			<path value="Encounter.diagnosis.use"/>
+		</element>
+		<element id="Encounter.diagnosis.use.text">
+			<path value="Encounter.diagnosis.use.text"/>
+			<short value="DiagType"/>
+			<min value="1"/>
+		</element>
+
+	</differential>
+</StructureDefinition>

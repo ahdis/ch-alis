@@ -2,6 +2,9 @@
 
 <Bundle xmlns="http://hl7.org/fhir">
     <id value="AlisBeispielComplete43"/>
+    <meta>
+        <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
+    </meta>
     <type value="message"/>
 
     <!-- 1.10 Fileerstellungsdatum (FileCreationDate) -->
@@ -14,7 +17,7 @@
                 <!-- 1.7 Auftrags-ID (MessageControlId) -->
                 <id value="1"/>
 
-                <!--TBD-->
+                <!--TBD: 1 Header Attribut Version -->
                 <eventUri value="http://fhir.ch/ig/ch-alis-43"/>
 
                 <destination>
@@ -22,7 +25,7 @@
                     <!-- 1.2 MandantenNr (ReceivingFacility) -->
                     <!-- 1.3 Einrichtung (ReceivingServiceCode) -->
                     <!-- URL je nach Implementation -->
-                    <endpoint value="http://fhir.ch/ig/ch-alis/{ReceivingApplication}/{ReceivingFacility}/{ReceivingServiceCode}"/>
+                    <endpoint value="http://fhir.ch/ig/ch-alis/ReceivingApplication/ReceivingFacility/ReceivingServiceCode"/>
                 </destination>
 
                 <source>
@@ -33,11 +36,11 @@
                     <!-- 1.5 MandatenNr (SendingFacility) -->
                     <!-- 1.6 Einrichtung (SendingServiceCode) -->
                     <!-- URL je nach Implementation -->
-                    <endpoint value="http://fhir.ch/ig/ch-alis/{SendingApplication}/{SendingFacility}/{SendingServiceCode}"/>
+                    <endpoint value="http://fhir.ch/ig/ch-alis/SendingApplication/SendingFacility/SendingServiceCode"/>
                 </source>
 
                 <focus>
-                    <reference value="Bundle/BundleTransaction"/>
+                    <reference value="Bundle/Transaction"/>
                 </focus>
 
             </MessageHeader>
@@ -45,10 +48,10 @@
     </entry>
 
     <entry>
-        <fullUrl value="http://fhir.ch/ig/ch-alis/Bundle/BundleTransaction"/>
+        <fullUrl value="http://fhir.ch/ig/ch-alis/Bundle/Transaction"/>
         <resource>
             <Bundle>
-                <id value="BundleTransaction"/>
+                <id value="Transaction"/>
                 <type value="transaction"/>
 
                 <entry>
@@ -96,13 +99,13 @@
                                     <id value="Visit"/>
 
                                     <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination">
-                                        <!-- 2.8 Fall Abschlussgrund (TerminationReason) -->
-                                        <extension url="terminationreason">
-                                            <valueString value="Grund für Fallabschluss"/>
-                                        </extension>
                                         <!-- 2.7 Fall Abschluss (TerminationVisit) -->
-                                        <extension url="terminationvisit">
+                                        <extension url="TerminationVisit">
                                             <valueDate value="2017-08-31"/>
+                                        </extension>
+                                        <!-- 2.8 Fall Abschlussgrund (TerminationReason) -->
+                                        <extension url="TerminationReason">
+                                            <valueString value="Grund für Fallabschluss"/>
                                         </extension>
                                     </extension>
 
@@ -134,7 +137,7 @@
                                     <!-- 2.9 DiagnoseGruppe (DiagGroup) -->
                                     <diagnosis>
                                         <condition>
-                                            <reference value="#Cond1"/>
+                                            <reference value="#Diagnosis"/>
                                         </condition>
 
                                         <!-- 2.9.2 Diagnosetyp (DiagType)-->
@@ -148,12 +151,13 @@
 
                             <contained>
                                 <Condition>
-                                    <id value="Cond1"/>
+                                    <id value="Diagnosis"/>
 
                                     <code>
                                         <coding>
                                             <!-- 2.9.3 Katalogtyp (DiagCatType) -->
-                                            <system value="CHOP"/>
+                                            <!-- TBD -->
+                                            <system value="http://www.example.com/CHOP"/>
                                             <!-- 2.9.1 Diagnosecode (DiagCode) -->
                                             <code value="99.99"/>
                                         </coding>
@@ -187,7 +191,7 @@
                             <code>
                                 <coding>
                                     <!-- 3.5 Katalog (ServiceType) -->
-                                    <system value="http://fhir.ch/ig/ch-alis/codesystem/tbd"/>
+                                    <system value="http://fhir.ch/ig/ch-alis/CodeSystem/tbd"/>
                                     <!-- 3.6 Tarifposition (ServiceItem) -->
                                     <code value="00.0010"/>
                                 </coding>
@@ -211,7 +215,7 @@
                                 <!-- 3.15.1 PersonTyp (PersonTyp)-->
                                 <function>
                                     <coding>
-                                        <system value="http://fhir.ch/ig/ch-alis/codesystem/tbd"/>
+                                        <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp"/>
                                         <code value="ResponsiblePhysician"/>
                                     </coding>
                                 </function>
@@ -227,7 +231,7 @@
                                 <!-- 3.15.1 PersonTyp (PersonTyp)-->
                                 <function>
                                     <coding>
-                                        <system value="http://fhir.ch/ig/ch-alis/codesystem/tbd"/>
+                                        <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp"/>
                                         <code value="ProvidingPhysician"/>
                                     </coding>
                                 </function>
@@ -315,13 +319,13 @@
                                     <id value="Visit"/>
 
                                     <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination">
-                                        <!-- 2.8 Fall Abschlussgrund (TerminationReason) -->
-                                        <extension url="terminationreason">
-                                            <valueString value="Grund für Fallabschluss"/>
-                                        </extension>
                                         <!-- 2.7 Fall Abschluss (TerminationVisit) -->
-                                        <extension url="terminationvisit">
+                                        <extension url="TerminationVisit">
                                             <valueDate value="2017-08-31"/>
+                                        </extension>
+                                        <!-- 2.8 Fall Abschlussgrund (TerminationReason) -->
+                                        <extension url="TerminationReason">
+                                            <valueString value="Grund für Fallabschluss"/>
                                         </extension>
                                     </extension>
 
@@ -353,7 +357,7 @@
                                     <!-- 2.9 DiagnoseGruppe (DiagGroup) -->
                                     <diagnosis>
                                         <condition>
-                                            <reference value="#Cond1"/>
+                                            <reference value="#Diagnosis"/>
                                         </condition>
 
                                         <!-- 2.9.2 Diagnosetyp (DiagType)-->
@@ -367,12 +371,13 @@
 
                             <contained>
                                 <Condition>
-                                    <id value="Cond1"/>
+                                    <id value="Diagnosis"/>
 
                                     <code>
                                         <coding>
                                             <!-- 2.9.3 Katalogtyp (DiagCatType) -->
-                                            <system value="CHOP"/>
+                                            <!-- TBD -->
+                                            <system value="http://www.example.com/CHOP"/>
                                             <!-- 2.9.1 Diagnosecode (DiagCode) -->
                                             <code value="99.99"/>
                                         </coding>
@@ -397,7 +402,7 @@
                             <code>
                                 <coding>
                                     <!-- 3.5 Katalog (ServiceType) -->
-                                    <system value="http://fhir.ch/ig/ch-alis/codesystem/tbd"/>
+                                    <system value="http://fhir.ch/ig/ch-alis/CodeSystem/tbd"/>
                                     <!-- 3.6 Tarifposition (ServiceItem) -->
                                     <code value="00.0030"/>
                                 </coding>
