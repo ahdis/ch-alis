@@ -18,7 +18,7 @@
             <value value="https://www.alis-connect.ch/"/>
         </telecom>
     </contact>
-    <description value="Leistungsschnittstelle ALIS Version 4.3 - DiagGroup"/>
+    <description value="This logical model describes the DiagGroup of 'Leistungsschnittstelle ALIS Version 4.3'."/>
     <jurisdiction>
         <coding>
             <system value="urn:iso:std:iso:3166"/>

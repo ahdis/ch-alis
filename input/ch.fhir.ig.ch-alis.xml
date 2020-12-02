@@ -33,40 +33,78 @@
   <packageId value="ch.fhir.ig.ch-alis"/>
   <license value="CC-BY-SA-4.0"/>
   <fhirVersion value="4.0.1"/>
-  <dependsOn id="cheprterm">
+  <dependsOn id="chcore">
     <uri value="http://fhir.ch/ig/ch-core/ImplementationGuide/ch.fhir.ig.ch-core"/>
     <packageId value="ch.fhir.ig.ch-core"/>
     <version value="1.0.x"/>
   </dependsOn>
   <definition>
 
-    <!-- References to examples -->
+    <!-- examples -->
     <resource>
       <reference>
-        <reference value="Bundle/AlisBeispielComplete43"/>
+        <reference value="Bundle/AlisExampleComplete43"/>
       </reference>
-      <name value="ALIS Beispiel complete43"/>
-      <description value="Example for Message (Bundle)"/>
+      <name value="Alis Example Complete43"/>
+      <description value="Example Message (Bundle)"/>
       <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
     </resource>
-    <resource>
-      <reference>
-        <reference value="Bundle/Transaction"/>
-      </reference>
-      <name value="Transaction"/>
-      <description value="Example for Transaction (Bundle)"/>
-      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-transaction"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="MessageHeader/1"/>
-      </reference>
-      <name value="Message Header of ALIS Beispiel complete43"/>
-      <description value="Example for MessageHeader"/>
-      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-messageheader"/>
-    </resource>
 
-    <!-- References to structure definitions for Logical Model-->
+    <!-- structure definitions for logical model-->
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/Header"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/Visit"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/DiagGroup"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/Service"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/PersonV40"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ParameterV40"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/Text"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/Decimal"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/UnsignedInt"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
     <resource>
       <reference>
         <reference value="StructureDefinition/Date"/>
@@ -79,104 +117,8 @@
       </reference>
       <exampleBoolean value="false"/>
     </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/Decimal"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/DiagGroup"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/Header"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/ParameterV40"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/PersonV40"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/Service"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/Text"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/UnsignedInt"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/Visit"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-
-    <!-- References to structure definitions for Profiles-->
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/ch-alis-chargeitem"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/ch-alis-condition"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/ch-alis-encounter"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/ch-alis-ext-form"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/ch-alis-ext-orderid"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/ch-alis-ext-sessionid"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
-    <resource>
-      <reference>
-        <reference value="StructureDefinition/ch-alis-ext-termination"/>
-      </reference>
-      <exampleBoolean value="false"/>
-    </resource>
+    
+    <!-- structure definitions for profiles-->
     <resource>
       <reference>
         <reference value="StructureDefinition/ch-alis-message"/>
@@ -191,17 +133,61 @@
     </resource>
     <resource>
       <reference>
+        <reference value="StructureDefinition/ch-alis-transaction"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-chargeitem"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
         <reference value="StructureDefinition/ch-alis-patient"/>
       </reference>
       <exampleBoolean value="false"/>
     </resource>
     <resource>
       <reference>
-        <reference value="StructureDefinition/ch-alis-transaction"/>
+        <reference value="StructureDefinition/ch-alis-encounter"/>
       </reference>
       <exampleBoolean value="false"/>
     </resource>
-
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-condition"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    
+    <!-- structure definitions for extensions -->
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-ext-sessionid"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-ext-orderid"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-ext-form"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-ext-termination"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    
     <!-- code systems -->
     <resource>
       <reference>
@@ -210,7 +196,7 @@
       <exampleBoolean value="false"/>
     </resource>
 
-    <!-- valuesets -->
+    <!-- value sets -->
     <resource>
       <reference>
         <reference value="ValueSet/ch-alis-persontyp"/>
@@ -226,6 +212,11 @@
       <page>
         <nameUrl value="index.html"/>
         <title value="Home"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <nameUrl value="message.html"/>
+        <title value="Message"/>
         <generation value="markdown"/>
       </page>
       <page>

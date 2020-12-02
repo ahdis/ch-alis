@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Header xsi:noNamespaceSchemaLocation="LeistungsschnittstelleV41.xsd" Version="4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ReceivingApplication>HOSPIS</ReceivingApplication>
+  <ReceivingFacility>Beispiel</ReceivingFacility>
+  <ReceivingServiceCode>1</ReceivingServiceCode>
+  <SendingApplication>POLYPOINT</SendingApplication>
+  <SendingFacility>Beispiel</SendingFacility>
+  <SendingServiceCode>18</SendingServiceCode>
+  <MessageControlID>1</MessageControlID>
+  <SoftwareReleaseNumber/>
+  <FileCreationDate>2020-11-03T07:19:01</FileCreationDate>
+  <Visit>
+    <VisitNumber>123456</VisitNumber>
+    <PatientID>123456</PatientID>
+    <PatientName>Meier</PatientName>
+    <PatientGivenName>Susan</PatientGivenName>
+    <PatientBirthDate>1980-12-27</PatientBirthDate>
+    <PatientGender>F</PatientGender>
+    <Service>
+      <ServiceDate>2020-10-04T00:00:00</ServiceDate>
+      <SessionID>2</SessionID>
+      <OrderID>{D8DE37E9-5027-4879-8B31-D0E08974CC06}</OrderID>
+      <ServiceType></ServiceType>
+      <ServiceItem>98568</ServiceItem>
+      <EnteredDateTime>2020-10-05T16:26:11</EnteredDateTime>
+      <ProviderID>230</ProviderID>
+      <EnteredBy>HEGGLI</EnteredBy>
+      <ItemNumber>3193279</ItemNumber>
+      <RefItemNumber></RefItemNumber>
+      <Quantity>1</Quantity>
+      <ServiceItemErrorCode/>
+      <PersonV40 PersonTyp="ProvidingPhysician">
+        <PersonID>167303</PersonID>
+      </PersonV40>
+      <PersonV40 PersonTyp="ResponsiblePhysician">
+        <PersonID>137356</PersonID>
+      </PersonV40>
+      <ParameterV40 ParamTyp="Side">
+        <ParamValue></ParamValue>
+      </ParameterV40>
+    </Service>
+  </Visit>
+  <Visit>
+    <VisitNumber>123457</VisitNumber>
+    <PatientID>123457</PatientID>
+    <PatientName>Staufer</PatientName>
+    <PatientGivenName>Greta</PatientGivenName>
+    <PatientBirthDate>1970-01-12</PatientBirthDate>
+    <PatientGender>F</PatientGender>
+    <Service>
+      <ServiceDate>2020-10-04T00:00:00</ServiceDate>
+      <SessionID>2</SessionID>
+      <OrderID>{51D42934-209A-4319-9E29-5084F80E6D0F}</OrderID>
+      <ServiceType></ServiceType>
+      <ServiceItem>98568</ServiceItem>
+      <EnteredDateTime>2020-10-05T16:30:13</EnteredDateTime>
+      <ProviderID>230</ProviderID>
+      <EnteredBy>HEGGLI</EnteredBy>
+      <ItemNumber>3193305</ItemNumber>
+      <RefItemNumber></RefItemNumber>
+      <Quantity>1</Quantity>
+      <ServiceItemErrorCode/>
+      <PersonV40 PersonTyp="ProvidingPhysician">
+        <PersonID>167303</PersonID>
+      </PersonV40>
+      <PersonV40 PersonTyp="ResponsiblePhysician">
+        <PersonID>137356</PersonID>
+      </PersonV40>
+      <ParameterV40 ParamTyp="Side">
+        <ParamValue></ParamValue>
+      </ParameterV40>
+    </Service>
+  </Visit>
+</Header>
