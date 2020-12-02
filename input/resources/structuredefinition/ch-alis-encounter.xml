@@ -15,7 +15,7 @@
 			<value value="https://www.alis-connect.ch/" />
 		</telecom>
 	</contact>
-	<description value="This profile constrains the Encounter resource to represent the visit for service transmission." />
+	<description value="Base definition for the Encounter resource in the context of ALIS-Connect." />
 	<jurisdiction>
 		<coding>
 			<system value="urn:iso:std:iso:3166" />
@@ -23,6 +23,11 @@
 		</coding>
 	</jurisdiction>
 	<fhirVersion value="4.0.1" />
+	<mapping>
+		<identity value="alis"/>
+		<name value="Zertifizierungsdokument ALIS-Connect"/>
+		<comment value="Zertifizierung ALIS V4.3_2020"/>
+	</mapping>
 	<kind value="resource" />
 	<abstract value="false" />
 	<type value="Encounter" />
@@ -32,6 +37,10 @@
 		<element id="Encounter">
 			<path value="Encounter"/>
 			<short value="CH ALIS Encounter"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="Visit"/>
+			</mapping>
 		</element>
 
 		<element id="Encounter.extension">
@@ -88,6 +97,10 @@
             <path value="Encounter.identifier.value" />
 			<short value="VisitNumber"/>
             <min value="1" />
+			<mapping>
+				<identity value="alis"/>
+				<map value="VisitNumber"/>
+			</mapping>
         </element>
 
 		<element id="Encounter.status">
@@ -124,6 +137,10 @@
 			<path value="Encounter.diagnosis"/>
 			<short value="DiagGroup"/>
 			<max value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="DiagGroup"/>
+			</mapping>
 		</element>
 		<element id="Encounter.diagnosis.condition">
 			<path value="Encounter.diagnosis.condition"/>
@@ -145,6 +162,10 @@
 			<path value="Encounter.diagnosis.use.text"/>
 			<short value="DiagType"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="DiagType"/>
+			</mapping>
 		</element>
 
 	</differential>

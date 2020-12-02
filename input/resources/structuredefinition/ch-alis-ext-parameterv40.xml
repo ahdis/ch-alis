@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <StructureDefinition xmlns="http://hl7.org/fhir">
-    <id value="ch-alis-ext-termination"/>
-    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination"/>
+    <id value="ch-alis-ext-parameterv40"/>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40"/>
     <version value="0.1.0"/>
-    <name value="ChAlisExtensionTermination"/>
-    <title value="CH ALIS Extension Termination"/>
+    <name value="ChAlisExtensionParameterV40"/>
+    <title value="CH ALIS Extension ParameterV40"/>
     <status value="draft"/>
     <date value="2020-11-26" />
 	<publisher value="ALIS-Connect" />
@@ -15,7 +15,7 @@
 			<value value="https://www.alis-connect.ch/" />
 		</telecom>
 	</contact>
-    <description value="This extension describes the TerminationVisit and TerminationReason."/>
+    <description value="This extension describes the ParameterV40 with ParamTyp and ParamValue."/>
     <jurisdiction>
 		<coding>
 			<system value="urn:iso:std:iso:3166" />
@@ -32,82 +32,102 @@
     <abstract value="false"/>
     <context>
         <type value="element"/>
-        <expression value="Encounter"/>
+        <expression value="ChargeItem"/>
     </context>
     <type value="Extension"/>
     <baseDefinition value="http://hl7.org/fhir/StructureDefinition/Extension"/>
     <derivation value="constraint"/>
     <differential>
+        <!-- 4 ParameterV40 (ParameterV40) -->
         <element id="Extension">
             <path value="Extension"/>
-            <short value="CH ALIS Extension Termination"/>
+            <short value="CH ALIS Extension ParamV40"/>
+            <mapping>
+				<identity value="alis"/>
+				<map value="ParamV40"/>
+			</mapping>
         </element>
         
-        <!-- 2.7 Fall Abschluss (TerminationVisit) -->
-        <element id="Extension.extension:TerminationVisit">
+        <!-- 4.1 ParamTyp (ParamTyp) -->
+        <element id="Extension.extension:ParamTyp">
             <path value="Extension.extension"/>
-            <sliceName value="TerminationVisit"/>
-            <short value="TerminationVisit"/>
+            <sliceName value="ParamTyp"/>
+            <short value="ParamTyp"/>
             <max value="1"/>
             <type>
                 <code value="Extension"/>
             </type>
         </element>
-        <element id="Extension.extension:TerminationVisit.extension">
+        <element id="Extension.extension:ParamTyp.extension">
             <path value="Extension.extension.extension"/>
             <max value="0"/>
         </element>
-        <element id="Extension.extension:TerminationVisit.url">
+        <element id="Extension.extension:ParamTyp.url">
             <path value="Extension.extension.url"/>
             <type>
                 <code value="uri"/>
             </type>
-            <fixedUri value="TerminationVisit"/>
+            <fixedUri value="ParamTyp"/>
         </element>
-        <element id="Extension.extension:TerminationVisit.valueDate">
-            <path value="Extension.extension.valueDate"/>
-            <short value="TerminationVisit"/>
+        <element id="Extension.extension:ParamTyp.valueCodeableConcept">
+            <path value="Extension.extension.valueCodeableConcept"/>
+            <short value="ParamTyp"/>
             <min value="1"/>
             <type>
-                <code value="date"/>
+                <code value="CodeableConcept"/>
             </type>
             <mapping>
 				<identity value="alis"/>
-				<map value="TerminationVisit"/>
+				<map value="ParamTyp"/>
 			</mapping>
         </element>
-
-        <!-- 2.8 Fall Abschlussgrund (TerminationReason) -->
-        <element id="Extension.extension:TerminationReason">
+        <element id="Extension.extension:ParamTyp.valueCodeableConcept.coding">
+            <path value="Extension.extension.valueCodeableConcept.coding"/>
+        </element>
+        <element id="Extension.extension:ParamTyp.valueCodeableConcept.coding.system">
+            <path value="Extension.extension.valueCodeableConcept.coding.system"/>
+            <fixedUri value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-paramtyp"/>
+            <min value="1"/>
+        </element>
+        <element id="Extension.extension:ParamTyp.valueCodeableConcept.coding.code">
+            <path value="Extension.extension.valueCodeableConcept.coding.code"/>
+            <min value="1"/>
+        </element>
+        <element id="Extension.extension:ParamTyp.valueCodeableConcept.text">
+            <path value="Extension.extension.valueCodeableConcept.text"/>
+        </element>
+        
+        <!-- 4.2 ParamValue (ParamValue) -->
+        <element id="Extension.extension:ParamValue">
             <path value="Extension.extension"/>
-            <sliceName value="TerminationReason"/>
-            <short value="TerminationReason"/>
+            <sliceName value="ParamValue"/>
+            <short value="ParamValue"/>
             <max value="1"/>
             <type>
                 <code value="Extension"/>
             </type>
         </element>
-        <element id="Extension.extension:TerminationReason.extension">
+        <element id="Extension.extension:ParamValue.extension">
             <path value="Extension.extension.extension"/>
             <max value="0"/>
         </element>
-        <element id="Extension.extension:TerminationReason.url">
+        <element id="Extension.extension:ParamValue.url">
             <path value="Extension.extension.url"/>
             <type>
                 <code value="uri"/>
             </type>
-            <fixedUri value="TerminationReason"/>
+            <fixedUri value="ParamValue"/>
         </element>
-        <element id="Extension.extension:TerminationReason.valueString">
+        <element id="Extension.extension:ParamValue.valueString">
             <path value="Extension.extension.valueString"/>
-            <short value="TerminationReason"/>
+            <short value="ParamValue"/>
             <min value="1"/>
             <type>
                 <code value="string"/>
             </type>
             <mapping>
 				<identity value="alis"/>
-				<map value="TerminationReason"/>
+				<map value="ParamValue"/>
 			</mapping>
         </element>
 
@@ -116,7 +136,7 @@
             <type>
                 <code value="uri"/>
             </type>
-            <fixedUri value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination"/>
+            <fixedUri value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40"/>
         </element>
         <element id="Extension.value[x]">
             <path value="Extension.value[x]"/>

@@ -15,7 +15,7 @@
 			<value value="https://www.alis-connect.ch/" />
 		</telecom>
 	</contact>
-	<description value="This profile constrains the Condition resource to represent the diagnose groups for service transmission." />
+	<description value="Base definition for the Condition resource in the context of ALIS-Connect." />
 	<jurisdiction>
 		<coding>
 			<system value="urn:iso:std:iso:3166" />
@@ -23,6 +23,11 @@
 		</coding>
 	</jurisdiction>
 	<fhirVersion value="4.0.1" />
+	<mapping>
+		<identity value="alis"/>
+		<name value="Zertifizierungsdokument ALIS-Connect"/>
+		<comment value="Zertifizierung ALIS V4.3_2020"/>
+	</mapping>
 	<kind value="resource" />
 	<abstract value="false" />
 	<type value="Condition" />
@@ -46,12 +51,20 @@
 		<element id="Condition.code.coding.system">
 			<path value="Condition.code.coding.system"/>
 			<short value="DiagCatType"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="DiagCatType"/>
+			</mapping>
 		</element>
 		<!-- 2.9.1 Diagnosecode (DiagCode) -->
 		<element id="Condition.code.coding.code">
 			<path value="Condition.code.coding.code"/>
 			<short value="DiagCode"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="DiagCode"/>
+			</mapping>
 		</element>
 
 		<element id="Condition.subject">

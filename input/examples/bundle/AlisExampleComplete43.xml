@@ -14,10 +14,10 @@
         <fullUrl value="http://fhir.ch/ig/ch-alis/MessageHeader/1"/>
         <resource>
             <MessageHeader>
-                <!-- 1.7 Auftrags-ID (MessageControlId) -->
+                <!-- 1.7 Auftrags-ID (MessageControlID) -->
                 <id value="1"/>
 
-                <!--TBD: 1 Header Attribut Version -->
+                <!--TBD: 1 Version -->
                 <eventUri value="http://fhir.ch/ig/ch-alis-43"/>
 
                 <destination>
@@ -175,7 +175,7 @@
                                 <valueString value="1"/>
                             </extension>
 
-                            <!-- 3.3 Auftragsnummer (OrderId)-->
+                            <!-- 3.3 Auftragsnummer (OrderID)-->
                             <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid">
                                 <valueString value="16595790-a8c1-43e1-b785-bc81f3926482"/>
                             </extension>
@@ -183,6 +183,37 @@
                             <!-- 3.7 Formularbezeichnung (Form) -->
                             <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form">
                                 <valueString value="a1b2c3"/>
+                            </extension>
+
+                            <!-- 4 ParamterV40 (ParameterV40) -->
+                            <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40">
+                                <!-- 4.1 ParamTyp (ParamTyp) -->
+                                <extension url="ParamTyp">
+                                    <valueCodeableConcept>
+                                        <coding>
+                                            <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-paramtyp"/>
+                                            <code value="Duration"/>
+                                        </coding>
+                                    </valueCodeableConcept>
+                                </extension>
+                                <!-- 4.2 ParamValue (ParamValue) -->
+                                <extension url="ParamValue">
+                                    <valueString value="25"/>
+                                </extension>
+                            </extension>
+
+                            <!-- 4 ParamterV40 (ParameterV40) -->
+                            <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40">
+                                <!-- 4.1 ParamTyp (ParamTyp) -->
+                                <extension url="ParamTyp">
+                                    <valueCodeableConcept>
+                                        <text value="individuell vereinbart"/>
+                                    </valueCodeableConcept>
+                                </extension>
+                                <!-- 4.2 ParamValue (ParamValue) -->
+                                <extension url="ParamValue">
+                                    <valueString value="beliebige Information"/>
+                                </extension>
                             </extension>
 
                             <!-- 4.15 Parameter: Verrechenbar (Billable) -> nicht im Beispiel, aber von FHIR verlangt -->

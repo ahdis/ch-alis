@@ -15,7 +15,7 @@
 			<value value="https://www.alis-connect.ch/" />
 		</telecom>
 	</contact>
-	<description value="This profile constrains the ChargeItem resource to represent the service itself for service transmission." />
+	<description value="Base definition for the ChargeItem resource in the context of ALIS-Connect." />
 	<jurisdiction>
 		<coding>
 			<system value="urn:iso:std:iso:3166" />
@@ -23,6 +23,11 @@
 		</coding>
 	</jurisdiction>
 	<fhirVersion value="4.0.1" />
+	<mapping>
+		<identity value="alis"/>
+		<name value="Zertifizierungsdokument ALIS-Connect"/>
+		<comment value="Zertifizierung ALIS V4.3_2020"/>
+	</mapping>
 	<kind value="resource" />
 	<abstract value="false" />
 	<type value="ChargeItem" />
@@ -32,12 +37,20 @@
 		<element id="ChargeItem">
 			<path value="ChargeItem"/>
 			<short value="CH ALIS ChargeItem"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="Service"/>
+			</mapping>
 		</element>
 
 		<!-- 3.11 Laufnummer (ItemNumber) -->
 		<element id="ChargeItem.id">
 			<path value="ChargeItem.id"/>
 			<short value="ItemNumber"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ItemNumber"/>
+			</mapping>
 		</element>
 
 		<element id="ChargeItem.contained">
@@ -66,8 +79,12 @@
                 <code value="Extension" />
                 <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid" />
             </type>
+			<mapping>
+				<identity value="alis"/>
+				<map value="SessionID"/>
+			</mapping>
         </element>
-		<!-- 3.3 Auftragsnummer (OrderId)-->
+		<!-- 3.3 Auftragsnummer (OrderID)-->
 		<element id="ChargeItem.extension:OrderID">
             <path value="ChargeItem.extension" />
             <sliceName value="OrderID" />
@@ -77,6 +94,10 @@
                 <code value="Extension" />
                 <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid" />
             </type>
+			<mapping>
+				<identity value="alis"/>
+				<map value="OrderID"/>
+			</mapping>
         </element>
 		<!-- 3.7 Formularbezeichnung (Form) -->
 		<element id="ChargeItem.extension:Form">
@@ -88,12 +109,34 @@
                 <code value="Extension" />
                 <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form" />
             </type>
+			<mapping>
+				<identity value="alis"/>
+				<map value="Form"/>
+			</mapping>
+        </element>
+		<!-- 4 ParameterV40 (ParameterV40) -->
+		<element id="ChargeItem.extension:ParameterV40">
+            <path value="ChargeItem.extension" />
+            <sliceName value="ParameterV40" />
+            <short value="ParameterV40"/>
+            <type>
+                <code value="Extension" />
+                <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40" />
+            </type>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ParameterV40"/>
+			</mapping>
         </element>
 
-		<!-- 4.15 Parameter: Verrechenbar (Billable) -> nicht im Beispiel, aber von FHIR verlangt -->
+		<!-- 4.1 ParameterTyp: Billable (j/n), nicht im Beispiel inkludiert, aber von FHIR verlangt -->
 		<element id="ChargeItem.status">
 			<path value="ChargeItem.status"/>
 			<short value="billable | not-billable"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ParameterV40.ParamTyp = Billable (j/n)"/>
+			</mapping>
 		</element>
 
 		<!-- 3.12 Referenz zu Hauptleistung (RefItemNumber) -->
@@ -106,6 +149,10 @@
 				<targetProfile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-chargeitem"/>
 				<aggregation value="bundled"/>
 			</type>
+			<mapping>
+				<identity value="alis"/>
+				<map value="RefItemNumber"/>
+			</mapping>
 		</element>
 		<element id="ChargeItem.partOf.reference">
 			<path value="ChargeItem.partOf.reference"/>
@@ -128,12 +175,20 @@
 			<path value="ChargeItem.code.coding.system"/>
 			<short value="ServiceType"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ServiceType"/>
+			</mapping>
 		</element>
 		<!-- 3.6 Tarifposition (ServiceItem) -->
 		<element id="ChargeItem.code.coding.code">
 			<path value="ChargeItem.code.coding.code"/>
 			<short value="ServiceItem"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ServiceItem"/>
+			</mapping>
 		</element>
 
 		<!-- 2 Patient (Visit) -->
@@ -151,7 +206,6 @@
 			<min value="1"/>
 		</element>
 
-		<!-- 2.1 Fall (VisitNumber) -->
 		<element id="ChargeItem.context">
 			<path value="ChargeItem.context"/>
 			<short value="Encounter"/>
@@ -161,6 +215,10 @@
 				<aggregation value="contained"/>
 			</type>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="Visit"/>
+			</mapping>
 		</element>
 		<element id="ChargeItem.context.reference">
 			<path value="ChargeItem.context.reference"/>
@@ -172,12 +230,20 @@
 			<path value="ChargeItem.occurrenceDateTime"/>
 			<short value="ServiceDate"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ServiceDate"/>
+			</mapping>
 		</element>
 
 		<!-- 3.15 PersonV40 (PersonV40) -->
 		<element id="ChargeItem.performer">
 			<path value="ChargeItem.performer"/>
 			<short value="PersonV40"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="PersonV40"/>
+			</mapping>
 		</element>
 		<!-- 3.15.1 PersonTyp (PersonTyp)-->
 		<element id="ChargeItem.performer.function">
@@ -200,6 +266,10 @@
 			<path value="ChargeItem.performer.function.coding.code"/>
 			<short value="PersonTyp"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="PersonTyp"/>
+			</mapping>
 		</element>
 		<!-- 3.15.2. PersonID (PersonID) -->
 		<element id="ChargeItem.performer.actor">
@@ -209,6 +279,10 @@
 			<path value="ChargeItem.performer.actor.display"/>
 			<short value="PersonID"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="PersonID"/>
+			</mapping>
 		</element>
 
 		<!-- 3.9 Erbringende Organization (ProviderID) -->
@@ -219,6 +293,10 @@
 			<path value="ChargeItem.performingOrganization.display"/>
 			<short value="ProviderID"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ProviderID"/>
+			</mapping>
 		</element>
 
 		<!-- 3.4 Auftraggebende Kostenstelle (ReferrerID) -->
@@ -229,6 +307,10 @@
 			<path value="ChargeItem.costCenter.display"/>
 			<short value="ReferrerID"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ReferrerID"/>
+			</mapping>
 		</element>
 
 		<!-- 3.13 Anzahl (Quantity) -->
@@ -240,6 +322,24 @@
 			<path value="ChargeItem.quantity.value"/>
 			<short value="Quantity"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="Quantity"/>
+			</mapping>
+		</element>
+
+		<!-- 4.1 ParamTyp: Amount -->
+		<element id="ChargeItem.priceOverride">
+			<path value="ChargeItem.priceOverride"/>
+		</element>
+		<element id="ChargeItem.priceOverride.value">
+			<path value="ChargeItem.priceOverride.value"/>
+			<short value="ParameterV40: Amount"/>
+			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ParameterV40.ParamTyp = Amount"/>
+			</mapping>
 		</element>
 
 		<!-- 3.10 Erfasser (EnteredBy) -->
@@ -250,12 +350,39 @@
 			<path value="ChargeItem.enterer.display"/>
 			<short value="EnteredBy"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="EnteredBy"/>
+			</mapping>
 		</element>
 
 		<!-- 3.8 Erfassungsdatum (EnteredDateTime) -->
 		<element id="ChargeItem.enteredDate">
 			<path value="ChargeItem.enteredDate"/>
 			<short value="EnteredDateTime"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="EnteredDateTime"/>
+			</mapping>
+		</element>
+
+		<!-- 4.1 ParamTyp. BMI -->
+		<element id="ChargeItem.supportingInformation">
+			<path value="ChargeItem.supportingInformation"/>
+			<short value="ParameterV40: BMI"/>
+			<type>
+				<code value="Reference"/>
+				<targetProfile value="http://hl7.org/fhir/StructureDefinition/bmi"/>
+				<aggregation value="contained"/>
+			</type>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ParameterV40.ParamTyp = BMI"/>
+			</mapping>
+		</element>
+		<element id="ChargeItem.supportingInformation.reference">
+			<path value="ChargeItem.supportingInformation.reference"/>
+			<min value="1"/>
 		</element>
 
 	</differential>

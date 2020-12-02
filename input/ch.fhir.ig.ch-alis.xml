@@ -187,6 +187,12 @@
       </reference>
       <exampleBoolean value="false"/>
     </resource>
+    <resource>
+      <reference>
+        <reference value="StructureDefinition/ch-alis-ext-parameterv40"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
     
     <!-- code systems -->
     <resource>
@@ -195,11 +201,23 @@
       </reference>
       <exampleBoolean value="false"/>
     </resource>
+    <resource>
+      <reference>
+        <reference value="CodeSystem/ch-alis-paramtyp"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
 
     <!-- value sets -->
     <resource>
       <reference>
         <reference value="ValueSet/ch-alis-persontyp"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+    <resource>
+      <reference>
+        <reference value="ValueSet/ch-alis-paramtyp"/>
       </reference>
       <exampleBoolean value="false"/>
     </resource>

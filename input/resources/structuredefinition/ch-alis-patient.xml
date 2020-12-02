@@ -15,7 +15,7 @@
 			<value value="https://www.alis-connect.ch/" />
 		</telecom>
 	</contact>
-	<description value="This profile constrains the Patient resource to represent the patient for service transmission." />
+	<description value="Base definition for the Patient resource in the context of ALIS-Connect." />
 	<jurisdiction>
 		<coding>
 			<system value="urn:iso:std:iso:3166" />
@@ -23,6 +23,11 @@
 		</coding>
 	</jurisdiction>
 	<fhirVersion value="4.0.1" />
+	<mapping>
+		<identity value="alis"/>
+		<name value="Zertifizierungsdokument ALIS-Connect"/>
+		<comment value="Zertifizierung ALIS V4.3_2020"/>
+	</mapping>
 	<kind value="resource" />
 	<abstract value="false" />
 	<type value="Patient" />
@@ -65,6 +70,10 @@
         <element id="Patient.identifier:LocalPid.value">
             <path value="Patient.identifier.value" />
 			<short value="PatientID"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="PatientID"/>
+			</mapping>
         </element>
 
 		<element id="Patient.name">
@@ -75,24 +84,40 @@
 		<element id="Patient.name.family">
             <path value="Patient.name.family" />
 			<short value="PatientName"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="PatientName"/>
+			</mapping>
         </element>
 		<!-- 2.4 Patient.Vorname (PatientGivenName) -->
 		<element id="Patient.name.given">
             <path value="Patient.name.given" />
 			<short value="PatientGivenName"/>
 			<max value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="PatientGivenName"/>
+			</mapping>
         </element>
 
 		<!-- 2.6 Patient.Geschlecht (PatientGender) -->
 		<element id="Patient.gender">
             <path value="Patient.gender" />
 			<short value="PatientGender"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="PatientGender"/>
+			</mapping>
         </element>
 
 		<!-- 2.5 Patient.GebDatum (PatientBirthDate) -->
         <element id="Patient.birthDate">
             <path value="Patient.birthDate" />
 			<short value="PatientBirthDate"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="PatientBirthDate"/>
+			</mapping>
         </element>
 
 	</differential>

@@ -15,7 +15,7 @@
 			<value value="https://www.alis-connect.ch/" />
 		</telecom>
 	</contact>
-	<description value="This profile constrains the Bundle resource to represent the message for service transmission." />
+	<description value="Base definition for the Bundle resource in the context of ALIS-Connect." />
 	<jurisdiction>
 		<coding>
 			<system value="urn:iso:std:iso:3166" />
@@ -23,6 +23,11 @@
 		</coding>
 	</jurisdiction>
 	<fhirVersion value="4.0.1" />
+	<mapping>
+		<identity value="alis"/>
+		<name value="Zertifizierungsdokument ALIS-Connect"/>
+		<comment value="Zertifizierung ALIS V4.3_2020"/>
+	</mapping>
 	<kind value="resource" />
 	<abstract value="false" />
 	<type value="Bundle" />
@@ -32,18 +37,26 @@
 		<element id="Bundle">
 			<path value="Bundle"/>
 			<short value="CH ALIS Message"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="Header"/>
+			</mapping>
 		</element>
-        <element id="Bundle.type">
+		<element id="Bundle.type">
 			<path value="Bundle.type" />
 			<short value="message" />
 			<fixedCode value="message" />
 		</element>
 		<!-- 1.10 Fileerstellungsdatum (FileCreationDate) -->
-        <element id="Bundle.timestamp">
+		<element id="Bundle.timestamp">
 			<path value="Bundle.timestamp" />
-            <short value="FileCreationDate" />
+			<short value="FileCreationDate" />
+			<mapping>
+				<identity value="alis"/>
+				<map value="FileCreationDate"/>
+			</mapping>
 		</element>
-        <element id="Bundle.entry">
+		<element id="Bundle.entry">
 			<path value="Bundle.entry" />
 			<slicing>
 				<discriminator>
@@ -58,11 +71,11 @@
 			<path value="Bundle.entry.fullUrl"/>
 			<min value="1"/>
 			<constraint>
-                <key value="ch-alis-message-1"/>
-                <severity value="error"/>
-                <human value="The fullUrl must be an absolute URL server address or an URI for UUID/OID"/>
+				<key value="ch-alis-message-1"/>
+				<severity value="error"/>
+				<human value="The fullUrl must be an absolute URL server address or an URI for UUID/OID"/>
 				<expression value="startsWith('http') or startsWith('urn:uuid:') = true"/>
-            </constraint>
+			</constraint>
 		</element>
 		<element id="Bundle.entry:MessageHeader">
 			<path value="Bundle.entry" />

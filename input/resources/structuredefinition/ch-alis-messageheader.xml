@@ -15,7 +15,7 @@
 			<value value="https://www.alis-connect.ch/" />
 		</telecom>
 	</contact>
-	<description value="This profile constrains the MessageHeader resource to represent the header of a message for service transmission." />
+	<description value="Base definition for the MessageHeader resource in the context of ALIS-Connect." />
 	<jurisdiction>
 		<coding>
 			<system value="urn:iso:std:iso:3166" />
@@ -23,6 +23,11 @@
 		</coding>
 	</jurisdiction>
 	<fhirVersion value="4.0.1" />
+	<mapping>
+		<identity value="alis"/>
+		<name value="Zertifizierungsdokument ALIS-Connect"/>
+		<comment value="Zertifizierung ALIS V4.3_2020"/>
+	</mapping>
 	<kind value="resource" />
 	<abstract value="false" />
 	<type value="MessageHeader" />
@@ -34,16 +39,24 @@
 			<short value="CH ALIS MessageHeader"/>
 		</element>
 
-		<!-- 1.7 Auftrags-ID (MessageControlId) -->
+		<!-- 1.7 Auftrags-ID (MessageControlID) -->
 		<element id="MessageHeader.id">
 			<path value="MessageHeader.id"/>
 			<short value="MessageControlID"/>
 			<min value="1"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="MessageControlID"/>
+			</mapping>
 		</element>
 
 		<element id="MessageHeader.eventUri">
 			<path value="MessageHeader.eventUri"/>
-			<short value="Header Attribute Version"/>
+			<short value="Version"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="Version"/>
+			</mapping>
 		</element>
 
 		<element id="MessageHeader.destination">
@@ -58,6 +71,10 @@
 		<element id="MessageHeader.destination.endpoint">
 			<path value="MessageHeader.destination.endpoint"/>
 			<short value="http://fhir.ch/ig/ch-alis/{ReceivingApplication}/{ReceivingFacility}/{ReceivingServiceCode}"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="ReceivingApplication, ReceivingFacility, ReceivingServiceCode"/>
+			</mapping>
 		</element>
 
 		<element id="MessageHeader.source">
@@ -67,6 +84,10 @@
 		<element id="MessageHeader.source.version">
 			<path value="MessageHeader.source.version"/>
 			<short value="SoftwareReleaseNumber"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="SoftwareReleaseNumber"/>
+			</mapping>
 		</element>
 		<!-- 1.4 Sender (SendingApplication) -->
         <!-- 1.5 MandatenNr (SendingFacility) -->
@@ -75,11 +96,10 @@
 		<element id="MessageHeader.source.endpoint">
 			<path value="MessageHeader.source.endpoint"/>
 			<short value="http://fhir.ch/ig/ch-alis/{SendingApplication}/{SendingFacility}/{SendingServiceCode}"/>
-		</element>
-
-		<element id="MessageHeader.response">
-			<path value="MessageHeader.response"/>
-			<short value="HeaderErrorCode"/>
+			<mapping>
+				<identity value="alis"/>
+				<map value="SendingApplication, SendingFacility, SendingServiceCode"/>
+			</mapping>
 		</element>
         
 		<element id="MessageHeader.focus">

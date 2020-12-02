@@ -23,6 +23,11 @@
 		</coding>
 	</jurisdiction>
     <fhirVersion value="4.0.1"/>
+    <mapping>
+		<identity value="alis"/>
+		<name value="Zertifizierungsdokument ALIS-Connect"/>
+		<comment value="Zertifizierung ALIS V4.3_2020"/>
+	</mapping>
     <kind value="complex-type"/>
     <abstract value="false"/>
     <context>
@@ -55,6 +60,10 @@
             <type>
                 <code value="string"/>
             </type>
+            <mapping>
+				<identity value="alis"/>
+				<map value="OrderID"/>
+			</mapping>
         </element>
     </differential>
 </StructureDefinition>
