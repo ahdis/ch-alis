@@ -147,7 +147,6 @@
 			<type>
 				<code value="Reference"/>
 				<targetProfile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-chargeitem"/>
-				<aggregation value="bundled"/>
 			</type>
 			<mapping>
 				<identity value="alis"/>

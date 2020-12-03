@@ -55,7 +55,7 @@
                 <type value="transaction"/>
 
                 <entry>
-                    <fullUrl value="http://fhir.ch/ig/ch-alis/ChargeItem/8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
+                    <fullUrl value="urn:uuid:8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
                     <resource>
                         <ChargeItem>
                             <!-- 3.11 Laufnummer (ItemNumber) -->
@@ -306,7 +306,7 @@
                 </entry>
 
                 <entry>
-                    <fullUrl value="http://fhir.ch/ig/ch-alis/ChargeItem/2536b891-13b7-4edb-b00c-25d8f8c6bf23"/>
+                    <fullUrl value="urn:uuid:2536b891-13b7-4edb-b00c-25d8f8c6bf23"/>
                     <resource>
                         <ChargeItem>
                             <!-- 3.11 Laufnummer (ItemNumber) -->
@@ -426,7 +426,8 @@
 
                             <!-- 3.12 Referenz zu Hauptleistung (RefItemNumber) -->
                             <partOf>
-                                <reference value="ChargeItem/8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
+                                <reference value="urn:uuid:8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
+                                <type value="ChargeItem"/>
                             </partOf>
 
                             <!-- 3.6 Tarifposition (ServiceItem) -->

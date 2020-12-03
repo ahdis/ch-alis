@@ -65,7 +65,7 @@
 				</discriminator>
 				<rules value="open" />
 			</slicing>
-			<min value="1"/>
+			<min value="2"/>
 		</element>
 		<element id="Bundle.entry.fullUrl">
 			<path value="Bundle.entry.fullUrl"/>
@@ -77,6 +77,7 @@
 				<expression value="startsWith('http') or startsWith('urn:uuid:') = true"/>
 			</constraint>
 		</element>
+
 		<element id="Bundle.entry:MessageHeader">
 			<path value="Bundle.entry" />
 			<sliceName value="MessageHeader" />
@@ -90,6 +91,22 @@
 			<type>
 				<code value="Resource" />
 				<profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-messageheader" />
+			</type>
+		</element>
+
+		<element id="Bundle.entry:Transaction">
+			<path value="Bundle.entry" />
+			<sliceName value="Transaction" />
+			<short value="Transaction" />
+			<min value="1" />
+			<max value="1" />
+		</element>
+		<element id="Bundle.entry:Transaction.resource">
+			<path value="Bundle.entry.resource" />
+			<min value="1" />
+			<type>
+				<code value="Resource" />
+				<profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-transaction" />
 			</type>
 		</element>
 	</differential>
