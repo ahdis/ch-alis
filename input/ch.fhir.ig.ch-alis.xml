@@ -222,6 +222,14 @@
       <exampleBoolean value="false"/>
     </resource>
 
+    <resource>
+      <reference>
+        <reference value="StructureMap/Alis43ToBundle"/>
+      </reference>
+      <exampleBoolean value="false"/>
+    </resource>
+
+
     <!-- pages -->
     <page>
       <nameUrl value="toc.html"/>

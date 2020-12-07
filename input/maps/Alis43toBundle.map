@@ -4,9 +4,40 @@ map "http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle" = "Alis43ToBundle"
 // 2020-12-03 Oliver Egger, copyright ahdis ag, Apache License 
 // FHIR: http://hl7.org/fhir/r4/
 
+
+// ISSUE7: what are the URL's oid's we have to define 
+conceptmap "serviceMap" { 
+  prefix s = "http://fhir.ch/ig/ch-alis"
+  prefix t = "http://hl7.org/fhir"
+
+  s:"TARMED" == t:"urn:oid:2.16.756.5.30.1.129.1.4" 
+  s:"ICD10" == t:"urn:oid:2.16.756.5.30.1.126.3.2" 
+}
+
+conceptmap "gender" { 
+  prefix s = "http://fhir.ch/ig/ch-alis"
+  prefix t = "http://hl7.org/fhir/ValueSet/administrative-gender"
+
+  s:"M" == t:"male" 
+  s:"F" == t:"female" 
+}
+
+
 uses "http://fhir.ch/ig/ch-alis/StructureDefinition/Header" alias Header as source
+uses "http://fhir.ch/ig/ch-alis/StructureDefinition/Visit" alias Visit as source
+uses "http://fhir.ch/ig/ch-alis/StructureDefinition/Service" alias Service as source
+uses "http://fhir.ch/ig/ch-alis/StructureDefinition/PersonV40" alias PersonV40 as source
+uses "http://fhir.ch/ig/ch-alis/StructureDefinition/ParameterV40" alias ParameterV40 as source
+uses "http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup" alias DiagGroup as source
+
 uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as target
-uses "http://hl7.org/fhir/StructureDefinition/MessageHeader" alias Bundle as target
+uses "http://hl7.org/fhir/StructureDefinition/ChargeItem" alias ChargeItem as target
+uses "http://hl7.org/fhir/StructureDefinition/Extension" alias Extension as target
+uses "http://hl7.org/fhir/StructureDefinition/MessageHeader" alias MessageHeader as target
+uses "http://hl7.org/fhir/StructureDefinition/BackboneElement" alias BackboneElement as target
+uses "http://hl7.org/fhir/StructureDefinition/HumanName" alias HumanName as target
+uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as target
+uses "http://hl7.org/fhir/StructureDefinition/Encounter" alias Encounter as target
 
 group Alis43ToBundle(source header : Header, target bundle : Bundle) {
   header ->  bundle.entry as e, 
@@ -16,9 +47,12 @@ group Alis43ToBundle(source header : Header, target bundle : Bundle) {
              bundle.entry as e2, 
              e2.resource = create('Bundle') as transactionBundle,
              transactionBundle.id = uuid() as uuid2,
-             e2.fullUrl = append('urn:uuid:',uuid2)
-             then {
-               header then Alis43ToMessageHeader(header, messageHeader, transactionBundle) "messageHeader";
+             e2.fullUrl = append('urn:uuid:',uuid2),
+             messageHeader.focus = create('Reference') as reference, 
+             reference.type='Bundle', 
+             reference.reference = append('urn:uuid:',uuid2)
+            then {
+               header then Alis43ToMessageHeader(header, messageHeader) "messageHeader";
                header then Alis43ToBundleTransaction(header, transactionBundle) "bundleTransaction";
              } "bundle";
     header -> bundle.type = 'message' "type";
@@ -27,15 +61,242 @@ group Alis43ToBundle(source header : Header, target bundle : Bundle) {
     } "FileCreationDate";
 }
 
-group Alis43ToMessageHeader(source header : Header, target messageHeader: MessageHeader, target transactionBundle : Bundle) {
+group Alis43ToMessageHeader(source header : Header, target messageHeader: MessageHeader) {
     // ISSUE1: should be link to a MessageDefinition or a code?
     header -> messageHeader.event = create('uri') as value, value.value = 'http://fhir.ch/ig/ch-alis-43' "eventUri";
     // ISSUE2: MessageControlID cannot be id of entry, needs to be either fullUrl oder uuid, need to map this to an identifier
+
     header -> messageHeader.source as source then {
-        header.SoftwareReleaseNumber as version -> source.version = version "version";
-    // ISSUE3:
+        header.SoftwareReleaseNumber as version -> source.version = (%version.data) "version";
+    // ISSUE3: " : "urn:SendingApplication:SendingFacility:SendingServiceCode" -> add urn: in example/docu
+        header -> source.endpoint = ('urn:'+%header.SendingApplication.data+':'+%header.SendingFacility.data+':'+%header.SendingServiceCode.data) "endpoint";
     } "source";
+    header -> messageHeader.destination as destination then {
+    // ISSUE4: " : "urn:ReceivingApplication, ReceivingFacility, ReceivingServiceCode" -> add urn: in example/docu
+        header -> destination.endpoint = ('urn:'+%header.ReceivingApplication.data+':'+%header.ReceivingFacility.data+':'+%header.ReceivingServiceCode.data) "endpoint";
+    } "destination";
 }
 
 group Alis43ToBundleTransaction(source header : Header, target transactionBundle : Bundle) {
+    header -> transactionBundle.type = 'transaction' "transaction";
+    header.Visit as visit then {
+        visit.Service as service -> transactionBundle.entry as e, 
+             e.resource = create('ChargeItem') as chargeItem then ServiceToChargeItem(service, visit, chargeItem, e) "ServiceToChargeItem";
+    } "Visit";
+}
+
+
+group ServiceToChargeItem(source service : Service, source visit : Visit, target chargeItem : ChargeItem, target entry) {
+    service.ItemNumber as itemNumber -> chargeItem.id = (itemNumber.data.lower()) as uuid, entry.fullUrl = append('urn:uuid:',uuid) "3.11 Laufnummer (ItemNumber)";
+
+    service -> chargeItem.contained = create('Patient') as patient, 
+                                      patient.id = 'pat' as containedid, 
+                                      chargeItem.subject = create('Reference') as ref, 
+                                      ref.reference = ('#'+%containedid)
+                                      then ServiceToPatient(service, visit, patient) "patient";
+
+    visit -> chargeItem.contained = create('Encounter') as encounter,
+                                      encounter.id = 'enc' as containedid,
+                                      chargeItem.context = create('Reference') as ref, 
+                                      ref.reference = ('#'+%containedid)
+                                      then VisitToEncounter(visit, encounter) "VisitToEncounter";
+
+    visit.DiagGroup as diaggroup-> chargeItem.contained = create('Condition') as cond,
+                                      cond.id = 'cond' as containedid
+                                      then DiagGroupToCondition(diaggroup, cond) "DiagGroupToCondition";
+
+    service where (service.Transaction.exists()=false) -> entry.request as request, request.method = 'POST', request.url = 'ChargeItem' "POSTDEFAULT"; 
+    service.Transaction where (service.Transaction='insert') -> entry.request as request, request.method = 'POST', request.url = 'ChargeItem' "POST"; 
+    service.Transaction where (service.Transaction='update') -> entry.request as request, request.method = 'PUT', request.url = 'ChargeItem' "UPDATE"; 
+    service.Transaction where (service.Transaction='delete') -> entry.request as request, request.method = 'DELETE', request.url = 'ChargeItem' "DELETE"; 
+
+    service.SessionID as sessionID -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid', extension.value = create('string') as value, value.value = (sessionID.data) "3.2 Sitzung (SessionID)";
+    service.OrderID as orderID -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid', extension.value = create('string') as value, value.value = (orderID.data) "3.3 Auftragsnummer (OrderID)";
+    service.Form as form -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form', extension.value = create('string') as value, value.value = (form.data) "3.7 Formularbezeichnung (Form)";
+    service.ParameterV40 as parameterV40 -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40' then ParameterV40ToExtension(parameterV40, extension)  "4 ParamterV40 (ParameterV40)";
+
+
+    service -> chargeItem.status = 'billable' "billable";
+
+    service.RefItemNumber as refItemNumber then {
+        refItemNumber.data as data -> chargeItem.partOf = create('Reference') as ref, ref.reference = ('urn:uuid:'+%data.lower()), ref.type='ChargeItem' "3.12 Referenz zu Hauptleistung (RefItemNumber)";
+    } "RefItemNumber";
+
+    service.ServiceItem as serviceItem then {
+         serviceItem.data as data -> chargeItem.code = create('CodeableConcept') as cc, 
+          cc.coding = create('Coding') as coding, coding.code = data then {
+            service.ServiceType as serviceType then {
+                serviceType.data as data -> coding.system = translate(data, '#serviceMap', 'code') "3.5 Katalog (ServiceType)";
+            } "servicType";
+          } "3.6 Tarifposition (ServiceItem)";
+    } "3.6 Tarifposition";
+
+
+    service.ServiceDate as serviceData -> chargeItem.occurrence = create('dateTime') as occurrence, occurrence.value = (serviceData.data) "3.1 Leistungsdatum (ServiceDate)";
+    service.PersonV40 as personV40 -> chargeItem.performer = create('BackboneElement') as performer then PersonV40ToPerformer(personV40, performer) "3.15 PersonV40 (PersonV40)";
+    service.ProviderID as providerID -> chargeItem.performingOrganization = create('Reference') as reference, reference.display = (providerID.data) "3.9 Erbringende Organization (ProviderID)";
+    service.ReferrerID as referrerID -> chargeItem.costCenter = create('Reference') as reference, reference.display = (referrerID.data) "3.4 Auftraggebende Kostenstelle (ReferrerID)";
+    service.Quantity as quantity -> chargeItem.quantity = create('Quantity') as q, q.value as value, value.value = (quantity.data) "3.13 Anzahl (Quantity) ";
+    service.EnteredBy as enteredBy -> chargeItem.enterer = create('Reference') as reference, reference.display = (enteredBy.data) "3.10 Erfasser (EnteredBy)";
+    service.EnteredDateTime as enteredDateTime -> chargeItem.enteredDate = create('dateTime') as enteredDate, enteredDate.value = (enteredDateTime.data) "3.8 Erfassungsdatum (EnteredDateTime)";
+}
+
+group PersonV40ToPerformer(source personV40: PersonV40, target performer : BackboneElement) {
+    personV40.PersonTyp as personTyp -> performer.function = cc('http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp', personTyp) "3.15.1 PersonTyp (PersonTyp)";
+    personV40.PersonID as personId -> performer.actor = create('Reference') as reference, reference.display = (personId.data) "3.15.2. PersonID (PersonID)";
+}
+
+group ParameterV40ToExtension(source parameterV40: ParameterV40, target extension: Extension ) {
+    parameterV40.ParamTyp as paramTyp -> extension.extension as extInner then InnerExtensionParamTyp(paramTyp, extInner);
+    parameterV40.ParamValue as paramValue then {
+        paramValue.data as data -> extension.extension as extInner then InnerExtensionParamValue(data, extInner);
+    } "ParamValue";
+}
+
+group InnerExtensionParamTyp(source src, target ext: Extension) {
+  src -> ext.url = 'ParamTyp' "url";
+  src -> ext.value = create('CodeableConcept') as cc, cc.text as text, text.value = src "string";
+
+  // ISSUE5: How to handle ParamTyp? Why coded values? and if yes, should we then not define the param otherwise
+    //                           <!-- 4 ParamterV40 (ParameterV40) -->
+//                           <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40">
+//                               <!-- 4.1 ParamTyp (ParamTyp) -->
+//                               <extension url="ParamTyp">
+//                                   <valueCodeableConcept>
+//                                       <coding>
+//                                           <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-paramtyp"/>
+//                                           <code value="Duration"/>
+//                                       </coding>
+//                                   </valueCodeableConcept>
+//                               </extension>
+//                               <!-- 4.2 ParamValue (ParamValue) -->
+//                               <extension url="ParamValue">
+//                                   <valueString value="25"/>
+//                               </extension>
+//                           </extension>
+
+//                           <!-- 4 ParamterV40 (ParameterV40) -->
+//                            <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40">
+//                                <!-- 4.1 ParamTyp (ParamTyp) -->
+//                                <extension url="ParamTyp">
+//                                    <valueCodeableConcept>
+//                                        <text value="individuell vereinbart"/>
+//                                    </valueCodeableConcept>
+//                                </extension>
+//                                <!-- 4.2 ParamValue (ParamValue) -->
+//                                <extension url="ParamValue">
+//                                    <valueString value="beliebige Information"/>
+//                                </extension>
+//                            </extension>
+//  
+}
+
+group InnerExtensionParamValue(source src, target ext: Extension) {
+  src -> ext.url = 'ParamValue' "url";
+  src -> ext.value = create('string') as string, string.value = src "string";
+}
+
+group ServiceToPatientName(source visit : Visit, target name : HumanName) {
+    visit.PatientName as patientName then {
+        patientName.data as data -> name.family = data "2.3 Patient.Name (PatientName) -";
+    } "patientName";
+    visit.PatientGivenName as patientGivenName then {
+        patientGivenName.data as data -> name.given = data "2.4 Patient.Vorname (PatientGivenName) -";
+    } "patientGivenName";
+}
+
+group ServiceToPatient(source service : Service, source visit : Visit, target patient : Patient) {
+    visit.PatientID as patientID then {
+        patientID.data as patId -> patient.identifier = create('Identifier') as identifier,
+                                   identifier.value as value,
+                                   value.value = patId,
+                                   identifier.type as type,
+                                   type.coding = cc('http://terminology.hl7.org/CodeSystem/v2-0203','MR') "2.2 Patient.PID (PatientID)";
+    } "patientID";
+//                                    <!-- 2.2 Patient.PID (PatientID) -->
+//                                    <identifier>
+//                                        <type>
+//                                            <coding>
+//                                                <system value="http://terminology.hl7.org/CodeSystem/v2-0203" />
+//                                                <code value="MR" />
+//                                                <display value="Medical record number"/>
+//                                            </coding>
+//                                        </type>
+// ISSUE8: what do with system value
+//                                        <system value="http://www.example.ch/patienteniddomain"/>
+//                                        <value value="Patienten-ID"/>
+//                                    </identifier>//
+
+    visit where (visit.PatientName or visit.PatientGivenName) -> patient.name as name then ServiceToPatientName(visit, name) "ServiceToPatient"; 
+
+    visit.PatientGender as gender then {
+      gender.data as v -> patient.gender = translate(v, '#gender', 'code') "gender";
+    } "2.6 Patient.Geschlecht (PatientGender)";
+
+    visit.PatientBirthDate as birthDate then {
+      birthDate.data as v -> patient.birthDate = v "birthDate";
+    } "2.5 Patient.GebDatum (PatientBirthDate)";	
+}
+
+
+group DiagGroupToCondition(source diagGroup : DiagGroup, target cond : Condition) {
+    diagGroup -> cond.subject = create('Reference') as ref, ref.reference = '#pat' "containedpatient";
+
+    diagGroup.DiagCode as data -> cond.code = create('CodeableConcept') as cc, 
+       cc.coding = create('Coding') as coding, coding.code = data then {
+            diagGroup.DiagCatType as diagCatType then {
+                diagCatType.data as data -> coding.system = translate(data, '#serviceMap', 'code') "2.9.3 Katalogtyp (DiagCatType)";
+            } "serviceType";
+       } "2.9.1 Diagnosecode (DiagCode)";
+
+//                            <contained>
+//                                <Condition>
+//                                    <id value="Diagnosis"/>//
+
+//                                    <code>
+//                                        <coding>
+//                                            <!-- 2.9.3 Katalogtyp (DiagCatType) -->
+// ISSUE10: DiagCatType can be optional
+//                                            <!-- TBD -->
+//                                            <system value="http://www.example.com/CHOP"/>
+//                                            <!-- 2.9.1 Diagnosecode (DiagCode) -->
+//                                            <code value="99.99"/>
+//                                        </coding>
+//                                    </code>//
+
+//                                    <subject>
+//                                        <reference value="#MaxComplete"/>
+//                                    </subject>//
+
+//                                </Condition>
+//                            </contained>
+}
+
+
+group TerminationToExtension(source visit: Visit, target ext:Extension) {
+    visit.TerminationVisit as visit then {
+       visit.data as data -> ext.extension as ext1, ext1.url='TerminationVisit', ext1.value = create('date') as date, date.value = data "2.7 Fall Abschluss (TerminationVisit)"; 
+    } "TerminationVisit";
+    visit.TerminationReason as visit then {
+       visit.data as data -> ext.extension as ext1, ext1.url='TerminationReason', ext1.value = create('string') as string, string.value = data "2.8 Fall Abschlussgrund (TerminationReason)"; 
+    } "TerminationVisit";
+}
+
+group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
+    visit where (visit.TerminationVisit or visit.TerminationReason) -> encounter.extension as ext, ext.url='http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination' then TerminationToExtension(visit, ext) "TerminationToExtension";
+    visit.VisitNumber as visitNumber then {
+        //  ISSUE9: what to do with falldomain? <system value="http://www.example.ch/fallnummerdomain"/>
+        visitNumber.data as data ->  encounter.identifier = create('Identifier') as identifier,
+                                   identifier.value as value,
+                                   value.value = data,
+                                   identifier.type as type,
+                                   type.coding = cc('http://terminology.hl7.org/CodeSystem/v2-0203','VN') "2.1 Fall (VisitNumber)";
+    } "encounterID";
+
+    visit -> encounter.status = 'finished' "Finished";
+    visit -> encounter.class =  cc('http://terminology.hl7.org/CodeSystem/v3-ActCode','IMP') "inpatient encounter";
+    visit -> encounter.subject = create('Reference') as ref, ref.reference='#pat' "subject";
+    visit.DiagGroup as diaggroup-> encounter.diagnosis as diag, diag.condition = create('Reference') as ref, ref.reference='#cond' then {
+        diaggroup.DiagType as diagType -> diag.use as use, use.text = (%diagType.data) "2.9.2 Diagnosetyp (DiagType)";
+    } "2.9 DiagnoseGruppe (DiagGroup)"; 
 }
