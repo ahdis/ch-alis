@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Header xsi:noNamespaceSchemaLocation="LeistungsschnittstelleV41.xsd" Version="4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ReceivingApplication>HOSPIS</ReceivingApplication>
+  <ReceivingApplication>RecApp</ReceivingApplication>
   <ReceivingFacility>Beispiel</ReceivingFacility>
   <ReceivingServiceCode>1</ReceivingServiceCode>
-  <SendingApplication>POLYPOINT</SendingApplication>
+  <SendingApplication>SenderApp</SendingApplication>
   <SendingFacility>Beispiel</SendingFacility>
   <SendingServiceCode>18</SendingServiceCode>
   <MessageControlID>1</MessageControlID>

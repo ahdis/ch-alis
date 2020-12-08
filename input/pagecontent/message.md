@@ -2,7 +2,7 @@
 ALIS is a standard interface, originally based on XML (Fig. left), for the service transmission between IT systems in hospitals (from pure collection systems, RIS, HIS etc. to accounting systems). The interface is used for the transmission of coding data according to the different requirements of service providers, insurers and the public sector.
 
 * Logical Model: [Header](StructureDefinition-Header.html)
-* Examples: [ALIS Complete43](AlisExampleComplete43.xml), [Service interface 1](LsExpPOLY1.xml), [Service interface 2](LsExpPOLY1.xml)  
+* Examples: [ALIS Complete43](AlisExampleComplete43.xml), [Service interface 1](LsExpSample1.xml), [Service interface 2](LsExpSample2.xml)  
 
 
 ### FHIR message (Bundle)
