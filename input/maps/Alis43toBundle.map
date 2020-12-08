@@ -256,7 +256,7 @@ group DiagGroupToCondition(source diagGroup : DiagGroup, target cond : Condition
 //                                    <code>
 //                                        <coding>
 //                                            <!-- 2.9.3 Katalogtyp (DiagCatType) -->
-// ISSUE10: DiagCatType can be optional
+// ISSUE6: DiagCatType can be optional
 //                                            <!-- TBD -->
 //                                            <system value="http://www.example.com/CHOP"/>
 //                                            <!-- 2.9.1 Diagnosecode (DiagCode) -->
@@ -285,7 +285,7 @@ group TerminationToExtension(source visit: Visit, target ext:Extension) {
 group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
     visit where (visit.TerminationVisit or visit.TerminationReason) -> encounter.extension as ext, ext.url='http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination' then TerminationToExtension(visit, ext) "TerminationToExtension";
     visit.VisitNumber as visitNumber then {
-        //  ISSUE9: what to do with falldomain? <system value="http://www.example.ch/fallnummerdomain"/>
+        //  ISSUE8: what to do with falldomain? <system value="http://www.example.ch/fallnummerdomain"/>
         visitNumber.data as data ->  encounter.identifier = create('Identifier') as identifier,
                                    identifier.value as value,
                                    value.value = data,
