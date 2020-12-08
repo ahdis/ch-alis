@@ -51,10 +51,9 @@
     <concept>
         <code value="Side (l/r)"/>
     </concept>
-    <!-- ChargeItem.supportingInformation -->
-    <!--<concept>
+    <concept>
         <code value="BMI"/>
-    </concept>-->
+    </concept>
     <concept>
         <code value="Indication (j/n)"/>
     </concept>
@@ -67,17 +66,15 @@
     <concept>
         <code value="AccountNumber"/>
     </concept>
-    <!-- ChargeItem.status -->
-    <!--<concept>
+    <concept>
         <code value="Billable (j/n)"/>
-    </concept>-->
+    </concept>
     <concept>
         <code value="GuarantorID"/>
     </concept>
-    <!-- ChargeItem.priceOverride.value -->
-    <!--<concept>
+    <concept>
         <code value="Amount"/>
-    </concept>-->
+    </concept>
     <concept>
         <code value="InternalAmount"/>
     </concept> 

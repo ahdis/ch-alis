@@ -83,10 +83,14 @@
         </element>
         <element id="Extension.extension:ParamTyp.valueCodeableConcept.coding">
             <path value="Extension.extension.valueCodeableConcept.coding"/>
+            <binding>
+                <strength value="required"/>
+                <valueSet value="http://fhir.ch/ig/ch-alis/ValueSet/ch-alis-paramtyp"/>
+            </binding>
         </element>
         <element id="Extension.extension:ParamTyp.valueCodeableConcept.coding.system">
             <path value="Extension.extension.valueCodeableConcept.coding.system"/>
-            <fixedUri value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-paramtyp"/>
+            <!--<fixedUri value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-paramtyp"/>-->
             <min value="1"/>
         </element>
         <element id="Extension.extension:ParamTyp.valueCodeableConcept.coding.code">

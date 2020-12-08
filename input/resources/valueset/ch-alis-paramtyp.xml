@@ -15,7 +15,7 @@
             <value value="https://www.alis-connect.ch/" />
         </telecom>
     </contact>
-    <description value="This value set defines the ParamTyp." />
+    <description value="This value set defines the ParamTyp, which are displayed via CH ALIS Extension ParameterV40." />
     <jurisdiction>
         <coding>
             <system value="urn:iso:std:iso:3166"/>
@@ -54,8 +54,8 @@
             </concept>
             <!-- ChargeItem.supportingInformation -->
             <!--<concept>
-        <code value="BMI"/>
-    </concept>-->
+                <code value="BMI"/>
+            </concept>-->
             <concept>
                 <code value="Indication (j/n)"/>
             </concept>
@@ -70,15 +70,15 @@
             </concept>
             <!-- ChargeItem.status -->
             <!--<concept>
-        <code value="Billable (j/n)"/>
-    </concept>-->
+                <code value="Billable (j/n)"/>
+            </concept>-->
             <concept>
                 <code value="GuarantorID"/>
             </concept>
             <!-- ChargeItem.priceOverride.value -->
             <!--<concept>
-        <code value="Amount"/>
-    </concept>-->
+                <code value="Amount"/>
+            </concept>-->
             <concept>
                 <code value="InternalAmount"/>
             </concept>
