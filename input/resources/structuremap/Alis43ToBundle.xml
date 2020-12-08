@@ -7,10 +7,10 @@
       xmlns="http://www.w3.org/1999/xhtml">
       <pre>map "http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle" = "Alis43ToBundle"
 
-// Convert ALIS43 XML to a Bundle according to the ch-alis implmementation guie
-// 2020-12-03 Oliver Egger, copyright ahdis ag, Apache License
-// FHIR: http://hl7.org/fhir/r4/
-// ISSUE7: what are the URL's oid's we have to define
+// Convert ALIS43 XML to a Bundle according to the CH ALIS implmementation guide,
+// 2020-12-03 by Oliver Egger, copyright ahdis ag, Apache License,
+// FHIR: http://hl7.org/fhir/r4/.
+// ISSUE7: what are the URL's oid's we have to define.
 
 conceptmap "serviceMap" {
   prefix s = "http://fhir.ch/ig/ch-alis"
@@ -251,10 +251,10 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
   </extension>
   <url value="http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle"></url>
   <name value="Alis43ToBundle"></name>
-  <description value="Convert ALIS43 XML to a Bundle according to the ch-alis implmementation guie
-2020-12-03 Oliver Egger, copyright ahdis ag, Apache License
-FHIR: http://hl7.org/fhir/r4/
-ISSUE7: what are the URL's oid's we have to define"></description>
+  <description value="Convert ALIS43 XML to a Bundle according to the CH ALIS implmementation guide,
+2020-12-03 by Oliver Egger, copyright ahdis ag, Apache License,
+FHIR: http://hl7.org/fhir/r4/.
+ISSUE7: what are the URL's oid's we have to define."></description>
   <structure>
     <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Header"></url>
     <mode value="source"></mode>

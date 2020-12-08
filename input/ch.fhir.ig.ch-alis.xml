@@ -226,7 +226,8 @@
       <reference>
         <reference value="StructureMap/Alis43ToBundle"/>
       </reference>
-      <exampleBoolean value="false"/>
+      <name value="Alis43ToBundle"/>
+      <description value="Convert ALIS43 XML to a Bundle according to the CH ALIS implmementation guide."/>
     </resource>
 
 

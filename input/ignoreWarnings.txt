@@ -3,6 +3,9 @@
 # Allow upper case for logical models
 eld-20: Element names should be simple alphanumerics with a max of 64 characters, or code generation tools may be broken [path.matches('[A-Za-z][A-Za-z0-9]*(\\.[a-z][A-Za-z0-9]*(\\[x])?)*')]
 
+# The ConceptMap has no name, the name is not required
+cmd-0: Name should be usable as an identifier for the module by machine processing applications such as code generation [name.matches('[A-Z]([A-Za-z0-9_]){0,254}')]
+
 # The examples of the contained resources are shown in the resources they contain
 The Implementation Guide contains no explicitly linked examples for this profile
 The Implementation Guide contains no examples for this profile
