@@ -19,3 +19,18 @@ Accept: application/fhir+xml;fhirVersion=4.0
 Content-Type: application/fhir+xml;fhirVersion=4.0
 
 < ./input/images/AlisExampleComplete43.xml
+
+
+### 2. transform
+POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle
+Accept: application/fhir+xml;fhirVersion=4.0
+Content-Type: application/fhir+xml;fhirVersion=4.0
+
+< ./input/images/LsExpSample1.xml
+
+### 2. transform
+POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle
+Accept: application/fhir+xml;fhirVersion=4.0
+Content-Type: application/fhir+xml;fhirVersion=4.0
+
+< ./input/images/LsExpSample2.xml
