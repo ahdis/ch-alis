@@ -36,7 +36,7 @@
                     <!-- 1.5 MandatenNr (SendingFacility) -->
                     <!-- 1.6 Einrichtung (SendingServiceCode) -->
                     <!-- URL je nach Implementation -->
-                    <endpoint value="http://fhir.ch/ig/ch-alis/SendingApplication/SendingFacility/SendingServiceCode"/>
+                    <endpoint value="urn:SendingApplication:SendingFacility:SendingServiceCode"/>
                 </source>
 
                 <focus>

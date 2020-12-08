@@ -95,7 +95,7 @@
         <!-- URL je nach Implementation -->
 		<element id="MessageHeader.source.endpoint">
 			<path value="MessageHeader.source.endpoint"/>
-			<short value="http://fhir.ch/ig/ch-alis/{SendingApplication}/{SendingFacility}/{SendingServiceCode}"/>
+			<short value="urn:{SendingApplication}:{SendingFacility}:{SendingServiceCode}"/>
 			<mapping>
 				<identity value="alis"/>
 				<map value="SendingApplication, SendingFacility, SendingServiceCode"/>
