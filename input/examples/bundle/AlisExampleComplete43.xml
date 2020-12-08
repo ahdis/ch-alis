@@ -40,7 +40,8 @@
                 </source>
 
                 <focus>
-                    <reference value="Bundle/Transaction"/>
+                    <reference value="urn:uuid:cbb59175-ad00-4316-8f0f-0cf75a0214b6"/>
+                    <type value="Bundle"/>
                 </focus>
 
             </MessageHeader>
@@ -48,10 +49,9 @@
     </entry>
 
     <entry>
-        <fullUrl value="http://fhir.ch/ig/ch-alis/Bundle/Transaction"/>
+        <fullUrl value="urn:uuid:cbb59175-ad00-4316-8f0f-0cf75a0214b6"/>
         <resource>
             <Bundle>
-                <id value="Transaction"/>
                 <type value="transaction"/>
 
                 <entry>

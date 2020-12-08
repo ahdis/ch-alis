@@ -67,16 +67,6 @@
 			</slicing>
 			<min value="2"/>
 		</element>
-		<element id="Bundle.entry.fullUrl">
-			<path value="Bundle.entry.fullUrl"/>
-			<min value="1"/>
-			<constraint>
-				<key value="ch-alis-message-1"/>
-				<severity value="error"/>
-				<human value="The fullUrl must be an absolute URL server address or an URI for UUID/OID"/>
-				<expression value="startsWith('http') or startsWith('urn:uuid:') = true"/>
-			</constraint>
-		</element>
 
 		<element id="Bundle.entry:MessageHeader">
 			<path value="Bundle.entry" />
@@ -84,6 +74,16 @@
 			<short value="MessageHeader" />
 			<min value="1" />
 			<max value="1" />
+		</element>
+		<element id="Bundle.entry:MessageHeader.fullUrl">
+			<path value="Bundle.entry.fullUrl"/>
+			<min value="1"/>
+			<constraint>
+				<key value="ch-alis-message-1"/>
+				<severity value="error"/>
+				<human value="The fullUrl for the MessageHeader as first entry must be an absolute URL server address"/>
+				<expression value="startsWith('http') = true"/>
+			</constraint>
 		</element>
 		<element id="Bundle.entry:MessageHeader.resource">
 			<path value="Bundle.entry.resource" />
@@ -100,6 +100,16 @@
 			<short value="Transaction" />
 			<min value="1" />
 			<max value="1" />
+		</element>
+		<element id="Bundle.entry:Transaction.fullUrl">
+			<path value="Bundle.entry.fullUrl"/>
+			<min value="1"/>
+			<constraint>
+				<key value="ch-alis-message-2"/>
+				<severity value="error"/>
+				<human value="The fullUrl must be an absolute URL server address or an URI for UUID/OID"/>
+				<expression value="startsWith('http') or startsWith('urn:uuid:') = true"/>
+			</constraint>
 		</element>
 		<element id="Bundle.entry:Transaction.resource">
 			<path value="Bundle.entry.resource" />
