@@ -50,7 +50,7 @@
       <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
     </resource>
 
-    <!-- structure definitions for logical model-->
+    <!-- structure definitions for logical models-->
     <resource>
       <reference>
         <reference value="StructureDefinition/Header"/>
@@ -246,8 +246,13 @@
         <generation value="markdown"/>
       </page>
       <page>
-        <nameUrl value="logicalmodel.html"/>
-        <title value="Logical Model"/>
+        <nameUrl value="logicalmodels.html"/>
+        <title value="Logical Models"/>
+        <generation value="html"/>
+      </page>
+      <page>
+        <nameUrl value="maps.html"/>
+        <title value="Maps"/>
         <generation value="html"/>
       </page>
       <page>
