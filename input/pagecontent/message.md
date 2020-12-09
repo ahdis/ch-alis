@@ -6,7 +6,7 @@ ALIS is a standard interface, originally based on XML (Fig. left), for the servi
 
 
 ### FHIR message (Bundle)
-This transmission format (Fig. rights) is defined as a message type that corresponds to a Bundle as a FHIR resource. A Bundle has a list of entries. The first entry is the MessageHeader, in which a transaction type that corresponds to a Bundle is then referenced. One or more ChargeItems are listed in the transaction.
+This transmission format (Fig. right) is defined as a message type that corresponds to a Bundle as a FHIR resource. A Bundle has a list of entries. The first entry is the MessageHeader, in which a transaction type that corresponds to a Bundle is then referenced. One or more ChargeItems are listed in the transaction.
    
 * Profile: [FHIR message (Bundle)](StructureDefinition-ch-alis-message.html)
 * Examples: ALIS Complete43 ([XML](Bundle-AlisExampleComplete43.xml.html), [JSON](Bundle-AlisExampleComplete43.json.html)), Service interface 1 (XML, JSON), Service interface 2 (XML, JSON)
