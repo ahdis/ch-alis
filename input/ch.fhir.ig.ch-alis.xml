@@ -9,12 +9,12 @@
     </div>
   </text>
   <url value="http://fhir.ch/ig/ch-alis/ImplementationGuide/ch.fhir.ig.ch-alis"/>
-  <version value="0.1.0"/>
+  <version value="0.2.0"/>
   <name value="CH_ALIS"/>
   <title value="CH ALIS (R4)"/>
   <status value="active"/>
   <experimental value="false"/>
-  <date value="2020-08-06"/>
+  <date value="2021-02-06"/>
   <publisher value="ALIS-Connect"/>
   <contact>
     <name value="ALIS-Connect"/>
