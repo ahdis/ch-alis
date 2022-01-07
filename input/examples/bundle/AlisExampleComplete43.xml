@@ -55,11 +55,11 @@
                 <type value="transaction"/>
 
                 <entry>
-                    <fullUrl value="urn:uuid:8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
+                    <fullUrl value="urn:uuid:8cc5d1e4-182f-4905-93cc-4ba5c041755f"/>
                     <resource>
                         <ChargeItem>
                             <!-- 3.11 Laufnummer (ItemNumber) -->
-                            <id value="8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
+                            <id value="8cc5d1e4-182f-4905-93cc-4ba5c041755f"/>
 
                             <contained>
                                 <Patient>
@@ -426,7 +426,7 @@
 
                             <!-- 3.12 Referenz zu Hauptleistung (RefItemNumber) -->
                             <partOf>
-                                <reference value="urn:uuid:8cC5d1e4-182f-4905-93cc-4ba5c041755f"/>
+                                <reference value="urn:uuid:8cc5d1e4-182f-4905-93cc-4ba5c041755f"/>
                                 <type value="ChargeItem"/>
                             </partOf>
 

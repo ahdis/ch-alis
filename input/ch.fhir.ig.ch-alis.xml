@@ -50,6 +50,15 @@
       <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
     </resource>
 
+    <resource>
+      <reference>
+        <reference value="Bundle/AlisExampleMapped"/>
+      </reference>
+      <name value="Alis Example Mapped"/>
+      <description value="Example Message Mapped(Bundle)"/>
+      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
+    </resource>
+
     <!-- structure definitions for logical models-->
     <resource>
       <reference>

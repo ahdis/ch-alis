@@ -1,0 +1,310 @@
+<Bundle 
+  xmlns="http://hl7.org/fhir">
+  <id value="AlisExampleMapped"/>
+  <meta>
+    <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
+  </meta>
+  <type value="message"/>
+  <timestamp value="2017-08-30T11:23:05-01:00"/>
+  <entry>
+    <fullUrl value="urn:uuid:13ccd702-fd84-428d-a7d9-924f97ef8b2c"/>
+    <resource>
+      <MessageHeader>
+        <id value="13ccd702-fd84-428d-a7d9-924f97ef8b2c"/>
+        <eventUri value="http://fhir.ch/ig/ch-alis-43"/>
+        <destination>
+          <endpoint value="urn:Name_des_empfangenden_Systems:Mandant:Code_im_empfangenden_System"/>
+        </destination>
+        <source>
+          <version value="Version der sendenden Software"/>
+          <endpoint value="urn:Name_des_senden_Systems:Mandant:Code_im_sendenden:System"/>
+        </source>
+        <focus>
+          <reference value="urn:uuid:c11ebbf5-020b-40aa-8338-fca4a1dd2df0"/>
+          <type value="Bundle"/>
+        </focus>
+      </MessageHeader>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="urn:uuid:c11ebbf5-020b-40aa-8338-fca4a1dd2df0"/>
+    <resource>
+      <Bundle>
+        <id value="c11ebbf5-020b-40aa-8338-fca4a1dd2df0"/>
+        <type value="transaction"/>
+        <entry>
+          <fullUrl value="urn:uuid:8c85d1e4-182f-4905-93cc-4ba5c041755f"/>
+          <resource>
+            <ChargeItem>
+              <id value="8c85d1e4-182f-4905-93cc-4ba5c041755f"/>
+              <contained>
+                <Patient>
+                  <id value="pat"/>
+                  <identifier>
+                    <type>
+                      <coding>
+                        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                        <code value="MR"/>
+                      </coding>
+                    </type>
+                    <system value="http://www.example.ch/patienteniddomain"/>
+                    <value value="Patienten-ID"/>
+                  </identifier>
+                  <name>
+                    <family value="Patienten-Name"/>
+                    <given value="Patienten-Vorname"/>
+                  </name>
+                  <gender value="male"/>
+                  <birthDate value="1950-01-01"/>
+                </Patient>
+              </contained>
+              <contained>
+                <Encounter>
+                  <id value="enc"/>
+                  <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination">
+                    <extension url="TerminationVisit">
+                      <valueDate value="2017-08-31"/>
+                    </extension>
+                    <extension url="TerminationReason">
+                      <valueString value="Grund für Fallabschluss"/>
+                    </extension>
+                  </extension>
+                  <identifier>
+                    <type>
+                      <coding>
+                        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                        <code value="VN"/>
+                      </coding>
+                    </type>
+                    <system value="http://www.example.ch/fallnummerdomain"/>
+                    <value value="eindeutige Fall-Identifikation"/>
+                  </identifier>
+                  <status value="finished"/>
+                  <class>
+                    <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+                    <code value="IMP"/>
+                    <display value="inpatient encounter"/>
+                  </class>
+                  <subject>
+                    <reference value="#pat"/>
+                  </subject>
+                  <diagnosis>
+                    <condition>
+                      <reference value="#cond"/>
+                    </condition>
+                    <use>
+                      <text value="Eintrittsdiagnose"/>
+                    </use>
+                  </diagnosis>
+                </Encounter>
+              </contained>
+              <contained>
+                <Condition>
+                  <id value="cond"/>
+                  <code>
+                    <coding>
+                      <system value="urn:oid:2.16.756.5.30.1.126.3.2"/>
+                      <code value="99.99"/>
+                    </coding>
+                  </code>
+                  <subject>
+                    <reference value="#pat"/>
+                  </subject>
+                </Condition>
+              </contained>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
+                <valueString value="1"/>
+              </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid">
+                <valueString value="16595790-A8C1-43E1-B785-BC81F3926482"/>
+              </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form">
+                <valueString value="a1b2c3"/>
+              </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40">
+                <extension url="ParamTyp">
+                  <valueCodeableConcept>
+                    <text value="Duration"/>
+                  </valueCodeableConcept>
+                </extension>
+                <extension url="ParamValue">
+                  <valueString value="25"/>
+                </extension>
+              </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40">
+                <extension url="ParamTyp">
+                  <valueCodeableConcept>
+                    <text value="individuell vereinbart"/>
+                  </valueCodeableConcept>
+                </extension>
+                <extension url="ParamValue">
+                  <valueString value="beliebige Information"/>
+                </extension>
+              </extension>
+              <status value="billable"/>
+              <code>
+                <coding>
+                  <system value="urn:oid:2.16.756.5.30.1.129.1.4"/>
+                  <code value="00.0010"/>
+                </coding>
+              </code>
+              <subject>
+                <reference value="#pat"/>
+              </subject>
+              <context>
+                <reference value="#enc"/>
+              </context>
+              <occurrenceDateTime value="2017-08-30T00:00:00-01:00"/>
+              <performer>
+                <function>
+                  <coding>
+                    <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp"/>
+                    <code value="ResponsiblePhysician"/>
+                  </coding>
+                </function>
+                <actor>
+                  <display value="ID der Person"/>
+                </actor>
+              </performer>
+              <performer>
+                <function>
+                  <coding>
+                    <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp"/>
+                    <code value="ProvidingPhysician"/>
+                  </coding>
+                </function>
+                <actor>
+                  <display value="ID der Person"/>
+                </actor>
+              </performer>
+              <performingOrganization>
+                <display value="1012"/>
+              </performingOrganization>
+              <costCenter>
+                <display value="ABCD"/>
+              </costCenter>
+              <quantity>
+                <value value="1"/>
+              </quantity>
+              <enterer>
+                <display value="Kennung erfassender Benutzer im senden System"/>
+              </enterer>
+              <enteredDate value="2017-08-30T10:17:37-01:00"/>
+            </ChargeItem>
+          </resource>
+          <request>
+            <method value="POST"/>
+            <url value="ChargeItem"/>
+          </request>
+        </entry>
+        <entry>
+          <fullUrl value="urn:uuid:2536b891-13b7-4edb-b00c-25d8f8c6bf23"/>
+          <resource>
+            <ChargeItem>
+              <id value="2536b891-13b7-4edb-b00c-25d8f8c6bf23"/>
+              <contained>
+                <Patient>
+                  <id value="pat"/>
+                  <identifier>
+                    <type>
+                      <coding>
+                        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                        <code value="MR"/>
+                      </coding>
+                    </type>
+                    <system value="http://www.example.ch/patienteniddomain"/>
+                    <value value="Patienten-ID"/>
+                  </identifier>
+                  <name>
+                    <family value="Patienten-Name"/>
+                    <given value="Patienten-Vorname"/>
+                  </name>
+                  <gender value="male"/>
+                  <birthDate value="1950-01-01"/>
+                </Patient>
+              </contained>
+              <contained>
+                <Encounter>
+                  <id value="enc"/>
+                  <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination">
+                    <extension url="TerminationVisit">
+                      <valueDate value="2017-08-31"/>
+                    </extension>
+                    <extension url="TerminationReason">
+                      <valueString value="Grund für Fallabschluss"/>
+                    </extension>
+                  </extension>
+                  <identifier>
+                    <type>
+                      <coding>
+                        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                        <code value="VN"/>
+                      </coding>
+                    </type>
+                    <system value="http://www.example.ch/fallnummerdomain"/>
+                    <value value="eindeutige Fall-Identifikation"/>
+                  </identifier>
+                  <status value="finished"/>
+                  <class>
+                    <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+                    <code value="IMP"/>
+                    <display value="inpatient encounter"/>
+                  </class>
+                  <subject>
+                    <reference value="#pat"/>
+                  </subject>
+                  <diagnosis>
+                    <condition>
+                      <reference value="#cond"/>
+                    </condition>
+                    <use>
+                      <text value="Eintrittsdiagnose"/>
+                    </use>
+                  </diagnosis>
+                </Encounter>
+              </contained>
+              <contained>
+                <Condition>
+                  <id value="cond"/>
+                  <code>
+                    <coding>
+                      <system value="urn:oid:2.16.756.5.30.1.126.3.2"/>
+                      <code value="99.99"/>
+                    </coding>
+                  </code>
+                  <subject>
+                    <reference value="#pat"/>
+                  </subject>
+                </Condition>
+              </contained>
+              <status value="billable"/>
+              <partOf>
+                <reference value="urn:uuid:8c85d1e4-182f-4905-93cc-4ba5c041755f"/>
+                <type value="ChargeItem"/>
+              </partOf>
+              <code>
+                <coding>
+                  <code value="00.0030"/>
+                </coding>
+              </code>
+              <subject>
+                <reference value="#pat"/>
+              </subject>
+              <context>
+                <reference value="#enc"/>
+              </context>
+              <occurrenceDateTime value="2017-08-30T00:00:00-01:00"/>
+              <quantity>
+                <value value="1"/>
+              </quantity>
+            </ChargeItem>
+          </resource>
+          <request>
+            <method value="POST"/>
+            <url value="ChargeItem"/>
+          </request>
+        </entry>
+      </Bundle>
+    </resource>
+  </entry>
+</Bundle>

@@ -77,13 +77,6 @@
 		</element>
 		<element id="Bundle.entry:MessageHeader.fullUrl">
 			<path value="Bundle.entry.fullUrl"/>
-			<min value="1"/>
-			<constraint>
-				<key value="ch-alis-message-1"/>
-				<severity value="error"/>
-				<human value="The fullUrl for the MessageHeader as first entry must be an absolute URL server address"/>
-				<expression value="startsWith('http') = true"/>
-			</constraint>
 		</element>
 		<element id="Bundle.entry:MessageHeader.resource">
 			<path value="Bundle.entry.resource" />
