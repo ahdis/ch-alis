@@ -29,9 +29,9 @@
       <code value="CH"/>
     </coding>
   </jurisdiction>
-  <copyright value="CC-BY-SA-4.0"/>
+  <copyright value="not-open-source"/>
   <packageId value="ch.fhir.ig.ch-alis"/>
-  <license value="CC-BY-SA-4.0"/>
+  <license value="not-open-source"/>
   <fhirVersion value="4.0.1"/>
   <dependsOn id="chcore">
     <uri value="http://fhir.ch/ig/ch-core/ImplementationGuide/ch.fhir.ig.ch-core"/>
@@ -202,6 +202,7 @@
       </reference>
       <exampleBoolean value="false"/>
     </resource>
+
     
     <!-- code systems -->
     <resource>
@@ -239,6 +240,17 @@
       <description value="Convert ALIS43 XML to a Bundle according to the CH ALIS implmementation guide."/>
     </resource>
 
+    <resource>
+      <extension url="http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format">
+          <valueCode value="application/fhir+xml"/>
+      </extension>
+      <reference>
+          <reference value="Binary/curaMED-20230713-1"/>
+      </reference>
+      <name value="curaMED ALIS 4.3 Example File"/>
+      <description value="curaMED ALIS 4.3 example File"/>
+      <exampleCanonical value="http://fhir.ch/ig/ch-alis/StructureDefinition/Header"/>
+  </resource>
 
     <!-- pages -->
     <page>
