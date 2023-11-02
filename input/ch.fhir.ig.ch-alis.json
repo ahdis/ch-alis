@@ -56,10 +56,7 @@
 				},
 				"name": "Alis Example Complete43",
 				"description": "Example Message (Bundle)",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message",
-				"fhir_comments": [
-					"examples"
-				]
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
 			},
 			{
 				"reference": {
@@ -73,10 +70,7 @@
 				"reference": {
 					"reference": "StructureDefinition/Header"
 				},
-				"exampleBoolean": false,
-				"fhir_comments": [
-					"structure definitions for logical models"
-				]
+				"exampleBoolean": false
 			},
 			{
 				"reference": {
@@ -142,10 +136,7 @@
 				"reference": {
 					"reference": "StructureDefinition/ch-alis-message"
 				},
-				"exampleBoolean": false,
-				"fhir_comments": [
-					"structure definitions for profiles"
-				]
+				"exampleBoolean": false
 			},
 			{
 				"reference": {
@@ -187,10 +178,7 @@
 				"reference": {
 					"reference": "StructureDefinition/ch-alis-ext-sessionid"
 				},
-				"exampleBoolean": false,
-				"fhir_comments": [
-					"structure definitions for extensions"
-				]
+				"exampleBoolean": false
 			},
 			{
 				"reference": {
@@ -220,11 +208,8 @@
 				"reference": {
 					"reference": "CodeSystem/ch-alis-persontyp"
 				},
-				"exampleBoolean": false,
-				"fhir_comments": [
-					"code systems"
-				]
-			},
+				"exampleBoolean": false
+      },
 			{
 				"reference": {
 					"reference": "CodeSystem/ch-alis-paramtyp"
@@ -235,10 +220,7 @@
 				"reference": {
 					"reference": "ValueSet/ch-alis-persontyp"
 				},
-				"exampleBoolean": false,
-				"fhir_comments": [
-					"value sets"
-				]
+				"exampleBoolean": false
 			},
 			{
 				"reference": {
@@ -336,18 +318,12 @@
 					"title": "Terminology",
 					"generation": "html"
 				}
-			],
-			"fhir_comments": [
-				"pages"
 			]
 		},
 		"parameter": [
 			{
 				"code": "releaselabel",
-				"value": "CI build",
-				"fhir_comments": [
-					"parameters"
-				]
+				"value": "CI build"
 			},
 			{
 				"code": "path-pages",

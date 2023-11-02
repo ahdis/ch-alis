@@ -1,0 +1,120 @@
+{
+	"resourceType": "ValueSet",
+	"id": "ch-alis-paramtyp",
+	"url": "http://fhir.ch/ig/ch-alis/ValueSet/ch-alis-paramtyp",
+	"version": "0.1.0",
+	"name": "ChAlisParamTyp",
+	"title": "CH ALIS ParamTyp",
+	"status": "draft",
+	"date": "2020-11-26",
+	"publisher": "ALIS-Connect",
+	"contact": [
+		{
+			"name": "ALIS-Connect",
+			"telecom": [
+				{
+					"system": "url",
+					"value": "https://www.alis-connect.ch/"
+				}
+			]
+		}
+	],
+	"description": "This value set defines the ParamTyp, which are displayed via CH ALIS Extension ParameterV40.",
+	"jurisdiction": [
+		{
+			"coding": [
+				{
+					"system": "urn:iso:std:iso:3166",
+					"code": "CH"
+				}
+			]
+		}
+	],
+	"compose": {
+		"include": [
+			{
+				"system": "http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-paramtyp",
+				"concept": [
+					{
+						"code": "Duration"
+					},
+					{
+						"code": "Length"
+					},
+					{
+						"code": "Depth"
+					},
+					{
+						"code": "Extension"
+					},
+					{
+						"code": "Fracture (j/n)"
+					},
+					{
+						"code": "RiscClass"
+					},
+					{
+						"code": "SGICategory"
+					},
+					{
+						"code": "Region"
+					},
+					{
+						"code": "Side (l/r)"
+					},
+					{
+						"code": "Indication (j/n)"
+					},
+					{
+						"code": "AdditionalText"
+					},
+					{
+						"code": "Resource"
+					},
+					{
+						"code": "AccountNumber"
+					},
+					{
+						"code": "GuarantorID"
+					},
+					{
+						"code": "InternalAmount"
+					},
+					{
+						"code": "Validity"
+					},
+					{
+						"code": "Validate"
+					},
+					{
+						"code": "ValReason"
+					},
+					{
+						"code": "SomaticRehabilitation (j/n)"
+					},
+					{
+						"code": "Given"
+					},
+					{
+						"code": "ServiceText"
+					},
+					{
+						"code": "ClientUnit"
+					},
+					{
+						"code": "NumberofParticipants"
+					},
+					{
+						"code": "Application"
+					},
+					{
+						"code": "ATCCode"
+					},
+					{
+						"code": "Dose"
+					}
+				]
+			}
+		]
+	}
+}

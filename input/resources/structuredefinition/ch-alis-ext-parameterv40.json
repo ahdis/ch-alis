@@ -1,0 +1,192 @@
+{
+	"resourceType": "StructureDefinition",
+	"id": "ch-alis-ext-parameterv40",
+	"url": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40",
+	"version": "0.1.0",
+	"name": "ChAlisExtensionParameterV40",
+	"title": "CH ALIS Extension ParameterV40",
+	"status": "draft",
+	"date": "2020-11-26",
+	"publisher": "ALIS-Connect",
+	"contact": [
+		{
+			"name": "ALIS-Connect",
+			"telecom": [
+				{
+					"system": "url",
+					"value": "https://www.alis-connect.ch/"
+				}
+			]
+		}
+	],
+	"description": "This extension describes the ParameterV40 with ParamTyp and ParamValue.",
+	"jurisdiction": [
+		{
+			"coding": [
+				{
+					"system": "urn:iso:std:iso:3166",
+					"code": "CH"
+				}
+			]
+		}
+	],
+	"fhirVersion": "4.0.1",
+	"mapping": [
+		{
+			"identity": "alis",
+			"name": "Zertifizierungsdokument ALIS-Connect",
+			"comment": "Zertifizierung ALIS V4.3_2020"
+		}
+	],
+	"kind": "complex-type",
+	"abstract": false,
+	"context": [
+		{
+			"type": "element",
+			"expression": "ChargeItem"
+		}
+	],
+	"type": "Extension",
+	"baseDefinition": "http://hl7.org/fhir/StructureDefinition/Extension",
+	"derivation": "constraint",
+	"differential": {
+		"element": [
+			{
+				"id": "Extension",
+				"path": "Extension",
+				"short": "CH ALIS Extension ParamV40",
+				"mapping": [
+					{
+						"identity": "alis",
+						"map": "ParamV40"
+					}
+				]
+			},
+			{
+				"id": "Extension.extension:ParamTyp",
+				"path": "Extension.extension",
+				"sliceName": "ParamTyp",
+				"short": "ParamTyp",
+				"max": "1",
+				"type": [
+					{
+						"code": "Extension"
+					}
+				]
+			},
+			{
+				"id": "Extension.extension:ParamTyp.extension",
+				"path": "Extension.extension.extension",
+				"max": "0"
+			},
+			{
+				"id": "Extension.extension:ParamTyp.url",
+				"path": "Extension.extension.url",
+				"type": [
+					{
+						"code": "uri"
+					}
+				],
+				"fixedUri": "ParamTyp"
+			},
+			{
+				"id": "Extension.extension:ParamTyp.valueCodeableConcept",
+				"path": "Extension.extension.valueCodeableConcept",
+				"short": "ParamTyp",
+				"min": 1,
+				"type": [
+					{
+						"code": "CodeableConcept"
+					}
+				],
+				"mapping": [
+					{
+						"identity": "alis",
+						"map": "ParamTyp"
+					}
+				]
+			},
+			{
+				"id": "Extension.extension:ParamTyp.valueCodeableConcept.coding",
+				"path": "Extension.extension.valueCodeableConcept.coding",
+				"binding": {
+					"strength": "required",
+					"valueSet": "http://fhir.ch/ig/ch-alis/ValueSet/ch-alis-paramtyp"
+				}
+			},
+			{
+				"id": "Extension.extension:ParamTyp.valueCodeableConcept.coding.system",
+				"path": "Extension.extension.valueCodeableConcept.coding.system",
+				"min": 1
+			},
+			{
+				"id": "Extension.extension:ParamTyp.valueCodeableConcept.coding.code",
+				"path": "Extension.extension.valueCodeableConcept.coding.code",
+				"min": 1
+			},
+			{
+				"id": "Extension.extension:ParamTyp.valueCodeableConcept.text",
+				"path": "Extension.extension.valueCodeableConcept.text"
+			},
+			{
+				"id": "Extension.extension:ParamValue",
+				"path": "Extension.extension",
+				"sliceName": "ParamValue",
+				"short": "ParamValue",
+				"max": "1",
+				"type": [
+					{
+						"code": "Extension"
+					}
+				]
+			},
+			{
+				"id": "Extension.extension:ParamValue.extension",
+				"path": "Extension.extension.extension",
+				"max": "0"
+			},
+			{
+				"id": "Extension.extension:ParamValue.url",
+				"path": "Extension.extension.url",
+				"type": [
+					{
+						"code": "uri"
+					}
+				],
+				"fixedUri": "ParamValue"
+			},
+			{
+				"id": "Extension.extension:ParamValue.valueString",
+				"path": "Extension.extension.valueString",
+				"short": "ParamValue",
+				"min": 1,
+				"type": [
+					{
+						"code": "string"
+					}
+				],
+				"mapping": [
+					{
+						"identity": "alis",
+						"map": "ParamValue"
+					}
+				]
+			},
+			{
+				"id": "Extension.url",
+				"path": "Extension.url",
+				"type": [
+					{
+						"code": "uri"
+					}
+				],
+				"fixedUri": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40"
+			},
+			{
+				"id": "Extension.value[x]",
+				"path": "Extension.value[x]",
+				"max": "0"
+			}
+		]
+	}
+}

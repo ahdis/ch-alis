@@ -1,0 +1,83 @@
+{
+	"resourceType": "StructureDefinition",
+	"id": "ParameterV40",
+	"extension": [
+		{
+			"url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace",
+			"valueUri": "noNamespace"
+		}
+	],
+	"url": "http://fhir.ch/ig/ch-alis/StructureDefinition/ParameterV40",
+	"version": "0.1.0",
+	"name": "ChAlisLeistungsschnittstelleParameterV40",
+	"title": "CH ALIS Leistungsschnittstelle - ParameterV40",
+	"status": "draft",
+	"date": "2020-09-01",
+	"publisher": "ALIS-Connect",
+	"contact": [
+		{
+			"name": "ALIS-Connect",
+			"telecom": [
+				{
+					"system": "url",
+					"value": "https://www.alis-connect.ch/"
+				}
+			]
+		}
+	],
+	"description": "This logical model describes the ParameterV40 of 'Leistungsschnittstelle ALIS Version 4.3'.",
+	"jurisdiction": [
+		{
+			"coding": [
+				{
+					"system": "urn:iso:std:iso:3166",
+					"code": "CH"
+				}
+			]
+		}
+	],
+	"fhirVersion": "4.0.1",
+	"kind": "logical",
+	"abstract": false,
+	"type": "ParameterV40",
+	"baseDefinition": "http://hl7.org/fhir/StructureDefinition/Base",
+	"derivation": "specialization",
+	"differential": {
+		"element": [
+			{
+				"id": "ParameterV40",
+				"path": "ParameterV40",
+				"definition": "4, ParameterV40, Optional (0,N)",
+				"min": 0,
+				"max": "*"
+			},
+			{
+				"id": "ParameterV40.ParamTyp",
+				"path": "ParameterV40.ParamTyp",
+				"representation": [
+					"xmlAttr"
+				],
+				"definition": "4.1, ParamTyp, Alphanum., Obligatorisch",
+				"min": 1,
+				"max": "1",
+				"type": [
+					{
+						"code": "string"
+					}
+				]
+			},
+			{
+				"id": "ParameterV40.ParamValue",
+				"path": "ParameterV40.ParamValue",
+				"definition": "4.2, ParamValue, Alphanum., Obligatorisch",
+				"min": 1,
+				"max": "1",
+				"type": [
+					{
+						"code": "http://fhir.ch/ig/ch-alis/StructureDefinition/Text"
+					}
+				]
+			}
+		]
+	}
+}

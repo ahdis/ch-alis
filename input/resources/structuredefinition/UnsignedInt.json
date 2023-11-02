@@ -1,0 +1,71 @@
+{
+	"resourceType": "StructureDefinition",
+	"id": "UnsignedInt",
+	"extension": [
+		{
+			"url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace",
+			"valueUri": "noNamespace"
+		}
+	],
+	"url": "http://fhir.ch/ig/ch-alis/StructureDefinition/UnsignedInt",
+	"version": "0.1.0",
+	"name": "ChAlisDataTypeUnsignedInt",
+	"title": "CH ALIS Data Type UnsignedInt",
+	"status": "draft",
+	"date": "2020-09-01",
+	"publisher": "ALIS-Connect",
+	"contact": [
+		{
+			"name": "ALIS-Connect",
+			"telecom": [
+				{
+					"system": "url",
+					"value": "https://www.alis-connect.ch/"
+				}
+			]
+		}
+	],
+	"description": "Data Type UnsignedInt",
+	"jurisdiction": [
+		{
+			"coding": [
+				{
+					"system": "urn:iso:std:iso:3166",
+					"code": "CH"
+				}
+			]
+		}
+	],
+	"fhirVersion": "4.0.1",
+	"kind": "logical",
+	"abstract": false,
+	"type": "UnsignedInt",
+	"baseDefinition": "http://hl7.org/fhir/StructureDefinition/Base",
+	"derivation": "specialization",
+	"differential": {
+		"element": [
+			{
+				"id": "UnsignedInt",
+				"path": "UnsignedInt",
+				"definition": "UnsignedInt",
+				"min": 1,
+				"max": "1"
+			},
+			{
+				"id": "UnsignedInt.data",
+				"path": "UnsignedInt.data",
+				"representation": [
+					"xmlText"
+				],
+				"definition": "UnsignedInt",
+				"min": 1,
+				"max": "1",
+				"type": [
+					{
+						"code": "unsignedInt"
+					}
+				]
+			}
+		]
+	}
+}

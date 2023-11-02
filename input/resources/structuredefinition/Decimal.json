@@ -1,0 +1,71 @@
+{
+	"resourceType": "StructureDefinition",
+	"id": "Decimal",
+	"extension": [
+		{
+			"url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace",
+			"valueUri": "noNamespace"
+		}
+	],
+	"url": "http://fhir.ch/ig/ch-alis/StructureDefinition/Decimal",
+	"version": "0.1.0",
+	"name": "ChAlisDataTypeDecimal",
+	"title": "CH ALIS Data Type Decimal",
+	"status": "draft",
+	"date": "2020-09-01",
+	"publisher": "ALIS-Connect",
+	"contact": [
+		{
+			"name": "ALIS-Connect",
+			"telecom": [
+				{
+					"system": "url",
+					"value": "https://www.alis-connect.ch/"
+				}
+			]
+		}
+	],
+	"description": "Data Type Decimal",
+	"jurisdiction": [
+		{
+			"coding": [
+				{
+					"system": "urn:iso:std:iso:3166",
+					"code": "CH"
+				}
+			]
+		}
+	],
+	"fhirVersion": "4.0.1",
+	"kind": "logical",
+	"abstract": false,
+	"type": "Decimal",
+	"baseDefinition": "http://hl7.org/fhir/StructureDefinition/Base",
+	"derivation": "specialization",
+	"differential": {
+		"element": [
+			{
+				"id": "Decimal",
+				"path": "Decimal",
+				"definition": "Decimal",
+				"min": 1,
+				"max": "1"
+			},
+			{
+				"id": "Decimal.data",
+				"path": "Decimal.data",
+				"representation": [
+					"xmlText"
+				],
+				"definition": "Decimal",
+				"min": 1,
+				"max": "1",
+				"type": [
+					{
+						"code": "decimal"
+					}
+				]
+			}
+		]
+	}
+}

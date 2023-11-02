@@ -1,0 +1,75 @@
+{
+	"resourceType": "CodeSystem",
+	"id": "ch-alis-persontyp",
+	"url": "http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp",
+	"version": "0.1.0",
+	"name": "ChAlisPersonTyp",
+	"title": "CH ALIS PersonTyp",
+	"status": "draft",
+	"date": "2020-11-26",
+	"publisher": "ALIS-Connect",
+	"contact": [
+		{
+			"name": "ALIS-Connect",
+			"telecom": [
+				{
+					"system": "url",
+					"value": "https://www.alis-connect.ch/"
+				}
+			]
+		}
+	],
+	"description": "This code system defines the PersonTyp.",
+	"jurisdiction": [
+		{
+			"coding": [
+				{
+					"system": "urn:iso:std:iso:3166",
+					"code": "CH"
+				}
+			]
+		}
+	],
+	"content": "complete",
+	"concept": [
+		{
+			"code": "ResponsiblePhysician"
+		},
+		{
+			"code": "ProvidingPhysician"
+		},
+		{
+			"code": "TreatingPhysician"
+		},
+		{
+			"code": "FeePhysician"
+		},
+		{
+			"code": "AssistingPhysician1"
+		},
+		{
+			"code": "AssistingPhysician2"
+		},
+		{
+			"code": "AssistingPhysician3"
+		},
+		{
+			"code": "AssistingPhysician4"
+		},
+		{
+			"code": "AssistingPhysician5"
+		},
+		{
+			"code": "AssistingPhysician6"
+		},
+		{
+			"code": "AssistingPhysician7"
+		},
+		{
+			"code": "AssistingPhysician8"
+		},
+		{
+			"code": "AssistingPhysician9"
+		}
+	]
+}
