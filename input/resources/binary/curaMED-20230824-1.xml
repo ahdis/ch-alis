@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="4.3">
+    <ReceivingApplication>Spital Test</ReceivingApplication>
+    <ReceivingFacility>1234</ReceivingFacility>
+    <ReceivingServiceCode>Radiologie</ReceivingServiceCode>
+    <SendingApplication>curaMED</SendingApplication>
+    <SendingFacility>4321</SendingFacility>
+    <SendingServiceCode>4321</SendingServiceCode>
+    <MessageControlID>1262754</MessageControlID>
+    <SoftwareReleaseNumber>4.7.0.35</SoftwareReleaseNumber>
+    <FileCreationDate>2023-08-24T10:06:44Z</FileCreationDate>
+    <Visit>
+        <VisitNumber>11229777100</VisitNumber>
+        <PatientID>102</PatientID>
+        <PatientName>Kaufmann</PatientName>
+        <PatientGivenName>Urs</PatientGivenName>
+        <PatientBirthDate>1981-05-20</PatientBirthDate>
+        <PatientGender>M</PatientGender>
+        <Service Transaction="insert">
+            <ServiceDate>2023-08-24T09:00:00Z</ServiceDate>
+            <SessionID>1</SessionID>
+            <OrderID>dbakkowlwcaaaaadfukk</OrderID>
+            <ReferrerID>007</ReferrerID>
+            <ServiceType>medication</ServiceType>
+            <ServiceItem>7680193950301</ServiceItem>
+            <EnteredDateTime>2023-08-24T10:05:36Z</EnteredDateTime>
+            <ProviderID>QA</ProviderID>
+            <EnteredBy>7653253256988</EnteredBy>
+            <ItemNumber>dbakkowlwcaaaaadfukk</ItemNumber>
+            <Quantity>1</Quantity>
+            <PersonV40 PersonTyp="ResponsiblePhysician">
+                <PersonID>7653253256988</PersonID>
+            </PersonV40>
+            <PersonV40 PersonTyp="ProvidingPhysician">
+                <PersonID>7653253256988</PersonID>
+            </PersonV40>
+            <ParameterV40 ParamTyp="Duration">
+                <ParamValue>0</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="Code207">
+                <ParamValue>false</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="FraFree">
+                <ParamValue>false</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="KatalogVersion">
+                <ParamValue>400</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="Indication">
+                <ParamValue>true</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="Amount">
+                <ParamValue>19.2</ParamValue>
+            </ParameterV40>
+        </Service>
+        <Service Transaction="insert">
+            <ServiceDate>2023-08-24T09:00:00Z</ServiceDate>
+            <SessionID>1</SessionID>
+            <OrderID>dbakkowlwcaaaaadfukl</OrderID>
+            <ReferrerID>007</ReferrerID>
+            <ServiceType>analysis</ServiceType>
+            <ServiceItem>6251.54</ServiceItem>
+            <EnteredDateTime>2023-08-24T10:05:36Z</EnteredDateTime>
+            <ProviderID>QA</ProviderID>
+            <EnteredBy>7653253256988</EnteredBy>
+            <ItemNumber>dbakkowlwcaaaaadfukl</ItemNumber>
+            <Quantity>1</Quantity>
+            <PersonV40 PersonTyp="ResponsiblePhysician">
+                <PersonID>7653253256988</PersonID>
+            </PersonV40>
+            <PersonV40 PersonTyp="ProvidingPhysician">
+                <PersonID>7653253256988</PersonID>
+            </PersonV40>
+            <ParameterV40 ParamTyp="Duration">
+                <ParamValue>0</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="Code207">
+                <ParamValue>false</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="FraFree">
+                <ParamValue>false</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="KatalogVersion">
+                <ParamValue>317</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="Indication">
+                <ParamValue>true</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="Amount">
+                <ParamValue>166.5</ParamValue>
+            </ParameterV40>
+        </Service>
+        <Service Transaction="insert">
+            <ServiceDate>2023-08-24T09:00:00Z</ServiceDate>
+            <SessionID>1</SessionID>
+            <OrderID>dbakkoyopoaaaaadfukj</OrderID>
+            <ReferrerID>007</ReferrerID>
+            <ServiceType>tarmed</ServiceType>
+            <ServiceItem>10.1020</ServiceItem>
+            <EnteredDateTime>2023-08-24T10:05:36Z</EnteredDateTime>
+            <ProviderID>QA</ProviderID>
+            <EnteredBy>7653253256988</EnteredBy>
+            <ItemNumber>dbakkoyopoaaaaadfukj</ItemNumber>
+            <Quantity>1</Quantity>
+            <PersonV40 PersonTyp="ResponsiblePhysician">
+                <PersonID>7653253256988</PersonID>
+            </PersonV40>
+            <PersonV40 PersonTyp="ProvidingPhysician">
+                <PersonID>7653253256988</PersonID>
+            </PersonV40>
+            <ParameterV40 ParamTyp="Duration">
+                <ParamValue>25</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="Code207">
+                <ParamValue>false</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="FraFree">
+                <ParamValue>false</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="KatalogVersion">
+                <ParamValue>001</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="Indication">
+                <ParamValue>true</ParamValue>
+            </ParameterV40>
+            <ParameterV40 ParamTyp="Amount">
+                <ParamValue>114.56</ParamValue>
+            </ParameterV40>
+        </Service>
+    </Visit>
+</Header>
