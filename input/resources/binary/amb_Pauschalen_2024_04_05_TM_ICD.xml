@@ -39,7 +39,7 @@
 				<Category>ICD10_2023</Category>
 				<Code>B01.2</Code>
 				<Display>Varizellen-Pneumonie</Display>
-				<Laterality>links</Laterality>			
+				<Laterality>l</Laterality>			
 			</Diagnosis>
 		</Service>
 		<Service>
