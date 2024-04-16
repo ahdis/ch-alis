@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Leistungsschnittstelle ALIS Version 5.0 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="5.0">
+	<xs:element name="Header">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ReceivingApplication">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ReceivingFacility">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ReceivingServiceCode">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SendingApplication">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SendingFacility">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="10" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SendingServiceCode">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MessageControlID" type="xs:unsignedInt" />
+				<xs:element name="HeaderErrorCode" type="xs:string" minOccurs="0" />
+				<xs:element name="SoftwareReleaseNumber">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FileCreationDate" type="xs:dateTime" minOccurs="0" />
+				<xs:element name="Visit" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="VisitNumber" type="xs:string" />
+							<xs:element name="PatientID" type="xs:normalizedString" minOccurs="0" />
+							<xs:element name="PatientName" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="50" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="PatientGivenName" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="50" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="PatientBirthDate" type="xs:date" minOccurs="0" />
+							<xs:element name="PatientGender" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="M|F" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="TerminationVisit" type="xs:date" minOccurs="0" />
+							<xs:element name="TerminationReason" type="xs:string" minOccurs="0" />
+							<xs:element name="DiagGroup" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="DiagType" type="xs:string" minOccurs="0" />
+										<xs:element name="DiagCatType" type="xs:string" minOccurs="0" />
+									</xs:sequence>
+									<xs:attribute name="DiagCode" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Service" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation />
+									<xs:documentation>Leistungen stehen zum Patient im Verhältnis 1:N</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ServiceDate" type="xs:dateTime" />
+										<xs:element name="SessionID" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="64" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="OrderID" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="64" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="OrderDate" type="xs:dateTime" minOccurs="0" />
+										<xs:element name="ReferrerID" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="50" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ServiceType" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<!-- 5.00 increased to 20-->
+													<xs:maxLength value="20" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="ServiceItem" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:minLength value="1" />
+													<xs:maxLength value="20" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Form" type="xs:string" minOccurs="0" />
+										<xs:element name="EnteredDateTime" type="xs:dateTime" minOccurs="0" />
+										<xs:element name="ProviderID" type="xs:string" minOccurs="0" />
+										<xs:element name="EnteredBy" type="xs:string" minOccurs="0" />
+										<xs:element name="PatientContactID" type="xs:string" minOccurs="0" />
+										<xs:element name="ItemNumber" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="64" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="RefItemNumber" type="xs:string" minOccurs="0" />
+										<xs:element name="Quantity" type="xs:float" minOccurs="0" />
+										<xs:element name="Costweight" type="xs:float" minOccurs="0" />
+										<xs:element name="ServiceItemErrorCode" type="xs:string" minOccurs="0" />
+										<xs:element name="PersonV40" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="PersonID" type="xs:string" />
+												</xs:sequence>
+												<xs:attribute name="PersonTyp" use="required">
+													<xs:simpleType>
+														<xs:restriction base="xs:string" />
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:complexType>
+											<xs:unique name="ConstPersonTyp">
+												<xs:selector xpath="Header/Visit/Service/PersonV40" />
+												<xs:field xpath="@PersonTyp" />
+											</xs:unique>
+										</xs:element>
+										<xs:element name="ParameterV40" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ParamValue" type="xs:string" />
+												</xs:sequence>
+												<xs:attribute name="ParamTyp" type="xs:string" use="required" />
+											</xs:complexType>
+											<xs:unique name="ConstParamTyp">
+												<xs:selector xpath="Header/Visit/Service/ParameterV40" />
+												<xs:field xpath="@ParamTyp" />
+											</xs:unique>
+										</xs:element>
+										<xs:element name="Diagnosis" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Identifier" type="xs:string" />
+													<xs:element name="Category" type="xs:string" minOccurs="1" />
+													<xs:element name="Code" type="xs:string" minOccurs="1" />
+													<xs:element name="Display" type="xs:string" />
+													<xs:element name="Laterality" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="l|r|b" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Procedure" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Identifier" type="xs:string" />
+													<xs:element name="Category" type="xs:string" minOccurs="1" />
+													<xs:element name="Code" type="xs:string" minOccurs="1" />
+													<xs:element name="Display" type="xs:string" />
+													<xs:element name="OccurrenceDateTime" type="xs:dateTime" minOccurs="0" />
+													<xs:element name="Laterality" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:pattern value="l|r|b" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="Performer" minOccurs="1">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Function" type="xs:string" />
+																<xs:element name="Identifier" type="xs:string" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="Transaction" type="xs:string" use="optional" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Version" type="xs:float" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

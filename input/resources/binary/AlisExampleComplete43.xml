@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- # = nicht zertifizierungsrelevant, allfällige Lieferung/Inhalte sind zwischen Sender/Empfänger zu vereinbaren -->
-<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="4.3">
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="5.0" xsi:noNamespaceSchemaLocation="LeistungsschnittstelleV50.xsd">
 	<ReceivingApplication>Name_des_empfangenden_Systems</ReceivingApplication>
 	<ReceivingFacility>Mandant</ReceivingFacility>
 	<ReceivingServiceCode>Code_im_empfangenden_System</ReceivingServiceCode>
