@@ -45,7 +45,7 @@
 				<Category>CHOP_2023</Category>
 				<Code>87.41.99</Code>
 				<Display>Computertomographie des Thorax, sonstige</Display>
-				<OccurrenceDateTime>2024-04-04T10:06:50Z</OccurrenceDateTime>
+				<PerformedDateTime>2024-04-04T10:06:50Z</PerformedDateTime>
 				<Laterality>l</Laterality>			
 				<Performer>
 					<Function>ResponsiblePhysician</Function>

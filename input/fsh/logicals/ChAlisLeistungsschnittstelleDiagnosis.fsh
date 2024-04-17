@@ -15,7 +15,8 @@ Description: "This logical model describes the Diagnosis of 'Leistungsschnittste
 * ^jurisdiction.coding.code = #CH
 * . ^definition = "TODO"
 * Identifier 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "TODO"
-* Category 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "TODO"
-* Code 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "TODO"
+* Category 1..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "TODO"
+* Code 1..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "TODO"
 * Display 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "TODO"
+* OnsetDateTime 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/DateTime "TODO"
 * Laterality 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "TODO"

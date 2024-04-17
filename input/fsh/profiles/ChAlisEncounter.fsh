@@ -32,7 +32,7 @@ Description: "Base definition for the Encounter resource in the context of ALIS-
 * subject ^short = "Patient"
 * subject ^type.aggregation = #contained
 * subject.reference 1..
-* diagnosis ..1
+// * diagnosis ..1 ALIS 5.0 not limited to 1 anymore
 * diagnosis ^short = "DiagGroup"
 * diagnosis.condition only Reference(ChAlisCondition)
 * diagnosis.condition ^type.aggregation = #contained

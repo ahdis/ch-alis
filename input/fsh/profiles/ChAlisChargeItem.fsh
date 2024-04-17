@@ -14,7 +14,7 @@ Description: "Base definition for the ChargeItem resource in the context of ALIS
 * . ^short = "CH ALIS ChargeItem"
 * id ^short = "ItemNumber"
 * contained 2..
-* contained ^short = "Contained Resources (Patient, Encounter, Condition)"
+* contained ^short = "Contained Resources (Patient, Encounter, Condition, Procedure)"
 * extension ^slicing.discriminator.type = #value
 * extension ^slicing.discriminator.path = "url"
 * extension ^slicing.rules = #open
@@ -70,6 +70,8 @@ Description: "Base definition for the ChargeItem resource in the context of ALIS
 * enterer.display 1..
 * enterer.display ^short = "EnteredBy"
 * enteredDate ^short = "EnteredDateTime"
+* service only Reference(ChAlisProcedure) // ALIS 5.0
+* service ^type.aggregation = #contained
 * supportingInformation only Reference($bmi)
 * supportingInformation ^short = "ParameterV40: BMI"
 * supportingInformation ^type.aggregation = #contained
