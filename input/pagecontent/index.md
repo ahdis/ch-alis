@@ -2,14 +2,27 @@
 
 This implementation guide is provided to support the use of FHIR<sup>&reg;&copy;</sup> in a Swiss context, realm.
 
-This document is a working specification that is expected to be implemented and tested by FHIR<sup>&reg;&copy;</sup> system producers to enable feedback to improve the content of this guide. With this first Standard for Trial Use ballot version we are looking for feedback if the following goals are met:
+<div markdown="1" class="dragon">
 
-* provide guidance for resources, code systems and value sets in a Swiss specific context, especially related to the transfer of all type of service items between service recording system, clinical systems and accounting systems  
+This document is a working specification that is expected to be implemented and tested by FHIR<sup>&reg;&copy;</sup> system producers to enable feedback to improve the 
+    
 * define extensions that are necessary for local use covering needed ALIS-connect purposes
-* covering the requirements from the existing ALIS-Connect XML specification version 4.3
+* covering the requirements from the existing ALIS-Connect XML specification version 4.3 and upcoming version 5.0
 * define data elements from [FHIR finance module](https://www.hl7.org/fhir/financial-module.html) in FHIR ALIS-connect profiles
 
-**Note**: This implementation guide is not (yet) a FHIR API specification, this will be a goal for the next iteration.
+Please add your feedback via the 'Propose a change'-link in the footer of the page.
+
+See also already opened issues on [github](https://github.com/ahdis/ch-alis/issues)
+
+</div>
+
+
+
+<div markdown="1" class="stu-note">
+
+[Significant changes, open and closed issues](changelog.html)
+
+</div>
 
 **Download**: You can download this implementation guide in npm format from [here](package.tgz).
 

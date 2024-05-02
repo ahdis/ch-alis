@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="5.0" xsi:noNamespaceSchemaLocation="LeistungsschnittstelleV50.xsd">
-	<ReceivingApplication>TARDOC Test</ReceivingApplication>
+	<ReceivingApplication>TARDOCTest</ReceivingApplication>
 	<ReceivingFacility>1234</ReceivingFacility>
 	<ReceivingServiceCode>Radiologie</ReceivingServiceCode>
 	<SendingApplication>ALIS</SendingApplication>
@@ -29,6 +29,7 @@
 				<Category>ICD10_2023</Category>
 				<Code>B01.2</Code>
 				<Display>Varizellen-Pneumonie</Display>
+				<OnsetDateTime>2024-04-01T17:06:50Z</OnsetDateTime>
 				<Laterality>l</Laterality>
 			</Diagnosis>
 			<Procedure>

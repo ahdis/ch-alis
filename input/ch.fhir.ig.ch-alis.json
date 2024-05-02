@@ -6,7 +6,7 @@
 		"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      Implementation Guide for ALIS-Connect (R4)\n    </div>"
 	},
 	"url": "http://fhir.ch/ig/ch-alis/ImplementationGuide/ch.fhir.ig.ch-alis",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"name": "CH_ALIS",
 	"title": "CH ALIS (R4)",
 	"status": "active",
@@ -45,7 +45,7 @@
 			"id": "chcore",
 			"uri": "http://fhir.ch/ig/ch-core/ImplementationGuide/ch.fhir.ig.ch-core",
 			"packageId": "ch.fhir.ig.ch-core",
-			"version": "4.0.0-ballot"
+			"version": "4.0.1"
 		}
 	],
 	"definition": {
@@ -64,6 +64,54 @@
 				},
 				"name": "Alis Example Mapped",
 				"description": "Example Message Mapped(Bundle)",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
+			},
+			{
+				"reference": {
+					"reference": "Bundle/Alis5TARDOC"
+				},
+				"name": "ALIS 5.0 FHIR Bundle Alis5TARDOC",
+				"description": "TARDOC mit Referenzleistung",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
+			},
+			{
+				"reference": {
+					"reference": "Bundle/Alis5AmbPauschalen-TM-ICD"
+				},
+				"name": "ALIS 5.0 FHIR Bundle  Alis5AmbPauschalen-TM-ICD",
+				"description": "Pauschale mit Tarmed und ICD (für Grouper Version 1.0 2024)",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
+			},
+			{
+				"reference": {
+					"reference": "Bundle/Alis5AmbPauschalen-Pauschale"
+				},
+				"name": "ALIS 5.0 FHIR Bundle Alis5AmbPauschalen-Pauschale",
+				"description": "Pauschale (bereits gruppiert, mit Costweight)",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
+			},
+			{
+				"reference": {
+					"reference": "Bundle/Alis5AmbPauschalen-CHOP-ICD"
+				},
+				"name": "ALIS 5.0 FHIR Bundle Alis5AmbPauschalen-CHOP-ICD",
+				"description": "Pauschale ICD und CHOP (für Gruppierung Grouper Version 2.0 2025)",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
+			},
+			{
+				"reference": {
+					"reference": "Bundle/Alis5AmbPauschalen-PauschaleKomplett"
+				},
+				"name": "ALIS 5.0 FHIR Bundle Alis5AmbPauschalen-PauschaleKomplett",
+				"description": "Pauschale komplett (Pauschale mit Costweight, ICD und CHOP)",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
+			},
+			{
+				"reference": {
+					"reference": "Bundle/Alis5Analysenliste"
+				},
+				"name": "ALIS 5.0 FHIR Bundle Alis5Analysenliste",
+				"description": "Analysenliste mit OrderDate",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
 			},
 			{
@@ -233,7 +281,7 @@
 					"reference": "StructureMap/Alis43ToBundle"
 				},
 				"name": "Alis43ToBundle",
-				"description": "Convert ALIS43 XML to a Bundle according to the CH ALIS implmementation guide."
+				"description": "Convert ALIS43 XML to a Bundle according to the CH ALIS implementation guide."
 			},
 			{
 				"extension": [
@@ -285,38 +333,10 @@
 					}
 				],
 				"reference": {
-					"reference": "Binary/Alis5AmbPauschalen-CHOP-ICD"
+					"reference": "Binary/Alis5TARDOC"
 				},
-				"name": "ALIS 5.0 Example File Alis5AmbPauschalen-CHOP-ICD",
-				"description": "Pauschale ICD und CHOP (für Gruppierung Grouper Version 2.0 2025)",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
-			},
-			{
-				"extension": [
-					{
-						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
-						"valueCode": "application/fhir+xml"
-					}
-				],
-				"reference": {
-					"reference": "Binary/Alis5AmbPauschalen-Pauschale"
-				},
-				"name": "ALIS 5.0 Example File Alis5AmbPauschalen-Pauschale",
-				"description": "Pauschale (bereits gruppiert, mit Costweight)",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
-			},
-			{
-				"extension": [
-					{
-						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
-						"valueCode": "application/fhir+xml"
-					}
-				],
-				"reference": {
-					"reference": "Binary/Alis5AmbPauschalen-PauschaleKomplett"
-				},
-				"name": "ALIS 5.0 Example File Alis5AmbPauschalen-PauschaleKomplett",
-				"description": "Pauschale komplett ( Pauschale mit costweight, ICD und CHOP)",
+				"name": "ALIS 5.0 XML Alis5TARDOC",
+				"description": "TARDOC mit Referenzleistung",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
 			},
 			{
@@ -329,8 +349,50 @@
 				"reference": {
 					"reference": "Binary/Alis5AmbPauschalen-TM-ICD"
 				},
-				"name": "ALIS 5.0 Example File Alis5AmbPauschalen-TM-ICD",
+				"name": "ALIS 5.0 XML Alis5AmbPauschalen-TM-ICD",
 				"description": "Pauschale mit Tarmed und ICD (für Grouper Version 1.0 2024)",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
+			},
+			{
+				"extension": [
+					{
+						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
+						"valueCode": "application/fhir+xml"
+					}
+				],
+				"reference": {
+					"reference": "Binary/Alis5AmbPauschalen-Pauschale"
+				},
+				"name": "ALIS 5.0 XML Alis5AmbPauschalen-Pauschale",
+				"description": "Pauschale (bereits gruppiert, mit Costweight)",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
+			},
+			{
+				"extension": [
+					{
+						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
+						"valueCode": "application/fhir+xml"
+					}
+				],
+				"reference": {
+					"reference": "Binary/Alis5AmbPauschalen-CHOP-ICD"
+				},
+				"name": "ALIS 5.0 XML Alis5AmbPauschalen-CHOP-ICD",
+				"description": "Pauschale ICD und CHOP (für Gruppierung Grouper Version 2.0 2025)",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
+			},
+			{
+				"extension": [
+					{
+						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
+						"valueCode": "application/fhir+xml"
+					}
+				],
+				"reference": {
+					"reference": "Binary/Alis5AmbPauschalen-PauschaleKomplett"
+				},
+				"name": "ALIS 5.0 XML Alis5AmbPauschalen-PauschaleKomplett",
+				"description": "Pauschale komplett (Pauschale mit costweight, ICD und CHOP)",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
 			},
 			{
@@ -343,22 +405,8 @@
 				"reference": {
 					"reference": "Binary/Alis5Analysenliste"
 				},
-				"name": "ALIS 5.0 Example File Alis5Analysenliste",
+				"name": "ALIS 5.0 XML Alis5Analysenliste",
 				"description": "Analysenliste mit OrderDate",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
-			},
-			{
-				"extension": [
-					{
-						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
-						"valueCode": "application/fhir+xml"
-					}
-				],
-				"reference": {
-					"reference": "Binary/Alis5TARDOC"
-				},
-				"name": "ALIS 5.0 Example File Alis5TARDOC",
-				"description": "TARDOC mit Referenzleistung",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
 			}
 		],
@@ -401,6 +449,16 @@
 					"nameUrl": "terminology.html",
 					"title": "Terminology",
 					"generation": "html"
+				},
+				{
+					"nameUrl": "alis5.html",
+					"title": "ALIS 5.0",
+					"generation": "markdown"
+				},
+				{
+					"nameUrl": "changelog.html",
+					"title": "Changelog",
+					"generation": "markdown"
 				}
 			]
 		},

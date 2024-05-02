@@ -1,13 +1,15 @@
 <StructureMap xmlns="http://hl7.org/fhir">
    <id value="Alis43ToBundle"/>
    <meta>
-      <versionId value="25"/>
-      <lastUpdated value="2022-01-07T15:28:58.061+01:00"/>
+      <lastUpdated value="2024-05-01T13:40:44.080+00:00"/>
    </meta>
    <text>
       <status value="generated"/>
       <div xmlns="http://www.w3.org/1999/xhtml">
-         <pre>map &quot;http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle&quot; = &quot;Alis43ToBundle&quot;
+         <pre>/// url = &quot;http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle&quot;
+/// name = &quot;Alis43ToBundle&quot;
+/// title = &quot;null&quot;
+/// status = &quot;draft&quot;
 
 // Convert ALIS43 XML to a Bundle according to the CH ALIS implmementation guide,
 // 2020-12-03 by Oliver Egger, copyright ahdis ag, Apache License,
@@ -30,12 +32,23 @@ conceptmap &quot;gender&quot; {
   s:F == t:female
 }
 
+conceptmap &quot;laterality&quot; {
+  prefix s = &quot;http://fhir.ch/ig/ch-alis&quot;
+  prefix t = &quot;http://snomed.info/sct&quot;
+
+  s:l == t:&quot;7771000&quot;
+  s:r == t:&quot;24028007&quot;
+  s:b == t:&quot;51440002&quot;
+}
+
 uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/Header&quot; alias Header as source
 uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/Visit&quot; alias Visit as source
 uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/Service&quot; alias Service as source
 uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/PersonV40&quot; alias PersonV40 as source
 uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/ParameterV40&quot; alias ParameterV40 as source
 uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup&quot; alias DiagGroup as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/LeistungsschnittstelleProcedure&quot; alias Proc as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/Diagnosis&quot; alias Diagnosis as source
 uses &quot;http://hl7.org/fhir/StructureDefinition/Bundle&quot; alias Bundle as target
 uses &quot;http://hl7.org/fhir/StructureDefinition/ChargeItem&quot; alias ChargeItem as target
 uses &quot;http://hl7.org/fhir/StructureDefinition/Extension&quot; alias Extension as target
@@ -44,6 +57,7 @@ uses &quot;http://hl7.org/fhir/StructureDefinition/BackboneElement&quot; alias B
 uses &quot;http://hl7.org/fhir/StructureDefinition/HumanName&quot; alias HumanName as target
 uses &quot;http://hl7.org/fhir/StructureDefinition/Condition&quot; alias Condition as target
 uses &quot;http://hl7.org/fhir/StructureDefinition/Encounter&quot; alias Encounter as target
+uses &quot;http://hl7.org/fhir/StructureDefinition/Procedure&quot; alias Procedure as target
 
 group Alis43ToBundle(source header : Header, target bundle : Bundle) {
   header -&gt;  bundle.meta as meta,  meta.profile as profile,  profile.value = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message',  bundle.entry as e,  e.resource = create('MessageHeader') as messageHeader,  messageHeader.id = uuid() as uuid,  e.fullUrl = append('urn:uuid:', uuid),  bundle.entry as e2,  e2.resource = create('Bundle') as transactionBundle,  transactionBundle.id = uuid() as uuid2,  e2.fullUrl = append('urn:uuid:', uuid2),  messageHeader.focus = create('Reference') as reference,  reference.type = 'Bundle',  reference.reference = append('urn:uuid:', uuid2) then {
@@ -79,41 +93,69 @@ group Alis43ToBundleTransaction(source header : Header, target transactionBundle
 }
 
 group ServiceToChargeItem(source service : Service, source visit : Visit, target chargeItem : ChargeItem, target entry) {
-  service.ItemNumber as itemNumber -&gt;  chargeItem.id = (itemNumber.data.lower()) as uuid,  entry.fullUrl = append(&apos;urn:uuid:&apos;, uuid) &quot;11-Laufnummer-ItemNumber&quot;;
+  service.ItemNumber as itemNumber -&gt;  chargeItem.id = (%itemNumber.data.lower()) as uuid,  entry.fullUrl = append(&apos;urn:uuid:&apos;, uuid) &quot;R311LaufnummerItemNumber&quot;;
   service -&gt;  chargeItem.contained = create(&apos;Patient&apos;) as patient,  patient.id = &apos;pat&apos; as containedid,  chargeItem.subject = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;#&apos; + %containedid) then ServiceToPatient(service, visit, patient) &quot;patient&quot;;
-  visit -&gt;  chargeItem.contained = create(&apos;Encounter&apos;) as encounter,  encounter.id = &apos;enc&apos; as containedid,  chargeItem.context = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;#&apos; + %containedid) then VisitToEncounter(visit, encounter) &quot;VisitToEncounter&quot;;
+  visit -&gt;  chargeItem.contained = create(&apos;Encounter&apos;) as encounter,  encounter.id = &apos;enc&apos; as containedid,  chargeItem.context = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;#&apos; + %containedid) then {
+    visit then VisitToEncounter(visit, encounter) &quot;VisitToEncounter&quot;;
+    service.Diagnosis as diag -&gt;  chargeItem.contained = create(&apos;Condition&apos;) as condition,  condition.id = uuid() as containedid,  encounter.diagnosis as diag,  diag.condition = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;#&apos; + %containedid) then DiagnosisToCondition(diag, condition) &quot;DiagnosisToCondition&quot;;
+  } &quot;encounter&quot;;
   visit.DiagGroup as diaggroup -&gt;  chargeItem.contained = create(&apos;Condition&apos;) as cond,  cond.id = &apos;cond&apos; as containedid then DiagGroupToCondition(diaggroup, cond) &quot;DiagGroupToCondition&quot;;
   service where (service.Transaction.exists() = false) -&gt;  entry.request as request,  request.method = &apos;POST&apos;,  request.url = &apos;ChargeItem&apos; &quot;POSTDEFAULT&quot;;
   service.Transaction where (service.Transaction = &apos;insert&apos;) -&gt;  entry.request as request,  request.method = &apos;POST&apos;,  request.url = &apos;ChargeItem&apos; &quot;POST&quot;;
   service.Transaction where (service.Transaction = &apos;update&apos;) -&gt;  entry.request as request,  request.method = &apos;PUT&apos;,  request.url = &apos;ChargeItem&apos; &quot;UPDATE&quot;;
   service.Transaction where (service.Transaction = &apos;delete&apos;) -&gt;  entry.request as request,  request.method = &apos;DELETE&apos;,  request.url = &apos;ChargeItem&apos; &quot;DELETE&quot;;
-  service.SessionID as sessionID -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid&apos;,  extension.value = create(&apos;string&apos;) as value,  value.value = (sessionID.data) &quot;2-Sitzung-SessionID&quot;;
-  service.OrderID as orderID -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid&apos;,  extension.value = create(&apos;string&apos;) as value,  value.value = (orderID.data) &quot;3-Auftragsnummer-OrderID&quot;;
-  service.Form as form -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form&apos;,  extension.value = create(&apos;string&apos;) as value,  value.value = (form.data) &quot;7-Formularbezeichnung-Form&quot;;
-  service.ParameterV40 as parameterV40 -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40&apos; then ParameterV40ToExtension(parameterV40, extension) &quot;4-ParamterV40-ParameterV40&quot;;
+  service.SessionID as sessionID -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid&apos;,  extension.value = create(&apos;string&apos;) as value,  value.value = (%sessionID.data) &quot;R32SitzungSessionID&quot;;
+  service.OrderID as orderID -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid&apos;,  extension.value = create(&apos;string&apos;) as value,  value.value = (%orderID.data) &quot;R33AuftragsnummerOrderID&quot;;
+  service.OrderDate as orderDate -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderdate&apos;,  extension.value = create(&apos;dateTime&apos;) as value,  value.value = (%orderDate.data) &quot;R33AuftragsnummerOrderID&quot;;
+  service.Form as form -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form&apos;,  extension.value = create(&apos;string&apos;) as value,  value.value = (%form.data) &quot;R37FormularbezeichnungForm&quot;;
+  service.ParameterV40 as parameterV40 -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40&apos; then ParameterV40ToExtension(parameterV40, extension) &quot;R4ParamterV40ParameterV40&quot;;
   service -&gt; chargeItem.status = &apos;billable&apos; &quot;billable&quot;;
   service.RefItemNumber as refItemNumber then {
-    refItemNumber.data as data -&gt;  chargeItem.partOf = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;urn:uuid:&apos; + %data.lower()),  ref.type = &apos;ChargeItem&apos; &quot;12-Referenz-zu-Hauptleistung-RefItemNumber&quot;;
+    refItemNumber.data as data -&gt;  chargeItem.partOf = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;urn:uuid:&apos; + %data.lower()),  ref.type = &apos;ChargeItem&apos; &quot;R312ReferenzzuHauptleistungRefItemNumber&quot;;
   };
   service.ServiceItem as serviceItem then {
     serviceItem.data as data -&gt;  chargeItem.code = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = data then {
       service.ServiceType as serviceType then {
-        serviceType.data as data -&gt; coding.system = translate(data, &apos;#serviceMap&apos;, &apos;code&apos;) &quot;5-Katalog-ServiceType&quot;;
+        serviceType.data as data -&gt; coding.system = translate(data, &apos;#serviceMap&apos;, &apos;code&apos;) &quot;R35KatalogServiceType&quot;;
       } &quot;servicType&quot;;
-    } &quot;6-Tarifposition-ServiceItem&quot;;
-  } &quot;6-Tarifposition&quot;;
-  service.ServiceDate as serviceData -&gt;  chargeItem.occurrence = create(&apos;dateTime&apos;) as occurrence,  occurrence.value = (serviceData.data) &quot;1-Leistungsdatum-ServiceDate&quot;;
-  service.PersonV40 as personV40 -&gt; chargeItem.performer = create(&apos;BackboneElement&apos;) as performer then PersonV40ToPerformer(personV40, performer) &quot;15-PersonV40-PersonV40&quot;;
-  service.ProviderID as providerID -&gt;  chargeItem.performingOrganization = create(&apos;Reference&apos;) as reference,  reference.display = (providerID.data) &quot;9-Erbringende-Organization-ProviderID&quot;;
-  service.ReferrerID as referrerID -&gt;  chargeItem.costCenter = create(&apos;Reference&apos;) as reference,  reference.display = (referrerID.data) &quot;4-Auftraggebende-Kostenstelle-ReferrerID&quot;;
-  service.Quantity as quantity -&gt;  chargeItem.quantity = create(&apos;Quantity&apos;) as q,  q.value as value,  value.value = (quantity.data) &quot;13-Anzahl-Quantity&quot;;
-  service.EnteredBy as enteredBy -&gt;  chargeItem.enterer = create(&apos;Reference&apos;) as reference,  reference.display = (enteredBy.data) &quot;10-Erfasser-EnteredBy&quot;;
-  service.EnteredDateTime as enteredDateTime -&gt;  chargeItem.enteredDate = create(&apos;dateTime&apos;) as enteredDate,  enteredDate.value = (enteredDateTime.data) &quot;8-Erfassungsdatum-EnteredDateTime&quot;;
+    } &quot;R36TarifpositionServiceItem&quot;;
+  } &quot;R36Tarifposition&quot;;
+  service.ServiceDate as serviceData -&gt;  chargeItem.occurrence = create(&apos;dateTime&apos;) as occurrence,  occurrence.value = (%serviceData.data) &quot;R31LeistungsdatumServiceDate&quot;;
+  service.PersonV40 as personV40 -&gt; chargeItem.performer = create(&apos;BackboneElement&apos;) as performer then PersonV40ToPerformer(personV40, performer) &quot;R315PersonV40PersonV40&quot;;
+  service.ProviderID as providerID -&gt;  chargeItem.performingOrganization = create(&apos;Reference&apos;) as reference,  reference.display = (%providerID.data) &quot;R39ErbringendeOrganizationProviderID&quot;;
+  service.ReferrerID as referrerID -&gt;  chargeItem.costCenter = create(&apos;Reference&apos;) as reference,  reference.display = (%referrerID.data) &quot;R34AuftraggebendeKostenstelleReferrerID&quot;;
+  service.Quantity as quantity -&gt;  chargeItem.quantity = create(&apos;Quantity&apos;) as q,  q.value as value,  value.value = (%quantity.data) &quot;R313AnzahlQuantity&quot;;
+  service.EnteredBy as enteredBy -&gt;  chargeItem.enterer = create(&apos;Reference&apos;) as reference,  reference.display = (%enteredBy.data) &quot;R310ErfasserEnteredBy&quot;;
+  service.EnteredDateTime as enteredDateTime -&gt;  chargeItem.enteredDate = create(&apos;dateTime&apos;) as enteredDate,  enteredDate.value = (%enteredDateTime.data) &quot;R38ErfassungsdatumEnteredDateTime&quot;;
+  service.PatientContactID as patientContactID then {
+    patientContactID.data as data -&gt;  chargeItem.identifier = create(&apos;Identifier&apos;) as identifier,  identifier.value = data &quot;PatientContactID&quot;;
+  } &quot;patientContactID&quot;;
+  service.Costweight as costweight then {
+    costweight.data as data -&gt; chargeItem.factorOverride = data &quot;Costweight&quot;;
+  } &quot;costweight&quot;;
+  service.Procedure as proc -&gt;  chargeItem.contained = create(&apos;Procedure&apos;) as procedure,  procedure.id = uuid() as containedid,  chargeItem.service = create(&apos;Reference&apos;) as service,  service.reference = (&apos;#&apos; + %containedid) then ServiceProcedureToFhirProcedure(proc, procedure) &quot;ServiceProcedureToFhirProcedure&quot;;
 }
 
-group PersonV40ToPerformer(source personV40 : PersonV40, target performer : BackboneElement) {
-  personV40.PersonTyp as personTyp -&gt;  performer.function as cc,  cc.coding as coding,  coding.system as system,  system.value = &apos;http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp&apos;,  coding.code as code,  code.value = personTyp &quot;-PersonID-PersonID&quot;;
-  personV40.PersonID as personId -&gt;  performer.actor = create(&apos;Reference&apos;) as reference,  reference.display = (personId.data) &quot;-PersonID-PersonID&quot;;
+group ServiceProcedureToFhirProcedure(source proc : Proc, target procedure : Procedure) {
+  proc.Identifier as identifier -&gt;  procedure.identifier = create(&apos;Identifier&apos;) as identifier,  identifier.value = (%identifier.data) &quot;R314ProzedurIDIdentifier&quot;;
+  proc.Code as chopcode where (%proc.Category.data = &apos;CHOP_2023&apos;) -&gt;  procedure.code = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = (%chopcode.data),  coding.system = &apos;https://www.bfs.admin.ch/bfs/statistiche/catalog/chop2023&apos;,  coding.display = (%proc.Display.data) &quot;R316ProzedurcodeCode&quot;;
+  proc.PerformedDateTime as performedDateTime -&gt; procedure.performed = (%performedDateTime.data) &quot;R317DatumZeitPerformedDateTime&quot;;
+  proc.Laterality as laterality then {
+    laterality.data as v -&gt;  procedure.bodySite = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = translate(v, &apos;#laterality&apos;, &apos;code&apos;),  coding.system = &apos;http://snomed.info/sct&apos;,  coding.display = (%proc.LateralityDisplay.data) &quot;R318SeiteLaterality&quot;;
+  } &quot;laterality&quot;;
+  proc.Performer as performer then {
+    // TODO Perfomer.function
+    performer.Identifier as identifier then {
+      identifier.data as data -&gt;  procedure.performer as performer,  performer.actor as actor,  actor.identifier as identifier,  identifier.value = data &quot;identifier&quot;;
+    };
+  } &quot;performer&quot;;
+  proc -&gt;  procedure.subject = create(&apos;Reference&apos;) as ref,  ref.reference = &apos;#pat&apos; &quot;containedpatient&quot;;
+  proc -&gt; procedure.status = &apos;completed&apos; &quot;status&quot;;
+}
+
+group PersonV40ToPerformer(source personV40 : PersonV40, target performer) {
+  personV40.PersonTyp as personTyp -&gt;  performer.function as cc,  cc.coding as coding,  coding.system as system,  system.value = &apos;http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp&apos;,  coding.code as code,  code.value = personTyp &quot;R3152PersonIDPersonID&quot;;
+  personV40.PersonID as personId -&gt;  performer.actor = create(&apos;Reference&apos;) as reference,  reference.display = (%personId.data) &quot;R3152PersonIDPersonID&quot;;
 }
 
 group ParameterV40ToExtension(source parameterV40 : ParameterV40, target extension : Extension) {
@@ -135,42 +177,72 @@ group InnerExtensionParamValue(source src, target ext : Extension) {
 
 group ServiceToPatientName(source visit : Visit, target name : HumanName) {
   visit.PatientName as patientName then {
-    patientName.data as data -&gt; name.family = data &quot;Name-PatientName&quot;;
+    patientName.data as data -&gt; name.family = data &quot;R23PatientNamePatientName&quot;;
   } &quot;patientName&quot;;
   visit.PatientGivenName as patientGivenName then {
-    patientGivenName.data as data -&gt; name.given = data &quot;Vorname-PatientGivenName&quot;;
+    patientGivenName.data as data -&gt; name.given = data &quot;R24PatientVornamePatientGivenName&quot;;
   } &quot;patientGivenName&quot;;
 }
 
 group ServiceToPatient(source service : Service, source visit : Visit, target patient : Patient) {
   visit.PatientID as patientID then {
-    patientID.data as patId -&gt;  patient.identifier as identifier,  identifier.value as value,  value.value = patId,  identifier.system as idsystem,  idsystem.value = &apos;http://www.example.ch/patienteniddomain&apos;,  identifier.type as type,  type.coding as coding,  coding.system as system,  system.value = &apos;http://terminology.hl7.org/CodeSystem/v2-0203&apos;,  coding.code as code,  code.value = &apos;MR&apos; &quot;PID-PatientID&quot;;
+    patientID.data as patId -&gt;  patient.identifier as identifier,  identifier.value as value,  value.value = patId,  identifier.system as idsystem,  idsystem.value = &apos;http://www.example.ch/patienteniddomain&apos;,  identifier.type as type,  type.coding as coding,  coding.system as system,  system.value = &apos;http://terminology.hl7.org/CodeSystem/v2-0203&apos;,  coding.code as code,  code.value = &apos;MR&apos; &quot;R22PatientPIDPatientID&quot;;
   } &quot;patientID&quot;;
   // &lt;!-- 2.2 Patient.PID (PatientID) --&gt;
+  // &lt;identifier&gt;
+  // &lt;type&gt;
+  // &lt;coding&gt;
+  // &lt;system value=&quot;http://terminology.hl7.org/CodeSystem/v2-0203&quot; /&gt;
+  // &lt;code value=&quot;MR&quot; /&gt;
+  // &lt;display value=&quot;Medical record number&quot;/&gt;
+  // &lt;/coding&gt;
+  // &lt;/type&gt;
+  // ISSUE8: what do with system value
+  // &lt;system value=&quot;http://www.example.ch/patienteniddomain&quot;/&gt;
+  // &lt;value value=&quot;Patienten-ID&quot;/&gt;
+  // &lt;/identifier&gt;//
   visit where (visit.PatientName or visit.PatientGivenName) -&gt; patient.name as name then ServiceToPatientName(visit, name) &quot;ServiceToPatient&quot;;
   visit.PatientGender as gender then {
     gender.data as v -&gt; patient.gender = translate(v, &apos;#gender&apos;, &apos;code&apos;) &quot;gender&quot;;
-  } &quot;Geschlecht-PatientGender&quot;;
+  } &quot;R26PatientGeschlechtPatientGender&quot;;
   visit.PatientBirthDate as birthDate then {
     birthDate.data as v -&gt; patient.birthDate = v &quot;birthDate&quot;;
-  } &quot;GebDatum-PatientBirthDate&quot;;
+  } &quot;R25PatientGebDatumPatientBirthDate&quot;;
+}
+
+group DiagnosisToCondition(source diagnosis : Diagnosis, target cond : Condition) {
+  diagnosis -&gt;  cond.subject = create(&apos;Reference&apos;) as ref,  ref.reference = &apos;#pat&apos; &quot;containedpatient&quot;;
+  // * Identifier 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text &quot;TODO&quot;
+  diagnosis.Identifier as identifier then {
+    identifier.data as data -&gt;  cond.identifier as identifier,  identifier.value = data &quot;identifier&quot;;
+  };
+  diagnosis.Code as code -&gt;  cond.code = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = (%code.data),  coding.display = (%diagnosis.Display.data) then {
+    diagnosis.Category as category then {
+      category.data as data where (startsWith(&apos;ICD&apos;)) -&gt; coding.system = &apos;http://hl7.org/fhir/sid/icd-10&apos;;
+    } &quot;serviceType&quot;;
+  } &quot;R316ProzedurcodeCode&quot;;
+  // TODO system is not yet correct
+  diagnosis.OnsetDateTime as onsetDateTime -&gt; cond.onset = (%onsetDateTime.data) &quot;onsetDateTime&quot;;
+  diagnosis.Laterality as laterality then {
+    laterality.data as v -&gt;  cond.bodySite = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = translate(v, &apos;#laterality&apos;, &apos;code&apos;),  coding.system = &apos;http://snomed.info/sct&apos;,  coding.display = (%diagnosis.LateralityDisplay.data) &quot;R318SeiteLaterality&quot;;
+  } &quot;laterality&quot;;
 }
 
 group DiagGroupToCondition(source diagGroup : DiagGroup, target cond : Condition) {
   diagGroup -&gt;  cond.subject = create(&apos;Reference&apos;) as ref,  ref.reference = &apos;#pat&apos; &quot;containedpatient&quot;;
   diagGroup.DiagCode as data -&gt;  cond.code = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = data then {
     diagGroup.DiagCatType as diagCatType then {
-      diagCatType.data as data -&gt; coding.system = translate(data, &apos;#serviceMap&apos;, &apos;code&apos;) &quot;3-Katalogtyp-DiagCatType&quot;;
+      diagCatType.data as data -&gt; coding.system = translate(data, &apos;#serviceMap&apos;, &apos;code&apos;) &quot;R293KatalogtypDiagCatType&quot;;
     } &quot;serviceType&quot;;
-  } &quot;1-Diagnosecode-DiagCode&quot;;
+  } &quot;R291DiagnosecodeDiagCode&quot;;
 }
 
 group TerminationToExtension(source visit : Visit, target ext : Extension) {
   visit.TerminationVisit as visit then {
-    visit.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;TerminationVisit&apos;,  ext1.value = create(&apos;date&apos;) as date,  date.value = data &quot;7-Fall-Abschluss-TerminationVisit&quot;;
+    visit.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;TerminationVisit&apos;,  ext1.value = create(&apos;date&apos;) as date,  date.value = data &quot;R27FallAbschlussTerminationVisit&quot;;
   };
   visit.TerminationReason as visit then {
-    visit.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;TerminationReason&apos;,  ext1.value = create(&apos;string&apos;) as string,  string.value = data &quot;8-Fall-Abschlussgrund-TerminationReason&quot;;
+    visit.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;TerminationReason&apos;,  ext1.value = create(&apos;string&apos;) as string,  string.value = data &quot;R28FallAbschlussgrundTerminationReason&quot;;
   } &quot;TerminationVisit&quot;;
 }
 
@@ -178,14 +250,14 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
   visit where (visit.TerminationVisit or visit.TerminationReason) -&gt;  encounter.extension as ext,  ext.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination&apos; then TerminationToExtension(visit, ext) &quot;TerminationToExtension&quot;;
   visit.VisitNumber as visitNumber then {
     // ISSUE8: what to do with falldomain? &lt;system value=&quot;http://www.example.ch/fallnummerdomain&quot;/&gt;
-    visitNumber.data as data -&gt;  encounter.identifier = create(&apos;Identifier&apos;) as identifier,  identifier.value as value,  value.value = data,  identifier.system as idsystem,  idsystem.value = &apos;http://www.example.ch/fallnummerdomain&apos;,  identifier.type as type,  type.coding as coding,  coding.system as system,  system.value = &apos;http://terminology.hl7.org/CodeSystem/v2-0203&apos;,  coding.code as code,  code.value = &apos;VN&apos; &quot;1-Fall-VisitNumber&quot;;
+    visitNumber.data as data -&gt;  encounter.identifier = create(&apos;Identifier&apos;) as identifier,  identifier.value as value,  value.value = data,  identifier.system as idsystem,  idsystem.value = &apos;http://www.example.ch/fallnummerdomain&apos;,  identifier.type as type,  type.coding as coding,  coding.system as system,  system.value = &apos;http://terminology.hl7.org/CodeSystem/v2-0203&apos;,  coding.code as code,  code.value = &apos;VN&apos; &quot;R21FallVisitNumber&quot;;
   } &quot;encounterID&quot;;
   visit -&gt; encounter.status = &apos;finished&apos; &quot;Finished&quot;;
-  visit -&gt;  encounter.class as coding,  coding.system as system,  system.value = &apos;http://terminology.hl7.org/CodeSystem/v3-ActCode&apos;,  coding.code as code,  code.value = &apos;IMP&apos;,  coding.display as display,  display.value = &apos;inpatient encounter&apos; &quot;1-Fall-VisitNumber&quot;;
+  visit -&gt;  encounter.class as coding,  coding.system as system,  system.value = &apos;http://terminology.hl7.org/CodeSystem/v3-ActCode&apos;,  coding.code as code,  code.value = &apos;IMP&apos;,  coding.display as display,  display.value = &apos;inpatient encounter&apos; &quot;R21FallVisitNumber&quot;;
   visit -&gt;  encounter.subject = create(&apos;Reference&apos;) as ref,  ref.reference = &apos;#pat&apos; &quot;subject&quot;;
   visit.DiagGroup as diaggroup -&gt;  encounter.diagnosis as diag,  diag.condition = create(&apos;Reference&apos;) as ref,  ref.reference = &apos;#cond&apos; then {
-    diaggroup.DiagType as diagType -&gt;  diag.use as use,  use.text = (%diagType.data) &quot;2-Diagnosetyp-DiagType&quot;;
-  } &quot;9-DiagnoseGruppe-DiagGroup&quot;;
+    diaggroup.DiagType as diagType -&gt;  diag.use as use,  use.text = (%diagType.data) &quot;R292DiagnosetypDiagType&quot;;
+  } &quot;R29DiagnoseGruppeDiagGroup&quot;;
 }
 
 </pre>
@@ -239,8 +311,40 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </group>
       </ConceptMap>
    </contained>
+   <contained>
+      <ConceptMap xmlns="http://hl7.org/fhir">
+         <id value="laterality"/>
+         <status value="draft"/>
+         <group>
+            <source value="http://fhir.ch/ig/ch-alis"/>
+            <target value="http://snomed.info/sct"/>
+            <element>
+               <code value="l"/>
+               <target>
+                  <code value="7771000"/>
+                  <equivalence value="equivalent"/>
+               </target>
+            </element>
+            <element>
+               <code value="r"/>
+               <target>
+                  <code value="24028007"/>
+                  <equivalence value="equivalent"/>
+               </target>
+            </element>
+            <element>
+               <code value="b"/>
+               <target>
+                  <code value="51440002"/>
+                  <equivalence value="equivalent"/>
+               </target>
+            </element>
+         </group>
+      </ConceptMap>
+   </contained>
    <url value="http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle"/>
    <name value="Alis43ToBundle"/>
+   <status value="draft"/>
    <description value="Convert ALIS43 XML to a Bundle according to the CH ALIS implmementation guide,&#xd;&#xa;2020-12-03 by Oliver Egger, copyright ahdis ag, Apache License,&#xd;&#xa;FHIR: http://hl7.org/fhir/r4/.&#xd;&#xa;ISSUE7: what are the URL's oid's we have to define."/>
    <structure>
       <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Header"/>
@@ -271,6 +375,16 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
       <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup"/>
       <mode value="source"/>
       <alias value="DiagGroup"/>
+   </structure>
+   <structure>
+      <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/LeistungsschnittstelleProcedure"/>
+      <mode value="source"/>
+      <alias value="Proc"/>
+   </structure>
+   <structure>
+      <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Diagnosis"/>
+      <mode value="source"/>
+      <alias value="Diagnosis"/>
    </structure>
    <structure>
       <url value="http://hl7.org/fhir/StructureDefinition/Bundle"/>
@@ -311,6 +425,11 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
       <url value="http://hl7.org/fhir/StructureDefinition/Encounter"/>
       <mode value="target"/>
       <alias value="Encounter"/>
+   </structure>
+   <structure>
+      <url value="http://hl7.org/fhir/StructureDefinition/Procedure"/>
+      <mode value="target"/>
+      <alias value="Procedure"/>
    </structure>
    <group>
       <name value="Alis43ToBundle"/>
@@ -553,7 +672,6 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
                <valueString value="http://fhir.ch/ig/ch-alis-43"/>
             </parameter>
          </target>
-         <documentation value="ISSUE1: should be link to a MessageDefinition or a code?"/>
       </rule>
       <rule>
          <name value="source"/>
@@ -597,9 +715,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
                   <valueString value="'urn:' + %header.SendingApplication.data + ':' + %header.SendingFacility.data + ':' + %header.SendingServiceCode.data"/>
                </parameter>
             </target>
-            <documentation value="ISSUE3: &quot; : &quot;urn:SendingApplication:SendingFacility:SendingServiceCode&quot; -> add urn: in example/docu"/>
          </rule>
-         <documentation value="ISSUE2: MessageControlID cannot be id of entry, needs to be either fullUrl oder uuid, need to map this to an identifier"/>
       </rule>
       <rule>
          <name value="destination"/>
@@ -626,7 +742,6 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
                   <valueString value="'urn:' + %header.ReceivingApplication.data + ':' + %header.ReceivingFacility.data + ':' + %header.ReceivingServiceCode.data"/>
                </parameter>
             </target>
-            <documentation value="ISSUE4: &quot; : &quot;urn:ReceivingApplication, ReceivingFacility, ReceivingServiceCode&quot; -> add urn: in example/docu"/>
          </rule>
       </rule>
    </group>
@@ -721,7 +836,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          <mode value="target"/>
       </input>
       <rule>
-         <name value="3.11-Laufnummer-ItemNumber"/>
+         <name value="R311LaufnummerItemNumber"/>
          <source>
             <context value="service"/>
             <element value="ItemNumber"/>
@@ -734,7 +849,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <variable value="uuid"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="itemNumber.data.lower()"/>
+               <valueString value="%itemNumber.data.lower()"/>
             </parameter>
          </target>
          <target>
@@ -802,7 +917,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </dependent>
       </rule>
       <rule>
-         <name value="VisitToEncounter"/>
+         <name value="encounter"/>
          <source>
             <context value="visit"/>
          </source>
@@ -845,11 +960,72 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
                <valueString value="'#' + %containedid"/>
             </parameter>
          </target>
-         <dependent>
+         <rule>
             <name value="VisitToEncounter"/>
-            <variable value="visit"/>
-            <variable value="encounter"/>
-         </dependent>
+            <source>
+               <context value="visit"/>
+            </source>
+            <dependent>
+               <name value="VisitToEncounter"/>
+               <variable value="visit"/>
+               <variable value="encounter"/>
+            </dependent>
+         </rule>
+         <rule>
+            <name value="DiagnosisToCondition"/>
+            <source>
+               <context value="service"/>
+               <element value="Diagnosis"/>
+               <variable value="diag"/>
+            </source>
+            <target>
+               <context value="chargeItem"/>
+               <contextType value="variable"/>
+               <element value="contained"/>
+               <variable value="condition"/>
+               <transform value="create"/>
+               <parameter>
+                  <valueString value="Condition"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="condition"/>
+               <contextType value="variable"/>
+               <element value="id"/>
+               <variable value="containedid"/>
+               <transform value="uuid"/>
+            </target>
+            <target>
+               <context value="encounter"/>
+               <contextType value="variable"/>
+               <element value="diagnosis"/>
+               <variable value="diag"/>
+            </target>
+            <target>
+               <context value="diag"/>
+               <contextType value="variable"/>
+               <element value="condition"/>
+               <variable value="ref"/>
+               <transform value="create"/>
+               <parameter>
+                  <valueString value="Reference"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="ref"/>
+               <contextType value="variable"/>
+               <element value="reference"/>
+               <transform value="evaluate"/>
+               <parameter>
+                  <valueString value="'#' + %containedid"/>
+               </parameter>
+            </target>
+            <dependent>
+               <name value="DiagnosisToCondition"/>
+               <variable value="diag"/>
+               <variable value="condition"/>
+            </dependent>
+         </rule>
       </rule>
       <rule>
          <name value="DiagGroupToCondition"/>
@@ -1012,7 +1188,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </target>
       </rule>
       <rule>
-         <name value="3.2-Sitzung-SessionID"/>
+         <name value="R32SitzungSessionID"/>
          <source>
             <context value="service"/>
             <element value="SessionID"/>
@@ -1049,12 +1225,12 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="value"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="sessionID.data"/>
+               <valueString value="%sessionID.data"/>
             </parameter>
          </target>
       </rule>
       <rule>
-         <name value="3.3-Auftragsnummer-OrderID"/>
+         <name value="R33AuftragsnummerOrderID"/>
          <source>
             <context value="service"/>
             <element value="OrderID"/>
@@ -1091,12 +1267,54 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="value"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="orderID.data"/>
+               <valueString value="%orderID.data"/>
             </parameter>
          </target>
       </rule>
       <rule>
-         <name value="3.7-Formularbezeichnung-Form"/>
+         <name value="R33AuftragsnummerOrderID"/>
+         <source>
+            <context value="service"/>
+            <element value="OrderDate"/>
+            <variable value="orderDate"/>
+         </source>
+         <target>
+            <context value="chargeItem"/>
+            <contextType value="variable"/>
+            <element value="extension"/>
+            <variable value="extension"/>
+         </target>
+         <target>
+            <context value="extension"/>
+            <contextType value="variable"/>
+            <element value="url"/>
+            <transform value="copy"/>
+            <parameter>
+               <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderdate"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="extension"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <variable value="value"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="dateTime"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="evaluate"/>
+            <parameter>
+               <valueString value="%orderDate.data"/>
+            </parameter>
+         </target>
+      </rule>
+      <rule>
+         <name value="R37FormularbezeichnungForm"/>
          <source>
             <context value="service"/>
             <element value="Form"/>
@@ -1133,12 +1351,12 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="value"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="form.data"/>
+               <valueString value="%form.data"/>
             </parameter>
          </target>
       </rule>
       <rule>
-         <name value="4-ParamterV40-ParameterV40"/>
+         <name value="R4ParamterV40ParameterV40"/>
          <source>
             <context value="service"/>
             <element value="ParameterV40"/>
@@ -1188,7 +1406,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <variable value="refItemNumber"/>
          </source>
          <rule>
-            <name value="3.12-Referenz-zu-Hauptleistung-RefItemNumber"/>
+            <name value="R312ReferenzzuHauptleistungRefItemNumber"/>
             <source>
                <context value="refItemNumber"/>
                <element value="data"/>
@@ -1225,14 +1443,14 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </rule>
       </rule>
       <rule>
-         <name value="3.6-Tarifposition"/>
+         <name value="R36Tarifposition"/>
          <source>
             <context value="service"/>
             <element value="ServiceItem"/>
             <variable value="serviceItem"/>
          </source>
          <rule>
-            <name value="3.6-Tarifposition-ServiceItem"/>
+            <name value="R36TarifpositionServiceItem"/>
             <source>
                <context value="serviceItem"/>
                <element value="data"/>
@@ -1275,7 +1493,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
                   <variable value="serviceType"/>
                </source>
                <rule>
-                  <name value="3.5-Katalog-ServiceType"/>
+                  <name value="R35KatalogServiceType"/>
                   <source>
                      <context value="serviceType"/>
                      <element value="data"/>
@@ -1301,7 +1519,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </rule>
       </rule>
       <rule>
-         <name value="3.1-Leistungsdatum-ServiceDate"/>
+         <name value="R31LeistungsdatumServiceDate"/>
          <source>
             <context value="service"/>
             <element value="ServiceDate"/>
@@ -1323,12 +1541,12 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="value"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="serviceData.data"/>
+               <valueString value="%serviceData.data"/>
             </parameter>
          </target>
       </rule>
       <rule>
-         <name value="3.15-PersonV40-PersonV40"/>
+         <name value="R315PersonV40PersonV40"/>
          <source>
             <context value="service"/>
             <element value="PersonV40"/>
@@ -1351,7 +1569,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </dependent>
       </rule>
       <rule>
-         <name value="3.9-Erbringende-Organization-ProviderID"/>
+         <name value="R39ErbringendeOrganizationProviderID"/>
          <source>
             <context value="service"/>
             <element value="ProviderID"/>
@@ -1373,12 +1591,12 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="display"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="providerID.data"/>
+               <valueString value="%providerID.data"/>
             </parameter>
          </target>
       </rule>
       <rule>
-         <name value="3.4-Auftraggebende-Kostenstelle-ReferrerID"/>
+         <name value="R34AuftraggebendeKostenstelleReferrerID"/>
          <source>
             <context value="service"/>
             <element value="ReferrerID"/>
@@ -1400,12 +1618,12 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="display"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="referrerID.data"/>
+               <valueString value="%referrerID.data"/>
             </parameter>
          </target>
       </rule>
       <rule>
-         <name value="3.13-Anzahl-Quantity"/>
+         <name value="R313AnzahlQuantity"/>
          <source>
             <context value="service"/>
             <element value="Quantity"/>
@@ -1433,12 +1651,12 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="value"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="quantity.data"/>
+               <valueString value="%quantity.data"/>
             </parameter>
          </target>
       </rule>
       <rule>
-         <name value="3.10-Erfasser-EnteredBy"/>
+         <name value="R310ErfasserEnteredBy"/>
          <source>
             <context value="service"/>
             <element value="EnteredBy"/>
@@ -1460,12 +1678,12 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="display"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="enteredBy.data"/>
+               <valueString value="%enteredBy.data"/>
             </parameter>
          </target>
       </rule>
       <rule>
-         <name value="3.8-Erfassungsdatum-EnteredDateTime"/>
+         <name value="R38ErfassungsdatumEnteredDateTime"/>
          <source>
             <context value="service"/>
             <element value="EnteredDateTime"/>
@@ -1487,7 +1705,390 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="value"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="enteredDateTime.data"/>
+               <valueString value="%enteredDateTime.data"/>
+            </parameter>
+         </target>
+      </rule>
+      <rule>
+         <name value="patientContactID"/>
+         <source>
+            <context value="service"/>
+            <element value="PatientContactID"/>
+            <variable value="patientContactID"/>
+         </source>
+         <rule>
+            <name value="PatientContactID"/>
+            <source>
+               <context value="patientContactID"/>
+               <element value="data"/>
+               <variable value="data"/>
+            </source>
+            <target>
+               <context value="chargeItem"/>
+               <contextType value="variable"/>
+               <element value="identifier"/>
+               <variable value="identifier"/>
+               <transform value="create"/>
+               <parameter>
+                  <valueString value="Identifier"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="identifier"/>
+               <contextType value="variable"/>
+               <element value="value"/>
+               <transform value="copy"/>
+               <parameter>
+                  <valueId value="data"/>
+               </parameter>
+            </target>
+         </rule>
+      </rule>
+      <rule>
+         <name value="costweight"/>
+         <source>
+            <context value="service"/>
+            <element value="Costweight"/>
+            <variable value="costweight"/>
+         </source>
+         <rule>
+            <name value="Costweight"/>
+            <source>
+               <context value="costweight"/>
+               <element value="data"/>
+               <variable value="data"/>
+            </source>
+            <target>
+               <context value="chargeItem"/>
+               <contextType value="variable"/>
+               <element value="factorOverride"/>
+               <transform value="copy"/>
+               <parameter>
+                  <valueId value="data"/>
+               </parameter>
+            </target>
+         </rule>
+      </rule>
+      <rule>
+         <name value="ServiceProcedureToFhirProcedure"/>
+         <source>
+            <context value="service"/>
+            <element value="Procedure"/>
+            <variable value="proc"/>
+         </source>
+         <target>
+            <context value="chargeItem"/>
+            <contextType value="variable"/>
+            <element value="contained"/>
+            <variable value="procedure"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="Procedure"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="procedure"/>
+            <contextType value="variable"/>
+            <element value="id"/>
+            <variable value="containedid"/>
+            <transform value="uuid"/>
+         </target>
+         <target>
+            <context value="chargeItem"/>
+            <contextType value="variable"/>
+            <element value="service"/>
+            <variable value="service"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="Reference"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="service"/>
+            <contextType value="variable"/>
+            <element value="reference"/>
+            <transform value="evaluate"/>
+            <parameter>
+               <valueString value="'#' + %containedid"/>
+            </parameter>
+         </target>
+         <dependent>
+            <name value="ServiceProcedureToFhirProcedure"/>
+            <variable value="proc"/>
+            <variable value="procedure"/>
+         </dependent>
+      </rule>
+   </group>
+   <group>
+      <name value="ServiceProcedureToFhirProcedure"/>
+      <typeMode value="none"/>
+      <input>
+         <name value="proc"/>
+         <type value="Proc"/>
+         <mode value="source"/>
+      </input>
+      <input>
+         <name value="procedure"/>
+         <type value="Procedure"/>
+         <mode value="target"/>
+      </input>
+      <rule>
+         <name value="R314ProzedurIDIdentifier"/>
+         <source>
+            <context value="proc"/>
+            <element value="Identifier"/>
+            <variable value="identifier"/>
+         </source>
+         <target>
+            <context value="procedure"/>
+            <contextType value="variable"/>
+            <element value="identifier"/>
+            <variable value="identifier"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="Identifier"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="identifier"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="evaluate"/>
+            <parameter>
+               <valueString value="%identifier.data"/>
+            </parameter>
+         </target>
+      </rule>
+      <rule>
+         <name value="R316ProzedurcodeCode"/>
+         <source>
+            <context value="proc"/>
+            <element value="Code"/>
+            <variable value="chopcode"/>
+            <condition value="(%proc.Category.data = 'CHOP_2023')"/>
+         </source>
+         <target>
+            <context value="procedure"/>
+            <contextType value="variable"/>
+            <element value="code"/>
+            <variable value="cc"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="CodeableConcept"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="cc"/>
+            <contextType value="variable"/>
+            <element value="coding"/>
+            <variable value="coding"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="Coding"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="coding"/>
+            <contextType value="variable"/>
+            <element value="code"/>
+            <transform value="evaluate"/>
+            <parameter>
+               <valueString value="%chopcode.data"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="coding"/>
+            <contextType value="variable"/>
+            <element value="system"/>
+            <transform value="copy"/>
+            <parameter>
+               <valueString value="https://www.bfs.admin.ch/bfs/statistiche/catalog/chop2023"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="coding"/>
+            <contextType value="variable"/>
+            <element value="display"/>
+            <transform value="evaluate"/>
+            <parameter>
+               <valueString value="%proc.Display.data"/>
+            </parameter>
+         </target>
+      </rule>
+      <rule>
+         <name value="R317DatumZeitPerformedDateTime"/>
+         <source>
+            <context value="proc"/>
+            <element value="PerformedDateTime"/>
+            <variable value="performedDateTime"/>
+         </source>
+         <target>
+            <context value="procedure"/>
+            <contextType value="variable"/>
+            <element value="performed"/>
+            <transform value="evaluate"/>
+            <parameter>
+               <valueString value="%performedDateTime.data"/>
+            </parameter>
+         </target>
+      </rule>
+      <rule>
+         <name value="laterality"/>
+         <source>
+            <context value="proc"/>
+            <element value="Laterality"/>
+            <variable value="laterality"/>
+         </source>
+         <rule>
+            <name value="R318SeiteLaterality"/>
+            <source>
+               <context value="laterality"/>
+               <element value="data"/>
+               <variable value="v"/>
+            </source>
+            <target>
+               <context value="procedure"/>
+               <contextType value="variable"/>
+               <element value="bodySite"/>
+               <variable value="cc"/>
+               <transform value="create"/>
+               <parameter>
+                  <valueString value="CodeableConcept"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="cc"/>
+               <contextType value="variable"/>
+               <element value="coding"/>
+               <variable value="coding"/>
+               <transform value="create"/>
+               <parameter>
+                  <valueString value="Coding"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="coding"/>
+               <contextType value="variable"/>
+               <element value="code"/>
+               <transform value="translate"/>
+               <parameter>
+                  <valueId value="v"/>
+               </parameter>
+               <parameter>
+                  <valueString value="#laterality"/>
+               </parameter>
+               <parameter>
+                  <valueString value="code"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="coding"/>
+               <contextType value="variable"/>
+               <element value="system"/>
+               <transform value="copy"/>
+               <parameter>
+                  <valueString value="http://snomed.info/sct"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="coding"/>
+               <contextType value="variable"/>
+               <element value="display"/>
+               <transform value="evaluate"/>
+               <parameter>
+                  <valueString value="%proc.LateralityDisplay.data"/>
+               </parameter>
+            </target>
+         </rule>
+      </rule>
+      <rule>
+         <name value="performer"/>
+         <source>
+            <context value="proc"/>
+            <element value="Performer"/>
+            <variable value="performer"/>
+         </source>
+         <rule>
+            <name value="Identifier"/>
+            <source>
+               <context value="performer"/>
+               <element value="Identifier"/>
+               <variable value="identifier"/>
+            </source>
+            <rule>
+               <name value="identifier"/>
+               <source>
+                  <context value="identifier"/>
+                  <element value="data"/>
+                  <variable value="data"/>
+               </source>
+               <target>
+                  <context value="procedure"/>
+                  <contextType value="variable"/>
+                  <element value="performer"/>
+                  <variable value="performer"/>
+               </target>
+               <target>
+                  <context value="performer"/>
+                  <contextType value="variable"/>
+                  <element value="actor"/>
+                  <variable value="actor"/>
+               </target>
+               <target>
+                  <context value="actor"/>
+                  <contextType value="variable"/>
+                  <element value="identifier"/>
+                  <variable value="identifier"/>
+               </target>
+               <target>
+                  <context value="identifier"/>
+                  <contextType value="variable"/>
+                  <element value="value"/>
+                  <transform value="copy"/>
+                  <parameter>
+                     <valueId value="data"/>
+                  </parameter>
+               </target>
+            </rule>
+         </rule>
+      </rule>
+      <rule>
+         <name value="containedpatient"/>
+         <source>
+            <context value="proc"/>
+         </source>
+         <target>
+            <context value="procedure"/>
+            <contextType value="variable"/>
+            <element value="subject"/>
+            <variable value="ref"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="Reference"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="ref"/>
+            <contextType value="variable"/>
+            <element value="reference"/>
+            <transform value="copy"/>
+            <parameter>
+               <valueString value="#pat"/>
+            </parameter>
+         </target>
+      </rule>
+      <rule>
+         <name value="status"/>
+         <source>
+            <context value="proc"/>
+         </source>
+         <target>
+            <context value="procedure"/>
+            <contextType value="variable"/>
+            <element value="status"/>
+            <transform value="copy"/>
+            <parameter>
+               <valueString value="completed"/>
             </parameter>
          </target>
       </rule>
@@ -1502,11 +2103,10 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
       </input>
       <input>
          <name value="performer"/>
-         <type value="BackboneElement"/>
          <mode value="target"/>
       </input>
       <rule>
-         <name value="3.15.2.-PersonID-PersonID"/>
+         <name value="R3152PersonIDPersonID"/>
          <source>
             <context value="personV40"/>
             <element value="PersonTyp"/>
@@ -1556,7 +2156,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </target>
       </rule>
       <rule>
-         <name value="3.15.2.-PersonID-PersonID"/>
+         <name value="R3152PersonIDPersonID"/>
          <source>
             <context value="personV40"/>
             <element value="PersonID"/>
@@ -1578,7 +2178,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <element value="display"/>
             <transform value="evaluate"/>
             <parameter>
-               <valueString value="personId.data"/>
+               <valueString value="%personId.data"/>
             </parameter>
          </target>
       </rule>
@@ -1776,7 +2376,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <variable value="patientName"/>
          </source>
          <rule>
-            <name value="2.3-Patient.Name-PatientName"/>
+            <name value="R23PatientNamePatientName"/>
             <source>
                <context value="patientName"/>
                <element value="data"/>
@@ -1801,7 +2401,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <variable value="patientGivenName"/>
          </source>
          <rule>
-            <name value="2.4-Patient.Vorname-PatientGivenName"/>
+            <name value="R24PatientVornamePatientGivenName"/>
             <source>
                <context value="patientGivenName"/>
                <element value="data"/>
@@ -1845,7 +2445,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <variable value="patientID"/>
          </source>
          <rule>
-            <name value="2.2-Patient.PID-PatientID"/>
+            <name value="R22PatientPIDPatientID"/>
             <source>
                <context value="patientID"/>
                <element value="data"/>
@@ -1948,10 +2548,9 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <variable value="visit"/>
             <variable value="name"/>
          </dependent>
-         <documentation value="&lt;!-- 2.2 Patient.PID (PatientID) -->"/>
       </rule>
       <rule>
-         <name value="2.6-Patient.Geschlecht-PatientGender"/>
+         <name value="R26PatientGeschlechtPatientGender"/>
          <source>
             <context value="visit"/>
             <element value="PatientGender"/>
@@ -1982,7 +2581,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </rule>
       </rule>
       <rule>
-         <name value="2.5-Patient.GebDatum-PatientBirthDate"/>
+         <name value="R25PatientGebDatumPatientBirthDate"/>
          <source>
             <context value="visit"/>
             <element value="PatientBirthDate"/>
@@ -2002,6 +2601,234 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
                <transform value="copy"/>
                <parameter>
                   <valueId value="v"/>
+               </parameter>
+            </target>
+         </rule>
+      </rule>
+   </group>
+   <group>
+      <name value="DiagnosisToCondition"/>
+      <typeMode value="none"/>
+      <input>
+         <name value="diagnosis"/>
+         <type value="Diagnosis"/>
+         <mode value="source"/>
+      </input>
+      <input>
+         <name value="cond"/>
+         <type value="Condition"/>
+         <mode value="target"/>
+      </input>
+      <rule>
+         <name value="containedpatient"/>
+         <source>
+            <context value="diagnosis"/>
+         </source>
+         <target>
+            <context value="cond"/>
+            <contextType value="variable"/>
+            <element value="subject"/>
+            <variable value="ref"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="Reference"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="ref"/>
+            <contextType value="variable"/>
+            <element value="reference"/>
+            <transform value="copy"/>
+            <parameter>
+               <valueString value="#pat"/>
+            </parameter>
+         </target>
+      </rule>
+      <rule>
+         <name value="Identifier"/>
+         <source>
+            <context value="diagnosis"/>
+            <element value="Identifier"/>
+            <variable value="identifier"/>
+         </source>
+         <rule>
+            <name value="identifier"/>
+            <source>
+               <context value="identifier"/>
+               <element value="data"/>
+               <variable value="data"/>
+            </source>
+            <target>
+               <context value="cond"/>
+               <contextType value="variable"/>
+               <element value="identifier"/>
+               <variable value="identifier"/>
+            </target>
+            <target>
+               <context value="identifier"/>
+               <contextType value="variable"/>
+               <element value="value"/>
+               <transform value="copy"/>
+               <parameter>
+                  <valueId value="data"/>
+               </parameter>
+            </target>
+         </rule>
+      </rule>
+      <rule>
+         <name value="R316ProzedurcodeCode"/>
+         <source>
+            <context value="diagnosis"/>
+            <element value="Code"/>
+            <variable value="code"/>
+         </source>
+         <target>
+            <context value="cond"/>
+            <contextType value="variable"/>
+            <element value="code"/>
+            <variable value="cc"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="CodeableConcept"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="cc"/>
+            <contextType value="variable"/>
+            <element value="coding"/>
+            <variable value="coding"/>
+            <transform value="create"/>
+            <parameter>
+               <valueString value="Coding"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="coding"/>
+            <contextType value="variable"/>
+            <element value="code"/>
+            <transform value="evaluate"/>
+            <parameter>
+               <valueString value="%code.data"/>
+            </parameter>
+         </target>
+         <target>
+            <context value="coding"/>
+            <contextType value="variable"/>
+            <element value="display"/>
+            <transform value="evaluate"/>
+            <parameter>
+               <valueString value="%diagnosis.Display.data"/>
+            </parameter>
+         </target>
+         <rule>
+            <name value="serviceType"/>
+            <source>
+               <context value="diagnosis"/>
+               <element value="Category"/>
+               <variable value="category"/>
+            </source>
+            <rule>
+               <name value="data"/>
+               <source>
+                  <context value="category"/>
+                  <element value="data"/>
+                  <variable value="data"/>
+                  <condition value="(startsWith('ICD'))"/>
+               </source>
+               <target>
+                  <context value="coding"/>
+                  <contextType value="variable"/>
+                  <element value="system"/>
+                  <transform value="copy"/>
+                  <parameter>
+                     <valueString value="http://hl7.org/fhir/sid/icd-10"/>
+                  </parameter>
+               </target>
+            </rule>
+         </rule>
+      </rule>
+      <rule>
+         <name value="onsetDateTime"/>
+         <source>
+            <context value="diagnosis"/>
+            <element value="OnsetDateTime"/>
+            <variable value="onsetDateTime"/>
+         </source>
+         <target>
+            <context value="cond"/>
+            <contextType value="variable"/>
+            <element value="onset"/>
+            <transform value="evaluate"/>
+            <parameter>
+               <valueString value="%onsetDateTime.data"/>
+            </parameter>
+         </target>
+      </rule>
+      <rule>
+         <name value="laterality"/>
+         <source>
+            <context value="diagnosis"/>
+            <element value="Laterality"/>
+            <variable value="laterality"/>
+         </source>
+         <rule>
+            <name value="R318SeiteLaterality"/>
+            <source>
+               <context value="laterality"/>
+               <element value="data"/>
+               <variable value="v"/>
+            </source>
+            <target>
+               <context value="cond"/>
+               <contextType value="variable"/>
+               <element value="bodySite"/>
+               <variable value="cc"/>
+               <transform value="create"/>
+               <parameter>
+                  <valueString value="CodeableConcept"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="cc"/>
+               <contextType value="variable"/>
+               <element value="coding"/>
+               <variable value="coding"/>
+               <transform value="create"/>
+               <parameter>
+                  <valueString value="Coding"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="coding"/>
+               <contextType value="variable"/>
+               <element value="code"/>
+               <transform value="translate"/>
+               <parameter>
+                  <valueId value="v"/>
+               </parameter>
+               <parameter>
+                  <valueString value="#laterality"/>
+               </parameter>
+               <parameter>
+                  <valueString value="code"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="coding"/>
+               <contextType value="variable"/>
+               <element value="system"/>
+               <transform value="copy"/>
+               <parameter>
+                  <valueString value="http://snomed.info/sct"/>
+               </parameter>
+            </target>
+            <target>
+               <context value="coding"/>
+               <contextType value="variable"/>
+               <element value="display"/>
+               <transform value="evaluate"/>
+               <parameter>
+                  <valueString value="%diagnosis.LateralityDisplay.data"/>
                </parameter>
             </target>
          </rule>
@@ -2046,7 +2873,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </target>
       </rule>
       <rule>
-         <name value="2.9.1-Diagnosecode-DiagCode"/>
+         <name value="R291DiagnosecodeDiagCode"/>
          <source>
             <context value="diagGroup"/>
             <element value="DiagCode"/>
@@ -2089,7 +2916,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
                <variable value="diagCatType"/>
             </source>
             <rule>
-               <name value="2.9.3-Katalogtyp-DiagCatType"/>
+               <name value="R293KatalogtypDiagCatType"/>
                <source>
                   <context value="diagCatType"/>
                   <element value="data"/>
@@ -2135,7 +2962,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <variable value="visit"/>
          </source>
          <rule>
-            <name value="2.7-Fall-Abschluss-TerminationVisit"/>
+            <name value="R27FallAbschlussTerminationVisit"/>
             <source>
                <context value="visit"/>
                <element value="data"/>
@@ -2185,7 +3012,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <variable value="visit"/>
          </source>
          <rule>
-            <name value="2.8-Fall-Abschlussgrund-TerminationReason"/>
+            <name value="R28FallAbschlussgrundTerminationReason"/>
             <source>
                <context value="visit"/>
                <element value="data"/>
@@ -2276,7 +3103,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             <variable value="visitNumber"/>
          </source>
          <rule>
-            <name value="2.1-Fall-VisitNumber"/>
+            <name value="R21FallVisitNumber"/>
             <source>
                <context value="visitNumber"/>
                <element value="data"/>
@@ -2364,7 +3191,6 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
                   <valueString value="VN"/>
                </parameter>
             </target>
-            <documentation value="ISSUE8: what to do with falldomain? &lt;system value=&quot;http://www.example.ch/fallnummerdomain&quot;/>"/>
          </rule>
       </rule>
       <rule>
@@ -2383,7 +3209,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </target>
       </rule>
       <rule>
-         <name value="2.1-Fall-VisitNumber"/>
+         <name value="R21FallVisitNumber"/>
          <source>
             <context value="visit"/>
          </source>
@@ -2465,7 +3291,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
          </target>
       </rule>
       <rule>
-         <name value="2.9-DiagnoseGruppe-DiagGroup"/>
+         <name value="R29DiagnoseGruppeDiagGroup"/>
          <source>
             <context value="visit"/>
             <element value="DiagGroup"/>
@@ -2497,7 +3323,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
             </parameter>
          </target>
          <rule>
-            <name value="2.9.2-Diagnosetyp-DiagType"/>
+            <name value="R292DiagnosetypDiagType"/>
             <source>
                <context value="diaggroup"/>
                <element value="DiagType"/>
