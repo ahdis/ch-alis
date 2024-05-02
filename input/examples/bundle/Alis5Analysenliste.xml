@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Bundle xmlns="http://hl7.org/fhir">
+  <id value="Alis5Analysenliste" /><meta>
+    <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
+  </meta>
+  <type value="message"/>
+  <timestamp value="2024-04-05T10:06:44Z"/>
+  <entry>
+    <fullUrl value="urn:uuid:f040a2dc-b406-47e9-850c-f6c483bcea90"/>
+    <resource>
+      <MessageHeader>
+        <id value="f040a2dc-b406-47e9-850c-f6c483bcea90"/>
+        <eventUri value="http://fhir.ch/ig/ch-alis-43"/>
+        <destination>
+          <endpoint value="urn:TARDOCTest:1234:Radiologie"/>
+        </destination>
+        <source>
+          <version value="1.1.0"/>
+          <endpoint value="urn:ALIS:4321:4321"/>
+        </source>
+        <focus>
+          <reference value="urn:uuid:976d4689-64c7-4762-ba68-1928e2ad7d18"/>
+          <type value="Bundle"/>
+        </focus>
+      </MessageHeader>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="urn:uuid:976d4689-64c7-4762-ba68-1928e2ad7d18"/>
+    <resource>
+      <Bundle>
+        <id value="976d4689-64c7-4762-ba68-1928e2ad7d18"/>
+        <type value="transaction"/>
+        <entry>
+          <fullUrl value="urn:uuid:45678"/>
+          <resource>
+            <ChargeItem>
+              <id value="45678"/>
+              <contained>
+                <Patient>
+                  <id value="pat"/>
+                  <identifier>
+                    <type>
+                      <coding>
+                        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                        <code value="MR"/>
+                      </coding>
+                    </type>
+                    <system value="http://www.example.ch/patienteniddomain"/>
+                    <value value="102"/>
+                  </identifier>
+                  <name>
+                    <family value="Tester"/>
+                    <given value="Paul"/>
+                  </name>
+                  <gender value="male"/>
+                  <birthDate value="1982-03-22"/>
+                </Patient>
+              </contained>
+              <contained>
+                <Encounter>
+                  <id value="enc"/>
+                  <identifier>
+                    <type>
+                      <coding>
+                        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                        <code value="VN"/>
+                      </coding>
+                    </type>
+                    <system value="http://www.example.ch/fallnummerdomain"/>
+                    <value value="987654"/>
+                  </identifier>
+                  <status value="finished"/>
+                  <class>
+                    <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+                    <code value="IMP"/>
+                    <display value="inpatient encounter"/>
+                  </class>
+                  <subject>
+                    <reference value="#pat"/>
+                  </subject>
+                </Encounter>
+              </contained>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
+                <valueString value="1"/>
+              </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid">
+                <valueString value="20240405-1"/>
+              </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderdate">
+                <valueDateTime value="2024-04-04T10:00:00Z"/>
+              </extension>
+              <status value="billable"/>
+              <code>
+                <coding>
+                  <code value="1021.00"/>
+                </coding>
+              </code>
+              <subject>
+                <reference value="#pat"/>
+              </subject>
+              <context>
+                <reference value="#enc"/>
+              </context>
+              <occurrenceDateTime value="2024-04-05T09:00:00Z"/>
+              <performingOrganization>
+                <display value="2300"/>
+              </performingOrganization>
+              <costCenter>
+                <display value="007"/>
+              </costCenter>
+              <quantity>
+                <value value="1"/>
+              </quantity>
+              <enterer>
+                <display value="7653253256988"/>
+              </enterer>
+              <enteredDate value="2024-04-05T10:05:36Z"/>
+            </ChargeItem>
+          </resource>
+          <request>
+            <method value="POST"/>
+            <url value="ChargeItem"/>
+          </request>
+        </entry>
+      </Bundle>
+    </resource>
+  </entry>
+</Bundle>

@@ -16,6 +16,10 @@ Description: "This logical model describes the Header of 'Leistungsschnittstelle
 * . ^definition = "1, HeaderInformation"
 * Version 0..1 decimal "Optional according to specification, and required according to XSD" "1, Header-Attribut Version"
 * Version ^representation = #xmlAttr
+* noNamespaceSchemaLocation 0..1 string "xsi"
+* noNamespaceSchemaLocation ^representation = #xmlAttr
+* noNamespaceSchemaLocation ^extension.url = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"
+* noNamespaceSchemaLocation ^extension.valueUri = "http://www.w3.org/2001/XMLSchema-instance"
 * ReceivingApplication 1..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "1.1, Empfänger, Alphanum. (30), Text, 3 stufig"
 * ReceivingFacility 1..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "1.2, MandantenNr, Alphanum. (10), Mandantennummer des. Empfängers, 3 stufig"
 * ReceivingServiceCode 1..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "1.3, Einrichtung, Alphanum. (30), Einrichtung des. Empfänger, 3 stufig"

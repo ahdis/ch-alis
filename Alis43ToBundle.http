@@ -1,9 +1,13 @@
-### @host = https://test.ahdis.ch/matchbox/fhir
-@host = http://localhost:8080/matchbox/fhir
+@host = https://test.ahdis.ch/matchbox/fhir
+### @host = http://localhost:8080/matchboxv3/fhir
 
 
 GET {{host}}/metadata HTTP/1.1
 Accept: application/fhir+xml
+
+### 1. POST Alis43ToBundle.map
+GET {{host}}/StructureMap HTTP/1.1
+Accept: application/fhir+xml;fhirVersion=4.0
 
 
 ### 1. POST Alis43ToBundle.map
@@ -11,26 +15,29 @@ POST {{host}}/StructureMap HTTP/1.1
 Accept: application/fhir+xml;fhirVersion=4.0
 Content-Type: text/fhir-mapping
 
-< ./input/maps/Alis43ToBundle.map
+< ./maps/Alis43ToBundle.map
 
-### 2. transform
+
+### ALIS 5.0
 POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle
 Accept: application/fhir+xml;fhirVersion=4.0
 Content-Type: application/fhir+xml;fhirVersion=4.0
 
-< ./input/images/AlisExampleComplete43.xml
+< ./input/resources/binary/Alis5AmbPauschalen-CHOP-ICD.xml
 
-
-### 2. transform
+### ALIS 5.0
 POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle
 Accept: application/fhir+xml;fhirVersion=4.0
 Content-Type: application/fhir+xml;fhirVersion=4.0
 
-< ./input/images/LsExpSample1.xml
+< ./input/resources/binary/Alis5AmbPauschalen-PauschaleKomplett.xml
 
-### 2. transform
+
+### ALIS 5.0
 POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle
 Accept: application/fhir+xml;fhirVersion=4.0
 Content-Type: application/fhir+xml;fhirVersion=4.0
 
-< ./input/images/LsExpSample2.xml
+< ./input/resources/binary/Alis5Analysenliste.xml
+
+

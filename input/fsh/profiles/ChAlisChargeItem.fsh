@@ -14,19 +14,22 @@ Description: "Base definition for the ChargeItem resource in the context of ALIS
 * . ^short = "CH ALIS ChargeItem"
 * id ^short = "ItemNumber"
 * contained 2..
-* contained ^short = "Contained Resources (Patient, Encounter, Condition)"
+* contained ^short = "Contained Resources (Patient, Encounter, Condition, Procedure)"
 * extension ^slicing.discriminator.type = #value
 * extension ^slicing.discriminator.path = "url"
 * extension ^slicing.rules = #open
 * extension contains
     ChAlisExtensionSessionId named SessionID 0..1 and
     ChAlisExtensionOrderId named OrderID 0..1 and
+    ChAlisExtensionOrderDate named OrderDate 0..1 and
     ChAlisExtensionForm named Form 0..1 and
     ChAlisExtensionParameterV40 named ParameterV40 0..*
 * extension[SessionID] ^short = "SessionID"
 * extension[OrderID] ^short = "OrderID"
+* extension[OrderDate] ^short = "OrderDate"
 * extension[Form] ^short = "Form"
 * extension[ParameterV40] ^short = "ParameterV40"
+* identifier ^short = "PatientContactID"
 * status ^short = "billable | not-billable"
 * partOf ..1
 * partOf only Reference(ChAlisChargeItem)
@@ -65,11 +68,16 @@ Description: "Base definition for the ChargeItem resource in the context of ALIS
 * quantity 1..
 * quantity.value 1..
 * quantity.value ^short = "Quantity"
+* factorOverride 0..1
+* factorOverride.value 1..
+* factorOverride.value ^short = "Costweight"
 * priceOverride.value 1..
 * priceOverride.value ^short = "ParameterV40: Amount"
 * enterer.display 1..
 * enterer.display ^short = "EnteredBy"
 * enteredDate ^short = "EnteredDateTime"
+* service only Reference(ChAlisProcedure) // ALIS 5.0
+* service ^type.aggregation = #contained
 * supportingInformation only Reference($bmi)
 * supportingInformation ^short = "ParameterV40: BMI"
 * supportingInformation ^type.aggregation = #contained

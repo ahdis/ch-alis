@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Bundle xmlns="http://hl7.org/fhir">
+  <id value="Alis5AmbPauschalen-CHOP-ICD" /><meta>
+    <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
+  </meta>
+  <type value="message"/>
+  <timestamp value="2024-04-05T10:06:44Z"/>
+  <entry>
+    <fullUrl value="urn:uuid:009a939b-8ef0-4488-b804-7a301c0b80ec"/>
+    <resource>
+      <MessageHeader>
+        <id value="009a939b-8ef0-4488-b804-7a301c0b80ec"/>
+        <eventUri value="http://fhir.ch/ig/ch-alis-43"/>
+        <destination>
+          <endpoint value="urn:TARDOCTest:1234:Radiologie"/>
+        </destination>
+        <source>
+          <version value="1.1.0"/>
+          <endpoint value="urn:ALIS:4321:4321"/>
+        </source>
+        <focus>
+          <reference value="urn:uuid:dcc72a03-c85d-4010-b8e9-12125cc59a8e"/>
+          <type value="Bundle"/>
+        </focus>
+      </MessageHeader>
+    </resource>
+  </entry>
+  <entry>
+    <fullUrl value="urn:uuid:dcc72a03-c85d-4010-b8e9-12125cc59a8e"/>
+    <resource>
+      <Bundle>
+        <id value="dcc72a03-c85d-4010-b8e9-12125cc59a8e"/>
+        <type value="transaction"/>
+        <entry>
+          <resource>
+            <ChargeItem>
+              <contained>
+                <Patient>
+                  <id value="pat"/>
+                  <identifier>
+                    <type>
+                      <coding>
+                        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                        <code value="MR"/>
+                      </coding>
+                    </type>
+                    <system value="http://www.example.ch/patienteniddomain"/>
+                    <value value="102"/>
+                  </identifier>
+                  <name>
+                    <family value="Tester"/>
+                    <given value="Paul"/>
+                  </name>
+                  <gender value="male"/>
+                  <birthDate value="1982-03-22"/>
+                </Patient>
+              </contained>
+              <contained>
+                <Encounter>
+                  <id value="enc"/>
+                  <identifier>
+                    <type>
+                      <coding>
+                        <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                        <code value="VN"/>
+                      </coding>
+                    </type>
+                    <system value="http://www.example.ch/fallnummerdomain"/>
+                    <value value="987654"/>
+                  </identifier>
+                  <status value="finished"/>
+                  <class>
+                    <system value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+                    <code value="IMP"/>
+                    <display value="inpatient encounter"/>
+                  </class>
+                  <subject>
+                    <reference value="#pat"/>
+                  </subject>
+                  <diagnosis>
+                    <condition>
+                      <reference value="#5cebad0d-5fc3-4420-8130-2f93a5c04def"/>
+                    </condition>
+                  </diagnosis>
+                </Encounter>
+              </contained>
+              <contained>
+                <Condition>
+                  <id value="5cebad0d-5fc3-4420-8130-2f93a5c04def"/>
+                  <identifier>
+                    <value value="DIAG1"/>
+                  </identifier>
+                  <code>
+                    <coding>
+                      <system value="http://hl7.org/fhir/sid/icd-10"/>
+                      <code value="B01.2"/>
+                      <display value="Varizellen-Pneumonie"/>
+                    </coding>
+                  </code>
+                  <bodySite>
+                    <coding>
+                      <system value="http://snomed.info/sct"/>
+                      <code value="7771000"/>
+                    </coding>
+                  </bodySite>
+                  <subject>
+                    <reference value="#pat"/>
+                  </subject>
+                  <onsetDateTime value="2024-04-01T17:06:50Z"/>
+                </Condition>
+              </contained>
+              <contained>
+                <Procedure>
+                  <id value="84b2ed9a-1dcd-4390-84f8-1bd640a5a00e"/>
+                  <identifier>
+                    <value value="PROC1"/>
+                  </identifier>
+                  <status value="completed"/>
+                  <code>
+                    <coding>
+                      <system value="https://www.bfs.admin.ch/bfs/statistiche/catalog/chop2023"/>
+                      <code value="87.41.99"/>
+                      <display value="Computertomographie des Thorax, sonstige"/>
+                    </coding>
+                  </code>
+                  <subject>
+                    <reference value="#pat"/>
+                  </subject>
+                  <performedDateTime value="2024-04-04T10:06:50Z"/>
+                  <performer>
+                    <function>
+                      <coding>
+                        <system value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp"/>
+                        <code value="ResponsiblePhysician"/>
+                      </coding>
+                    </function>
+                    <actor>
+                      <identifier>
+                        <value value="7653253256999"/>
+                      </identifier>
+                    </actor>
+                  </performer>
+                  <bodySite>
+                    <coding>
+                      <system value="http://snomed.info/sct"/>
+                      <code value="7771000"/>
+                    </coding>
+                  </bodySite>
+                </Procedure>
+              </contained>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
+                <valueString value="1"/>
+              </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid">
+                <valueString value="20240405-1"/>
+              </extension>
+              <identifier>
+                <value value="20230404-1"/>
+              </identifier>
+              <status value="billable"/>
+              <subject>
+                <reference value="#pat"/>
+              </subject>
+              <context>
+                <reference value="#enc"/>
+              </context>
+              <occurrenceDateTime value="2024-04-04T09:00:00Z"/>
+              <performingOrganization>
+                <display value="2400"/>
+              </performingOrganization>
+              <costCenter>
+                <display value="007"/>
+              </costCenter>
+              <enterer>
+                <display value="7653253256988"/>
+              </enterer>
+              <service>
+                <reference value="#84b2ed9a-1dcd-4390-84f8-1bd640a5a00e"/>
+              </service>
+            </ChargeItem>
+          </resource>
+          <request>
+            <method value="POST"/>
+            <url value="ChargeItem"/>
+          </request>
+        </entry>
+      </Bundle>
+    </resource>
+  </entry>
+</Bundle>

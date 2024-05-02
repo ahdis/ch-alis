@@ -22,6 +22,15 @@ conceptmap "gender" {
   s:"F" == t:"female" 
 }
 
+conceptmap "laterality" { 
+    prefix s = "http://fhir.ch/ig/ch-alis"
+    prefix t = "http://snomed.info/sct"
+  
+    s:"l" == t:"7771000" 
+    s:"r" == t:"24028007" 
+    s:"b" == t:"51440002" 
+  }
+
 
 uses "http://fhir.ch/ig/ch-alis/StructureDefinition/Header" alias Header as source
 uses "http://fhir.ch/ig/ch-alis/StructureDefinition/Visit" alias Visit as source
@@ -29,6 +38,8 @@ uses "http://fhir.ch/ig/ch-alis/StructureDefinition/Service" alias Service as so
 uses "http://fhir.ch/ig/ch-alis/StructureDefinition/PersonV40" alias PersonV40 as source
 uses "http://fhir.ch/ig/ch-alis/StructureDefinition/ParameterV40" alias ParameterV40 as source
 uses "http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup" alias DiagGroup as source
+uses "http://fhir.ch/ig/ch-alis/StructureDefinition/LeistungsschnittstelleProcedure" alias Proc as source
+uses "http://fhir.ch/ig/ch-alis/StructureDefinition/Diagnosis" alias Diagnosis as source
 
 uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as target
 uses "http://hl7.org/fhir/StructureDefinition/ChargeItem" alias ChargeItem as target
@@ -38,6 +49,7 @@ uses "http://hl7.org/fhir/StructureDefinition/BackboneElement" alias BackboneEle
 uses "http://hl7.org/fhir/StructureDefinition/HumanName" alias HumanName as target
 uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as target
 uses "http://hl7.org/fhir/StructureDefinition/Encounter" alias Encounter as target
+uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as target
 
 group Alis43ToBundle(source header : Header, target bundle : Bundle) {
   header ->  bundle.meta as meta,
@@ -90,7 +102,7 @@ group Alis43ToBundleTransaction(source header : Header, target transactionBundle
 
 
 group ServiceToChargeItem(source service : Service, source visit : Visit, target chargeItem : ChargeItem, target entry) {
-    service.ItemNumber as itemNumber -> chargeItem.id = (itemNumber.data.lower()) as uuid, entry.fullUrl = append('urn:uuid:',uuid) "3.11-Laufnummer-ItemNumber";
+    service.ItemNumber as itemNumber -> chargeItem.id = (%itemNumber.data.lower()) as uuid, entry.fullUrl = append('urn:uuid:',uuid) "R3-11-Laufnummer-ItemNumber";
 
     service -> chargeItem.contained = create('Patient') as patient, 
                                       patient.id = 'pat' as containedid, 
@@ -102,7 +114,10 @@ group ServiceToChargeItem(source service : Service, source visit : Visit, target
                                       encounter.id = 'enc' as containedid,
                                       chargeItem.context = create('Reference') as ref, 
                                       ref.reference = ('#'+%containedid)
-                                      then VisitToEncounter(visit, encounter) "VisitToEncounter";
+                                      then {
+                                        visit then VisitToEncounter(visit, encounter) "VisitToEncounter";
+                                        service.Diagnosis as diag -> chargeItem.contained = create('Condition') as condition,  condition.id = uuid() as containedid,  encounter.diagnosis as diag, diag.condition = create('Reference') as ref, ref.reference= ('#'+%containedid) then DiagnosisToCondition(diag, condition) "DiagnosisToCondition";
+                                      } "encounter";
 
     visit.DiagGroup as diaggroup-> chargeItem.contained = create('Condition') as cond,
                                       cond.id = 'cond' as containedid
@@ -113,44 +128,79 @@ group ServiceToChargeItem(source service : Service, source visit : Visit, target
     service.Transaction where (service.Transaction='update') -> entry.request as request, request.method = 'PUT', request.url = 'ChargeItem' "UPDATE"; 
     service.Transaction where (service.Transaction='delete') -> entry.request as request, request.method = 'DELETE', request.url = 'ChargeItem' "DELETE"; 
 
-    service.SessionID as sessionID -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid', extension.value = create('string') as value, value.value = (sessionID.data) "3.2-Sitzung-SessionID";
-    service.OrderID as orderID -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid', extension.value = create('string') as value, value.value = (orderID.data) "3.3-Auftragsnummer-OrderID";
-    service.Form as form -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form', extension.value = create('string') as value, value.value = (form.data) "3.7-Formularbezeichnung-Form";
-    service.ParameterV40 as parameterV40 -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40' then ParameterV40ToExtension(parameterV40, extension)  "4-ParamterV40-ParameterV40";
+    service.SessionID as sessionID -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid', extension.value = create('string') as value, value.value = (%sessionID.data) "R3-2-Sitzung-SessionID";
+    service.OrderID as orderID -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid', extension.value = create('string') as value, value.value = (%orderID.data) "R3-3-Auftragsnummer-OrderID";
+    service.OrderDate as orderDate -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderdate', extension.value = create('dateTime') as value, value.value = (%orderDate.data) "R3-3-Auftragsnummer-OrderID";
+
+    service.Form as form -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form', extension.value = create('string') as value, value.value = (%form.data) "R3-7-Formularbezeichnung-Form";
+    service.ParameterV40 as parameterV40 -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40' then ParameterV40ToExtension(parameterV40, extension)  "R4-ParamterV40-ParameterV40";
 
 
     service -> chargeItem.status = 'billable' "billable";
 
     service.RefItemNumber as refItemNumber then {
-        refItemNumber.data as data -> chargeItem.partOf = create('Reference') as ref, ref.reference = ('urn:uuid:'+%data.lower()), ref.type='ChargeItem' "3.12-Referenz-zu-Hauptleistung-RefItemNumber";
+        refItemNumber.data as data -> chargeItem.partOf = create('Reference') as ref, ref.reference = ('urn:uuid:'+%data.lower()), ref.type='ChargeItem' "R3-12-Referenz-zu-Hauptleistung-RefItemNumber";
     } "RefItemNumber";
 
     service.ServiceItem as serviceItem then {
          serviceItem.data as data -> chargeItem.code = create('CodeableConcept') as cc, 
           cc.coding = create('Coding') as coding, coding.code = data then {
             service.ServiceType as serviceType then {
-                serviceType.data as data -> coding.system = translate(data, '#serviceMap', 'code') "3.5-Katalog-ServiceType";
+                serviceType.data as data -> coding.system = translate(data, '#serviceMap', 'code') "R3-5-Katalog-ServiceType";
             } "servicType";
-          } "3.6-Tarifposition-ServiceItem";
-    } "3.6-Tarifposition";
+          } "R3-6-Tarifposition-ServiceItem";
+    } "R3-6-Tarifposition";
 
 
-    service.ServiceDate as serviceData -> chargeItem.occurrence = create('dateTime') as occurrence, occurrence.value = (serviceData.data) "3.1-Leistungsdatum-ServiceDate";
-    service.PersonV40 as personV40 -> chargeItem.performer = create('BackboneElement') as performer then PersonV40ToPerformer(personV40, performer) "3.15-PersonV40-PersonV40";
-    service.ProviderID as providerID -> chargeItem.performingOrganization = create('Reference') as reference, reference.display = (providerID.data) "3.9-Erbringende-Organization-ProviderID";
-    service.ReferrerID as referrerID -> chargeItem.costCenter = create('Reference') as reference, reference.display = (referrerID.data) "3.4-Auftraggebende-Kostenstelle-ReferrerID";
-    service.Quantity as quantity -> chargeItem.quantity = create('Quantity') as q, q.value as value, value.value = (quantity.data) "3.13-Anzahl-Quantity";
-    service.EnteredBy as enteredBy -> chargeItem.enterer = create('Reference') as reference, reference.display = (enteredBy.data) "3.10-Erfasser-EnteredBy";
-    service.EnteredDateTime as enteredDateTime -> chargeItem.enteredDate = create('dateTime') as enteredDate, enteredDate.value = (enteredDateTime.data) "3.8-Erfassungsdatum-EnteredDateTime";
+    service.ServiceDate as serviceData -> chargeItem.occurrence = create('dateTime') as occurrence, occurrence.value = (%serviceData.data) "R3-1-Leistungsdatum-ServiceDate";
+    service.PersonV40 as personV40 -> chargeItem.performer = create('BackboneElement') as performer then PersonV40ToPerformer(personV40, performer) "R3-15-PersonV40-PersonV40";
+    service.ProviderID as providerID -> chargeItem.performingOrganization = create('Reference') as reference, reference.display = (%providerID.data) "R3-9-Erbringende-Organization-ProviderID";
+    service.ReferrerID as referrerID -> chargeItem.costCenter = create('Reference') as reference, reference.display = (%referrerID.data) "R3-4-Auftraggebende-Kostenstelle-ReferrerID";
+    service.Quantity as quantity -> chargeItem.quantity = create('Quantity') as q, q.value as value, value.value = (%quantity.data) "R3-13-Anzahl-Quantity";
+    service.EnteredBy as enteredBy -> chargeItem.enterer = create('Reference') as reference, reference.display = (%enteredBy.data) "R3-10-Erfasser-EnteredBy";
+    service.EnteredDateTime as enteredDateTime -> chargeItem.enteredDate = create('dateTime') as enteredDate, enteredDate.value = (%enteredDateTime.data) "R3-8-Erfassungsdatum-EnteredDateTime";
+
+    service.PatientContactID as patientContactID then {
+        patientContactID.data as data -> chargeItem.identifier = create('Identifier') as identifier, identifier.value = data "PatientContactID";
+    } "patientContactID";
+    service.Costweight as costweight then {
+      costweight.data as data -> chargeItem.factorOverride = data "Costweight";
+    } "costweight";
+    service.Procedure as proc -> chargeItem.contained = create('Procedure') as procedure,  procedure.id = uuid() as containedid,  chargeItem.service = create('Reference') as service,  service.reference = ('#'+%containedid) then ServiceProcedureToFhirProcedure(proc, procedure) "ServiceProcedureToFhirProcedure";
 }
 
-group PersonV40ToPerformer(source personV40: PersonV40, target performer : BackboneElement) {
+group ServiceProcedureToFhirProcedure(source proc: Proc, target procedure : Procedure) {
+    proc.Identifier as identifier -> procedure.identifier = create('Identifier') as identifier, identifier.value = (%identifier.data) "R3-14-ProzedurID-Identifier";
+    proc.Code as chopcode where (%proc.Category.data = 'CHOP_2023') -> procedure.code = create('CodeableConcept') as cc, 
+        cc.coding = create('Coding') as coding, coding.code = (%chopcode.data), coding.system = 'https://www.bfs.admin.ch/bfs/statistiche/catalog/chop2023',
+        coding.display = (%proc.Display.data) "R3-16-Prozedurcode-Code";
+    proc.PerformedDateTime as performedDateTime -> procedure.performed = (%performedDateTime.data) "R3-17-Datum-Zeit-PerformedDateTime";
+    proc.Laterality as laterality then {
+        laterality.data as v -> procedure.bodySite = create('CodeableConcept') as cc, 
+            cc.coding = create('Coding') as coding, coding.code = translate(v, '#laterality', 'code') , coding.system = 'http://snomed.info/sct',
+            coding.display = (%proc.LateralityDisplay.data) "R3-18-Seite-Laterality";
+    } "laterality";
+    proc.Performer as procperformer -> procedure.performer as performer then {
+        procperformer.Function as personTyp -> performer.function as cc, cc.coding as coding,
+        coding.system as system,
+        system.value = 'http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp',
+        coding.code as code,
+        code.value = (%personTyp.data) "R3-15-2-ServiceProcedure";
+        procperformer.Identifier as identifier then {
+            identifier.data as data -> performer.actor as actor, actor.identifier as identifier, identifier.value = data "identifier";
+        } "Identifier";
+    } "procperformer";
+    proc -> procedure.subject = create('Reference') as ref, ref.reference = '#pat' "containedpatient";
+    proc -> procedure.status = 'completed' "status";
+}
+
+group PersonV40ToPerformer(source personV40: PersonV40, target performer) {
     personV40.PersonTyp as personTyp -> performer.function as cc, cc.coding as coding,
                                    coding.system as system,
                                    system.value = 'http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp',
                                    coding.code as code,
-                                   code.value = personTyp "3.15.2.-PersonID-PersonID";
-    personV40.PersonID as personId -> performer.actor = create('Reference') as reference, reference.display = (personId.data) "3.15.2.-PersonID-PersonID";
+                                   code.value = personTyp "R3-15-2-PersonID-PersonID";
+    personV40.PersonID as personId -> performer.actor = create('Reference') as reference, reference.display = (%personId.data) "R3-15-2-PersonID-PersonID";
 }
 
 group ParameterV40ToExtension(source parameterV40: ParameterV40, target extension: Extension ) {
@@ -205,10 +255,10 @@ group InnerExtensionParamValue(source src, target ext: Extension) {
 
 group ServiceToPatientName(source visit : Visit, target name : HumanName) {
     visit.PatientName as patientName then {
-        patientName.data as data -> name.family = data "2.3-Patient.Name-PatientName";
+        patientName.data as data -> name.family = data "R2-3-Patient-Name-PatientName";
     } "patientName";
     visit.PatientGivenName as patientGivenName then {
-        patientGivenName.data as data -> name.given = data "2.4-Patient.Vorname-PatientGivenName";
+        patientGivenName.data as data -> name.given = data "R2-4-Patient-Vorname-PatientGivenName";
     } "patientGivenName";
 }
 
@@ -224,9 +274,9 @@ group ServiceToPatient(source service : Service, source visit : Visit, target pa
                                    coding.system as system,
                                    system.value = 'http://terminology.hl7.org/CodeSystem/v2-0203',
                                    coding.code as code,
-                                   code.value = 'MR' "2.2-Patient.PID-PatientID";
+                                   code.value = 'MR' "R2-2-Patient-PID-PatientID";
                                    
-//                                   type.coding = cc('http://terminology.hl7.org/CodeSystem/v2-0203','MR') "2.2 Patient.PID (PatientID";
+//                                   type.coding = cc('http://terminology.hl7.org/CodeSystem/v2-0203','MR') "R2-2 Patient.PID (PatientID";
     } "patientID";
 //                                    <!-- 2.2 Patient.PID (PatientID) -->
 //                                    <identifier>
@@ -246,13 +296,38 @@ group ServiceToPatient(source service : Service, source visit : Visit, target pa
 
     visit.PatientGender as gender then {
       gender.data as v -> patient.gender = translate(v, '#gender', 'code') "gender";
-    } "2.6-Patient.Geschlecht-PatientGender";
+    } "R2-6-Patient-Geschlecht-PatientGender";
 
     visit.PatientBirthDate as birthDate then {
       birthDate.data as v -> patient.birthDate = v "birthDate";
-    } "2.5-Patient.GebDatum-PatientBirthDate";	
+    } "R2-5-Patient-GebDatum-PatientBirthDate";	
 }
 
+group DiagnosisToCondition(source diagnosis : Diagnosis, target cond : Condition) {
+    diagnosis -> cond.subject = create('Reference') as ref, ref.reference = '#pat' "containedpatient";
+    // * Identifier 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "TODO"
+    diagnosis.Identifier as identifier then {
+        identifier.data as data -> cond.identifier as identifier, identifier.value = data "identifier";
+    } "Identifier";
+
+    diagnosis.Code as code -> cond.code = create('CodeableConcept') as cc, 
+    cc.coding = create('Coding') as coding, coding.code = (%code.data), 
+    coding.display = (%diagnosis.Display.data) then {
+        diagnosis.Category as category then {
+            category.data as data where (startsWith('ICD')) -> coding.system = 'http://hl7.org/fhir/sid/icd-10';
+        } "serviceType";    
+    } "R3-16-Prozedurcode-Code";
+
+    // TODO system is not yet correct
+
+    diagnosis.OnsetDateTime as onsetDateTime -> cond.onset = (%onsetDateTime.data) "onsetDateTime";
+    diagnosis.Laterality as laterality then {
+    laterality.data as v -> cond.bodySite = create('CodeableConcept') as cc, 
+        cc.coding = create('Coding') as coding, coding.code = translate(v, '#laterality', 'code') , coding.system = 'http://snomed.info/sct',
+        coding.display = (%diagnosis.LateralityDisplay.data) "R3-18-Seite-Laterality";
+    } "laterality";
+
+}
 
 group DiagGroupToCondition(source diagGroup : DiagGroup, target cond : Condition) {
     diagGroup -> cond.subject = create('Reference') as ref, ref.reference = '#pat' "containedpatient";
@@ -260,9 +335,9 @@ group DiagGroupToCondition(source diagGroup : DiagGroup, target cond : Condition
     diagGroup.DiagCode as data -> cond.code = create('CodeableConcept') as cc, 
        cc.coding = create('Coding') as coding, coding.code = data then {
             diagGroup.DiagCatType as diagCatType then {
-                diagCatType.data as data -> coding.system = translate(data, '#serviceMap', 'code') "2.9.3-Katalogtyp-DiagCatType";
+                diagCatType.data as data -> coding.system = translate(data, '#serviceMap', 'code') "R2-9-3-Katalogtyp-DiagCatType";
             } "serviceType";
-       } "2.9.1-Diagnosecode-DiagCode";
+       } "R2-9-1-Diagnosecode-DiagCode";
 
 //                            <contained>
 //                                <Condition>
@@ -290,10 +365,10 @@ group DiagGroupToCondition(source diagGroup : DiagGroup, target cond : Condition
 
 group TerminationToExtension(source visit: Visit, target ext:Extension) {
     visit.TerminationVisit as visit then {
-       visit.data as data -> ext.extension as ext1, ext1.url='TerminationVisit', ext1.value = create('date') as date, date.value = data "2.7-Fall-Abschluss-TerminationVisit"; 
+       visit.data as data -> ext.extension as ext1, ext1.url='TerminationVisit', ext1.value = create('date') as date, date.value = data "R2-7-Fall-Abschluss-TerminationVisit"; 
     } "TerminationVisit";
     visit.TerminationReason as visit then {
-       visit.data as data -> ext.extension as ext1, ext1.url='TerminationReason', ext1.value = create('string') as string, string.value = data "2.8-Fall-Abschlussgrund-TerminationReason"; 
+       visit.data as data -> ext.extension as ext1, ext1.url='TerminationReason', ext1.value = create('string') as string, string.value = data "R2-8-Fall-Abschlussgrund-TerminationReason"; 
     } "TerminationVisit";
 }
 
@@ -311,7 +386,7 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
                                    coding.system as system,
                                    system.value = 'http://terminology.hl7.org/CodeSystem/v2-0203',
                                    coding.code as code,
-                                   code.value = 'VN' "2.1-Fall-VisitNumber";
+                                   code.value = 'VN' "R2-1-Fall-VisitNumber";
     } "encounterID";
 
     visit -> encounter.status = 'finished' "Finished";
@@ -320,10 +395,10 @@ group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
         coding.code as code,
         code.value = 'IMP',
         coding.display as display,
-        display.value = 'inpatient encounter'  "2.1-Fall-VisitNumber";
+        display.value = 'inpatient encounter'  "R2-1-Fall-VisitNumber";
 
     visit -> encounter.subject = create('Reference') as ref, ref.reference='#pat' "subject";
     visit.DiagGroup as diaggroup-> encounter.diagnosis as diag, diag.condition = create('Reference') as ref, ref.reference='#cond' then {
-        diaggroup.DiagType as diagType -> diag.use as use, use.text = (%diagType.data) "2.9.2-Diagnosetyp-DiagType";
-    } "2.9-DiagnoseGruppe-DiagGroup"; 
+        diaggroup.DiagType as diagType -> diag.use as use, use.text = (%diagType.data) "R2-9-2-Diagnosetyp-DiagType";
+    } "R2-9-DiagnoseGruppe-DiagGroup"; 
 }
