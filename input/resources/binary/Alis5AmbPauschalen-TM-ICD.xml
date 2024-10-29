@@ -16,6 +16,11 @@
 		<PatientGivenName>Paul</PatientGivenName>
 		<PatientBirthDate>1982-03-22</PatientBirthDate>
 		<PatientGender>M</PatientGender>
+		<DiagGroup DiagCode="B01.2">
+			<DiagCatType>ICD10_2023</DiagCatType>
+			<OnsetDateTime>2024-03-05T10:05:36Z</OnsetDateTime>
+			<Laterality>l</Laterality>
+		</DiagGroup>
 		<Service Transaction="insert">
 			<ServiceDate>2024-04-05T09:00:00Z</ServiceDate>
 			<SessionID>1</SessionID>
@@ -34,13 +39,6 @@
 			<PersonV40 PersonTyp="ProvidingPhysician">
 				<PersonID>7653253256988</PersonID>
 			</PersonV40>
-			<Diagnosis>
-				<Identifier>DIAG1</Identifier>
-				<Category>ICD10_2023</Category>
-				<Code>B01.2</Code>
-				<Display>Varizellen-Pneumonie</Display>
-				<Laterality>l</Laterality>			
-			</Diagnosis>
 		</Service>
 		<Service>
 			<ServiceDate>2024-04-05T09:00:00Z</ServiceDate>

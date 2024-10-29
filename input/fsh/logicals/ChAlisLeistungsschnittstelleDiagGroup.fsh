@@ -18,3 +18,5 @@ Description: "This logical model describes the DiagGroup of 'Leistungsschnittste
 * DiagCode ^representation = #xmlAttr
 * DiagType 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "2.9.2, Diagnosetyp, Alphanum., Art der Diagnose: Einweisungs-, Behandlungs-, Aufnahme-...., Optional"
 * DiagCatType 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "2.9.3, Katalogtyp, Alphanum., Katalogtyp: ICDx, HK (Hauskatalog), Optional"
+* OnsetDateTime 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/DateTime "TODO"
+* Laterality 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "TODO"

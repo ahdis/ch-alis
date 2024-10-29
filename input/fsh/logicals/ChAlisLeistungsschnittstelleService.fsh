@@ -35,5 +35,3 @@ Description: "This logical model describes the Service of 'Leistungsschnittstell
 * ServiceItemErrorCode 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "3.14, Fehlercode, Alphanum., Fehlertabelle bei unbekanntem Feldinhalt, inkorrekten Werten etc., Optional"
 * PersonV40 0..* http://fhir.ch/ig/ch-alis/StructureDefinition/PersonV40 "3.15, PersonV40, Optional (0,N)"
 * ParameterV40 0..* http://fhir.ch/ig/ch-alis/StructureDefinition/ParameterV40 "4, ParameterV40, Optional (0,N)"
-* Diagnosis 0..* http://fhir.ch/ig/ch-alis/StructureDefinition/Diagnosis "5.0 neu"
-* Procedure 0..* http://fhir.ch/ig/ch-alis/StructureDefinition/LeistungsschnittstelleProcedure "5.0 neu"

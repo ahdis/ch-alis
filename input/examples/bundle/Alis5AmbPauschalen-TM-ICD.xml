@@ -7,10 +7,10 @@
   <type value="message"/>
   <timestamp value="2024-04-05T10:06:44Z"/>
   <entry>
-    <fullUrl value="urn:uuid:c566c97d-a1bd-4534-b573-482d65c09464"/>
+    <fullUrl value="urn:uuid:8e211fae-063b-4071-92b9-5539e4cf934f"/>
     <resource>
       <MessageHeader>
-        <id value="c566c97d-a1bd-4534-b573-482d65c09464"/>
+        <id value="8e211fae-063b-4071-92b9-5539e4cf934f"/>
         <eventUri value="http://fhir.ch/ig/ch-alis-43"/>
         <destination>
           <endpoint value="urn:TARDOCTest:1234:Radiologie"/>
@@ -20,17 +20,17 @@
           <endpoint value="urn:ALIS:4321:4321"/>
         </source>
         <focus>
-          <reference value="urn:uuid:b31d0514-785a-435e-8339-d0fe860f4e83"/>
+          <reference value="urn:uuid:af9c2655-7d3b-4bab-be8a-aeab88a5b442"/>
           <type value="Bundle"/>
         </focus>
       </MessageHeader>
     </resource>
   </entry>
   <entry>
-    <fullUrl value="urn:uuid:b31d0514-785a-435e-8339-d0fe860f4e83"/>
+    <fullUrl value="urn:uuid:af9c2655-7d3b-4bab-be8a-aeab88a5b442"/>
     <resource>
       <Bundle>
-        <id value="b31d0514-785a-435e-8339-d0fe860f4e83"/>
+        <id value="af9c2655-7d3b-4bab-be8a-aeab88a5b442"/>
         <type value="transaction"/>
         <entry>
           <fullUrl value="urn:uuid:45678"/>
@@ -82,22 +82,18 @@
                   </subject>
                   <diagnosis>
                     <condition>
-                      <reference value="#24d8f526-9089-4fa2-bfdf-565eb3d01457"/>
+                      <reference value="#cond"/>
                     </condition>
                   </diagnosis>
                 </Encounter>
               </contained>
               <contained>
                 <Condition>
-                  <id value="24d8f526-9089-4fa2-bfdf-565eb3d01457"/>
-                  <identifier>
-                    <value value="DIAG1"/>
-                  </identifier>
+                  <id value="cond"/>
                   <code>
                     <coding>
                       <system value="http://hl7.org/fhir/sid/icd-10"/>
                       <code value="B01.2"/>
-                      <display value="Varizellen-Pneumonie"/>
                     </coding>
                   </code>
                   <bodySite>
@@ -109,6 +105,7 @@
                   <subject>
                     <reference value="#pat"/>
                   </subject>
+                  <recordedDate value="2024-03-05T10:05:36Z"/>
                 </Condition>
               </contained>
               <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
@@ -221,7 +218,33 @@
                   <subject>
                     <reference value="#pat"/>
                   </subject>
+                  <diagnosis>
+                    <condition>
+                      <reference value="#cond"/>
+                    </condition>
+                  </diagnosis>
                 </Encounter>
+              </contained>
+              <contained>
+                <Condition>
+                  <id value="cond"/>
+                  <code>
+                    <coding>
+                      <system value="http://hl7.org/fhir/sid/icd-10"/>
+                      <code value="B01.2"/>
+                    </coding>
+                  </code>
+                  <bodySite>
+                    <coding>
+                      <system value="http://snomed.info/sct"/>
+                      <code value="7771000"/>
+                    </coding>
+                  </bodySite>
+                  <subject>
+                    <reference value="#pat"/>
+                  </subject>
+                  <recordedDate value="2024-03-05T10:05:36Z"/>
+                </Condition>
               </contained>
               <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
                 <valueString value="1"/>

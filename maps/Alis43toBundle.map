@@ -11,7 +11,8 @@ conceptmap "serviceMap" {
   prefix t = "http://hl7.org/fhir"
 
   s:"TARMED" == t:"urn:oid:2.16.756.5.30.1.129.1.4" 
-  s:"ICD10" == t:"urn:oid:2.16.756.5.30.1.126.3.2" 
+  s:"ICD10" == t:"urn:oid:2.16.756.5.30.1.126.3.2"
+  s:"ICD10_2023" == t:"http://hl7.org/fhir/sid/icd-10" 
 }
 
 conceptmap "gender" { 
@@ -166,32 +167,6 @@ group ServiceToChargeItem(source service : Service, source visit : Visit, target
     service.Costweight as costweight then {
       costweight.data as data -> chargeItem.factorOverride = data "Costweight";
     } "costweight";
-    service.Procedure as proc -> chargeItem.contained = create('Procedure') as procedure,  procedure.id = uuid() as containedid,  chargeItem.service = create('Reference') as service,  service.reference = ('#'+%containedid) then ServiceProcedureToFhirProcedure(proc, procedure) "ServiceProcedureToFhirProcedure";
-}
-
-group ServiceProcedureToFhirProcedure(source proc: Proc, target procedure : Procedure) {
-    proc.Identifier as identifier -> procedure.identifier = create('Identifier') as identifier, identifier.value = (%identifier.data) "R3-14-ProzedurID-Identifier";
-    proc.Code as chopcode where (%proc.Category.data = 'CHOP_2023') -> procedure.code = create('CodeableConcept') as cc, 
-        cc.coding = create('Coding') as coding, coding.code = (%chopcode.data), coding.system = 'https://www.bfs.admin.ch/bfs/statistiche/catalog/chop2023',
-        coding.display = (%proc.Display.data) "R3-16-Prozedurcode-Code";
-    proc.PerformedDateTime as performedDateTime -> procedure.performed = (%performedDateTime.data) "R3-17-Datum-Zeit-PerformedDateTime";
-    proc.Laterality as laterality then {
-        laterality.data as v -> procedure.bodySite = create('CodeableConcept') as cc, 
-            cc.coding = create('Coding') as coding, coding.code = translate(v, '#laterality', 'code') , coding.system = 'http://snomed.info/sct',
-            coding.display = (%proc.LateralityDisplay.data) "R3-18-Seite-Laterality";
-    } "laterality";
-    proc.Performer as procperformer -> procedure.performer as performer then {
-        procperformer.Function as personTyp -> performer.function as cc, cc.coding as coding,
-        coding.system as system,
-        system.value = 'http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp',
-        coding.code as code,
-        code.value = (%personTyp.data) "R3-15-2-ServiceProcedure";
-        procperformer.Identifier as identifier then {
-            identifier.data as data -> performer.actor as actor, actor.identifier as identifier, identifier.value = data "identifier";
-        } "Identifier";
-    } "procperformer";
-    proc -> procedure.subject = create('Reference') as ref, ref.reference = '#pat' "containedpatient";
-    proc -> procedure.status = 'completed' "status";
 }
 
 group PersonV40ToPerformer(source personV40: PersonV40, target performer) {
@@ -338,6 +313,14 @@ group DiagGroupToCondition(source diagGroup : DiagGroup, target cond : Condition
                 diagCatType.data as data -> coding.system = translate(data, '#serviceMap', 'code') "R2-9-3-Katalogtyp-DiagCatType";
             } "serviceType";
        } "R2-9-1-Diagnosecode-DiagCode";
+
+    diagGroup.OnsetDateTime as performedDateTime -> cond.recordedDate = (%performedDateTime.data) "R3-17-Datum-Zeit-PerformedDateTime";
+    diagGroup.Laterality as laterality then {
+        laterality.data as v -> cond.bodySite = create('CodeableConcept') as cc, 
+            cc.coding = create('Coding') as coding, coding.code = translate(v, '#laterality', 'code') , coding.system = 'http://snomed.info/sct',
+            coding.display = (%proc.LateralityDisplay.data) "R3-18-Seite-Laterality";
+    } "laterality";
+   
 
 //                            <contained>
 //                                <Condition>

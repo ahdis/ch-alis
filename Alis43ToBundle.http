@@ -1,5 +1,5 @@
-@host = https://test.ahdis.ch/matchbox/fhir
-### @host = http://localhost:8080/matchboxv3/fhir
+### @host = https://test.ahdis.ch/matchbox/fhir
+@host = http://localhost:8080/matchboxv3/fhir
 
 
 GET {{host}}/metadata HTTP/1.1
@@ -18,19 +18,6 @@ Content-Type: text/fhir-mapping
 < ./maps/Alis43ToBundle.map
 
 
-### ALIS 5.0
-POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle
-Accept: application/fhir+xml;fhirVersion=4.0
-Content-Type: application/fhir+xml;fhirVersion=4.0
-
-< ./input/resources/binary/Alis5AmbPauschalen-CHOP-ICD.xml
-
-### ALIS 5.0
-POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle
-Accept: application/fhir+xml;fhirVersion=4.0
-Content-Type: application/fhir+xml;fhirVersion=4.0
-
-< ./input/resources/binary/Alis5AmbPauschalen-PauschaleKomplett.xml
 
 
 ### ALIS 5.0
@@ -40,4 +27,11 @@ Content-Type: application/fhir+xml;fhirVersion=4.0
 
 < ./input/resources/binary/Alis5Analysenliste.xml
 
+
+### ALIS 5.0
+POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle
+Accept: application/fhir+xml;fhirVersion=4.0
+Content-Type: application/fhir+xml;fhirVersion=4.0
+
+< ./input/resources/binary/Alis5AmbPauschalen-TM-ICD.xml
 

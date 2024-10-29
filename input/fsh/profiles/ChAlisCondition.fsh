@@ -21,3 +21,5 @@ Description: "Base definition for the Condition resource in the context of ALIS-
 * subject ^short = "Patient"
 * subject ^type.aggregation = #contained
 * subject.reference 1..
+* bodySite 0..1 // TODO add ValueSet Binding left right both
+* recordedDate 0..1

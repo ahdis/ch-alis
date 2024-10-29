@@ -92,22 +92,6 @@
 			},
 			{
 				"reference": {
-					"reference": "Bundle/Alis5AmbPauschalen-CHOP-ICD"
-				},
-				"name": "ALIS 5.0 FHIR Bundle Alis5AmbPauschalen-CHOP-ICD",
-				"description": "Pauschale ICD und CHOP (für Gruppierung Grouper Version 2.0 2025)",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
-			},
-			{
-				"reference": {
-					"reference": "Bundle/Alis5AmbPauschalen-PauschaleKomplett"
-				},
-				"name": "ALIS 5.0 FHIR Bundle Alis5AmbPauschalen-PauschaleKomplett",
-				"description": "Pauschale komplett (Pauschale mit Costweight, ICD und CHOP)",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
-			},
-			{
-				"reference": {
 					"reference": "Bundle/Alis5Analysenliste"
 				},
 				"name": "ALIS 5.0 FHIR Bundle Alis5Analysenliste",
@@ -365,34 +349,6 @@
 				},
 				"name": "ALIS 5.0 XML Alis5AmbPauschalen-Pauschale",
 				"description": "Pauschale (bereits gruppiert, mit Costweight)",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
-			},
-			{
-				"extension": [
-					{
-						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
-						"valueCode": "application/fhir+xml"
-					}
-				],
-				"reference": {
-					"reference": "Binary/Alis5AmbPauschalen-CHOP-ICD"
-				},
-				"name": "ALIS 5.0 XML Alis5AmbPauschalen-CHOP-ICD",
-				"description": "Pauschale ICD und CHOP (für Gruppierung Grouper Version 2.0 2025)",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
-			},
-			{
-				"extension": [
-					{
-						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
-						"valueCode": "application/fhir+xml"
-					}
-				],
-				"reference": {
-					"reference": "Binary/Alis5AmbPauschalen-PauschaleKomplett"
-				},
-				"name": "ALIS 5.0 XML Alis5AmbPauschalen-PauschaleKomplett",
-				"description": "Pauschale komplett (Pauschale mit costweight, ICD und CHOP)",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
 			},
 			{

@@ -7,10 +7,10 @@
   <type value="message"/>
   <timestamp value="2024-04-05T10:06:44Z"/>
   <entry>
-    <fullUrl value="urn:uuid:f040a2dc-b406-47e9-850c-f6c483bcea90"/>
+    <fullUrl value="urn:uuid:b1fa9926-02f2-4e5d-8b2d-cd26c9a8346b"/>
     <resource>
       <MessageHeader>
-        <id value="f040a2dc-b406-47e9-850c-f6c483bcea90"/>
+        <id value="b1fa9926-02f2-4e5d-8b2d-cd26c9a8346b"/>
         <eventUri value="http://fhir.ch/ig/ch-alis-43"/>
         <destination>
           <endpoint value="urn:TARDOCTest:1234:Radiologie"/>
@@ -20,17 +20,17 @@
           <endpoint value="urn:ALIS:4321:4321"/>
         </source>
         <focus>
-          <reference value="urn:uuid:976d4689-64c7-4762-ba68-1928e2ad7d18"/>
+          <reference value="urn:uuid:7253285e-fcdd-4ceb-9025-9715428a5908"/>
           <type value="Bundle"/>
         </focus>
       </MessageHeader>
     </resource>
   </entry>
   <entry>
-    <fullUrl value="urn:uuid:976d4689-64c7-4762-ba68-1928e2ad7d18"/>
+    <fullUrl value="urn:uuid:7253285e-fcdd-4ceb-9025-9715428a5908"/>
     <resource>
       <Bundle>
-        <id value="976d4689-64c7-4762-ba68-1928e2ad7d18"/>
+        <id value="7253285e-fcdd-4ceb-9025-9715428a5908"/>
         <type value="transaction"/>
         <entry>
           <fullUrl value="urn:uuid:45678"/>
