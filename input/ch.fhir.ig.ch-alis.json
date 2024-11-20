@@ -68,26 +68,10 @@
 			},
 			{
 				"reference": {
-					"reference": "Bundle/Alis5TARDOC"
+					"reference": "Bundle/Alis5LKAAT"
 				},
-				"name": "ALIS 5.0 FHIR Bundle Alis5TARDOC",
-				"description": "TARDOC mit Referenzleistung",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
-			},
-			{
-				"reference": {
-					"reference": "Bundle/Alis5AmbPauschalen-TM-ICD"
-				},
-				"name": "ALIS 5.0 FHIR Bundle  Alis5AmbPauschalen-TM-ICD",
-				"description": "Pauschale mit Tarmed und ICD (für Grouper Version 1.0 2024)",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
-			},
-			{
-				"reference": {
-					"reference": "Bundle/Alis5AmbPauschalen-Pauschale"
-				},
-				"name": "ALIS 5.0 FHIR Bundle Alis5AmbPauschalen-Pauschale",
-				"description": "Pauschale (bereits gruppiert, mit Costweight)",
+				"name": "ALIS 5.0 FHIR Bundle Alis5LKAAT",
+				"description": "LKAAT",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
 			},
 			{
