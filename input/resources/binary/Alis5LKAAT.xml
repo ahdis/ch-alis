@@ -10,10 +10,10 @@
 	<SoftwareReleaseNumber>1.1.0</SoftwareReleaseNumber>
 	<FileCreationDate>2024-04-05T10:06:44Z</FileCreationDate>
 	<Treatment>
-		<PatientContactID>0dfaee29-f96b-4a93-a6af-3f307a22f6a2</PatientContactID>
+		<PatientContactID>43d2aa68-df3a-4d81-b4e5-46d784ee031a</PatientContactID>
 		<DiagGroup DiagCode="B01.2">
 			<DiagCatType>ICD10_2023</DiagCatType>
-			<OnsetDateTime>2024-03-02T10:05:36Z</OnsetDateTime>
+			<OnsetDateTime>2024-03-05T10:05:36Z</OnsetDateTime>
 			<Laterality>l</Laterality>
 		</DiagGroup>
 		<Visit>
@@ -27,15 +27,40 @@
 				<ServiceDate>2024-04-05T09:00:00Z</ServiceDate>
 				<SessionID>1</SessionID>
 				<OrderID>20240405-1</OrderID>
-				<OrderDate>2024-04-04T10:00:00Z</OrderDate>
 				<ReferrerID>007</ReferrerID>
-				<ServiceType>AL2024</ServiceType>
-				<ServiceItem>1021.00</ServiceItem>
+				<ServiceType>LKAAT</ServiceType>
+				<ServiceItem>MA.00.0040</ServiceItem>
 				<EnteredDateTime>2024-04-05T10:05:36Z</EnteredDateTime>
-				<ProviderID>2300</ProviderID>
+				<ProviderID>2400</ProviderID>
 				<EnteredBy>7653253256988</EnteredBy>
 				<ItemNumber>45678</ItemNumber>
 				<Quantity>1</Quantity>
+				<PersonV40 PersonTyp="ResponsiblePhysician">
+					<PersonID>7653253256988</PersonID>
+				</PersonV40>
+				<PersonV40 PersonTyp="ProvidingPhysician">
+					<PersonID>7653253256988</PersonID>
+				</PersonV40>
+			</Service>
+			<Service Transaction="insert">
+				<ServiceDate>2024-04-05T09:00:00Z</ServiceDate>
+				<SessionID>1</SessionID>
+				<OrderID>20240405-1</OrderID>
+				<ReferrerID>007</ReferrerID>
+				<ServiceType>LKAAT</ServiceType>
+				<ServiceItem>MA.00.0050</ServiceItem>
+				<EnteredDateTime>2024-04-05T10:05:36Z</EnteredDateTime>
+				<ProviderID>2400</ProviderID>
+				<EnteredBy>7653253256988</EnteredBy>
+				<ItemNumber>45679</ItemNumber>
+				<RefItemNumber>45678</RefItemNumber>
+				<Quantity>1</Quantity>
+				<PersonV40 PersonTyp="ResponsiblePhysician">
+					<PersonID>7653253256988</PersonID>
+				</PersonV40>
+				<PersonV40 PersonTyp="ProvidingPhysician">
+					<PersonID>7653253256988</PersonID>
+				</PersonV40>
 			</Service>
 		</Visit>
 	</Treatment>
