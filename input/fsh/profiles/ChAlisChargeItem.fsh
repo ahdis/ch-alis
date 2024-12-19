@@ -20,11 +20,13 @@ Description: "Base definition for the ChargeItem resource in the context of ALIS
 * extension ^slicing.rules = #open
 * extension contains
     ChAlisExtensionSessionId named SessionID 0..1 and
+    ChAlisExtensionPatientContactId named PatientContactID 0..1 and
     ChAlisExtensionOrderId named OrderID 0..1 and
     ChAlisExtensionOrderDate named OrderDate 0..1 and
     ChAlisExtensionForm named Form 0..1 and
     ChAlisExtensionParameterV40 named ParameterV40 0..*
 * extension[SessionID] ^short = "SessionID"
+* extension[PatientContactID] ^short = "PatientContactID"
 * extension[OrderID] ^short = "OrderID"
 * extension[OrderDate] ^short = "OrderDate"
 * extension[Form] ^short = "Form"
@@ -36,7 +38,6 @@ Description: "Base definition for the ChargeItem resource in the context of ALIS
 * partOf ^short = "RefItemNumber"
 * partOf.reference 1..
 * code.coding 1..
-* code.coding from $tbd (required)
 * code.coding.system 1..
 * code.coding.system ^short = "ServiceType"
 * code.coding.code 1..

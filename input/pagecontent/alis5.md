@@ -1,3 +1,14 @@
+For ALIS5 new concepts need to be introducted because of the introduction of 'TARDOC' and 'ambulante Pauschalen',
+see [https://oaat-otma.ch](https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/241022_AnhangB_Anwendungsmodalitaeten.pdf)
+
+Detailed in documentation is here in [german](https://oaat-otma.ch/fileadmin/redaktion/dokumente/DE/Gesamt-Tarifsystem/241022_AnhangB_Anwendungsmodalitaeten.pdf).
+
+
+Sitzung maps to currently to extension to session-id extension http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid (to be verfified: could this be potentially be an encounter.identifier?)
+
+PatientContactID needs a new extension ch-alis-ext-patientcontactid 
+
+
 ### ALIS 5.0 XML
 
 <div style="width: 100%; display: flex"> 

@@ -301,38 +301,10 @@
 					}
 				],
 				"reference": {
-					"reference": "Binary/Alis5TARDOC"
+					"reference": "Binary/Alis5LKAAT"
 				},
-				"name": "ALIS 5.0 XML Alis5TARDOC",
-				"description": "TARDOC mit Referenzleistung",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
-			},
-			{
-				"extension": [
-					{
-						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
-						"valueCode": "application/fhir+xml"
-					}
-				],
-				"reference": {
-					"reference": "Binary/Alis5AmbPauschalen-TM-ICD"
-				},
-				"name": "ALIS 5.0 XML Alis5AmbPauschalen-TM-ICD",
-				"description": "Pauschale mit Tarmed und ICD (für Grouper Version 1.0 2024)",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
-			},
-			{
-				"extension": [
-					{
-						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
-						"valueCode": "application/fhir+xml"
-					}
-				],
-				"reference": {
-					"reference": "Binary/Alis5AmbPauschalen-Pauschale"
-				},
-				"name": "ALIS 5.0 XML Alis5AmbPauschalen-Pauschale",
-				"description": "Pauschale (bereits gruppiert, mit Costweight)",
+				"name": "ALIS 5.0 XML Alis5LKAAT",
+				"description": "LKAAT",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
 			},
 			{

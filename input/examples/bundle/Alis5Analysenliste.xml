@@ -33,10 +33,10 @@
         <id value="7253285e-fcdd-4ceb-9025-9715428a5908"/>
         <type value="transaction"/>
         <entry>
-          <fullUrl value="urn:uuid:45678"/>
+          <fullUrl value="urn:uuid:698f12d1-e396-45f5-b68c-0cf3554cfb98"/>
           <resource>
             <ChargeItem>
-              <id value="45678"/>
+              <id value="698f12d1-e396-45f5-b68c-0cf3554cfb98"/>
               <contained>
                 <Patient>
                   <id value="pat"/>
@@ -85,6 +85,9 @@
               <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
                 <valueString value="1"/>
               </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-patientcontactid">
+                <valueString value="0dfaee29-f96b-4a93-a6af-3f307a22f6a2"/>
+              </extension>
               <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid">
                 <valueString value="20240405-1"/>
               </extension>
@@ -94,6 +97,7 @@
               <status value="billable"/>
               <code>
                 <coding>
+                  <system value="https://tardoc.fmh.ch/tarifstrukturen/leistungskatalog-lkaat.cfm" />
                   <code value="1021.00"/>
                 </coding>
               </code>

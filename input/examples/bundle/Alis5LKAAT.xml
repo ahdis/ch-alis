@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Bundle xmlns="http://hl7.org/fhir">
-  <id value="Alis5TARDOC" /><meta>
+  <id value="Alis5LKAAT" /><meta>
     <profile value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
   </meta>
   <type value="message"/>
@@ -33,10 +33,10 @@
         <id value="3c20976b-ebaa-42f2-884b-3db274e5ddf9"/>
         <type value="transaction"/>
         <entry>
-          <fullUrl value="urn:uuid:45678"/>
+          <fullUrl value="urn:uuid:0180c4ed-1d10-473f-aae4-e55c34b2cbf7"/>
           <resource>
             <ChargeItem>
-              <id value="45678"/>
+              <id value="0180c4ed-1d10-473f-aae4-e55c34b2cbf7"/>
               <contained>
                 <Patient>
                   <id value="pat"/>
@@ -85,12 +85,16 @@
               <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
                 <valueString value="1"/>
               </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-patientcontactid">
+                <valueString value="43d2aa68-df3a-4d81-b4e5-46d784ee031a"/>
+              </extension>
               <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid">
                 <valueString value="20240405-1"/>
               </extension>
               <status value="billable"/>
               <code>
                 <coding>
+                  <system value="https://tardoc.fmh.ch/tarifstrukturen/leistungskatalog-lkaat.cfm" />
                   <code value="MA.00.0040"/>
                 </coding>
               </code>
@@ -144,10 +148,10 @@
           </request>
         </entry>
         <entry>
-          <fullUrl value="urn:uuid:45679"/>
+          <fullUrl value="urn:uuid:42b0a97f-1cca-479c-ad34-73f7221065bb"/>
           <resource>
             <ChargeItem>
-              <id value="45679"/>
+              <id value="42b0a97f-1cca-479c-ad34-73f7221065bb"/>
               <contained>
                 <Patient>
                   <id value="pat"/>
@@ -196,16 +200,20 @@
               <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid">
                 <valueString value="1"/>
               </extension>
+              <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-patientcontactid">
+                <valueString value="43d2aa68-df3a-4d81-b4e5-46d784ee031a"/>
+              </extension>
               <extension url="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid">
                 <valueString value="20240405-1"/>
               </extension>
               <status value="billable"/>
               <partOf>
-                <reference value="urn:uuid:45678"/>
+                <reference value="urn:uuid:0180c4ed-1d10-473f-aae4-e55c34b2cbf7"/>
                 <type value="ChargeItem"/>
               </partOf>
               <code>
                 <coding>
+                  <system value="https://tardoc.fmh.ch/tarifstrukturen/leistungskatalog-lkaat.cfm" />
                   <code value="MA.00.0050"/>
                 </coding>
               </code>

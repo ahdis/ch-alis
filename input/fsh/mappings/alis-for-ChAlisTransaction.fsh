@@ -3,6 +3,8 @@
 // Please review this and add the following properties as necessary: Target, Title, Description
 Mapping: alis-for-ChAlisTransaction
 Id: alis
+Title: "TODO"
+Description: "TODO"
 Source: ChAlisTransaction
 * entry[ChargeItem].resource -> "Service"
 * entry[ChargeItem].request.method -> "Transaction"
