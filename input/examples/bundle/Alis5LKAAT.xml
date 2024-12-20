@@ -94,7 +94,7 @@
               <status value="billable"/>
               <code>
                 <coding>
-                  <system value="https://tardoc.fmh.ch/tarifstrukturen/leistungskatalog-lkaat.cfm" />
+                  <system value="http://forum-datenaustausch.ch/tariff/TMA" />
                   <code value="MA.00.0040"/>
                 </coding>
               </code>
@@ -213,7 +213,7 @@
               </partOf>
               <code>
                 <coding>
-                  <system value="https://tardoc.fmh.ch/tarifstrukturen/leistungskatalog-lkaat.cfm" />
+                  <system value="http://forum-datenaustausch.ch/tariff/TMA" />
                   <code value="MA.00.0050"/>
                 </coding>
               </code>
