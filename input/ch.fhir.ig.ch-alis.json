@@ -386,6 +386,14 @@
 			{
 				"code": "copyrightyear",
 				"value": "2020+"
+			},
+			{
+				"code": "copyrightyear",
+				"value": "2020+"
+			},
+			{
+				"code": "test-data-factories",
+				"value": "factories.json"
 			}
 		]
 	}

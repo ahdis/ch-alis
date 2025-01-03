@@ -1,0 +1,17 @@
+{
+    "factories-version" : 1,
+    "factories" : [
+        {
+        "name": "LKAAT-CodeSystem",
+        "details" : "Generating the CodeSystem from the published Excel File",
+        "mode": "liquid",
+        "liquid": "LKAAT/lkaat_cs.liquid",
+        "data": "LKAAT/lkaat_cs.csv",
+        "format": "json",
+        "filename": "LKAAT/CodeSystem-lkaat.json",
+        "bundle": false,
+        "tables": {
+            "lkaat": "LKAAT/241206_LKAAT_Leistungskatalog_ambulante_Arzttarife_1.0a_DE.xlsx;LKAAT 2024 dataonly"
+        }
+    }]
+  }

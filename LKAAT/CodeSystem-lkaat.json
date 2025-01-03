@@ -1,0 +1,60 @@
+{
+  "resourceType" : "CodeSystem",
+  "url" : "urn:oid:2.16.756.5.30.1.127.3.10.6",
+  "version" : "3.1.0",
+  "name" : "LKAAT 2024 (Leistungskatalog ambulante Arzttarife)",
+  "title" : "ch-ehealth-codesystem-role",
+  "status" : "active",
+  "experimental" : false,
+  "date" : "2024-12-17T13:29:11+00:00",
+  "publisher" : "HL7 Switzerland",
+  "contact" : [
+    {
+      "name" : "HL7 Switzerland",
+      "telecom" : [
+        {
+          "system" : "url",
+          "value" : "https://www.hl7.ch/"
+        }
+      ]
+    },
+    {
+      "name" : "HL7 Switzerland",
+      "telecom" : [
+        {
+          "system" : "url",
+          "value" : "https://www.hl7.ch/",
+          "use" : "work"
+        }
+      ]
+    }
+  ],
+  "description" : "Role codes as per Annex 5 EPRO-FDHA, version July 2019",
+  "jurisdiction" : [
+    {
+      "coding" : [
+        {
+          "system" : "urn:iso:std:iso:3166",
+          "code" : "CH"
+        }
+      ]
+    }
+  ],
+  "copyright" : "CC0-1.0",
+  "caseSensitive" : true,
+  "content" : "complete",
+  "concept" : [
+    {
+      "code" : "AA.00.0020",
+      "display" : "+ Ärztliche Konsultation, jede weitere 1 Min."
+    },
+    {
+      "code" : "AA.00.0030",
+      "display" : "Besuch, erste 5 Min."
+    },
+    {
+      "code" : "AA.00.0040",
+      "display" : "+ Besuch, jede weitere 1 Min."
+    }
+  ]
+}

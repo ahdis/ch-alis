@@ -6,3 +6,4 @@ template/**
 .vscode/**
 fsh-generated/**
 .DS_Store
+log
