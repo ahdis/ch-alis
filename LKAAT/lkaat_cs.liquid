@@ -100,7 +100,17 @@
 
       {
       "code" : "{{ lkaat.cell(row, 1) }}",
-      "display" : "{{ lkaat.cell(row, 3).replace('"','').replace('1 Min.\u00a0', '1 Min. ').trim() }}",
+      "display" : "{{ lkaat.cell(row, 3).replace('"','').replace('\u00a0', ' ').trim() }}",
+      "designation" : [
+        {
+          "language" : "de-CH",
+          "value" : "{{ lkaat.cell(row, 3).replace('"','').replace('\u00a0', ' ').trim() }}"
+        },
+        {
+          "language" : "fr-CH",
+          "value" : "{{ lkaat_fr.lookup(1, lkaat.cell(row, 1), 3).replace('\u00a0', ' ').trim() }}"
+        }
+      ],
       "property": [
          {
           "code": "typ",
@@ -110,7 +120,37 @@
           ,
           {
           "code": "comment",
-          "valueString": "{{ lkaat.cell(row, 4).replace('{:target="_blank"}','').replace('\\+','\\\\+').trim() }}"
+          "valueString": "{{ lkaat.cell(row, 4).replace('{:target="_blank"}','').replace('\\+','\\\\+').trim() }}",
+          "_valueString": {
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "lang",
+                    "valueCode": "de-CH"
+                  },
+                  {
+                    "url": "content",
+                    "valueString": "{{ lkaat.cell(row, 4).replace('{:target="_blank"}','').replace('\\+','\\\\+').trim() }}"
+                  }
+                ],
+                "url": "http://hl7.org/fhir/StructureDefinition/translation"
+              },
+              {
+                "extension": [
+                  {
+                    "url": "lang",
+                    "valueCode": "fr-CH"
+                  },
+                  {
+                    "url": "content",
+                    "valueString": "{{ lkaat_fr.lookup(1, lkaat.cell(row, 1), 4).replace('\"','\\"').replace('\\+','\\\\+').trim() }}"
+                  }
+                ],
+                "url": "http://hl7.org/fhir/StructureDefinition/translation"
+              }
+            ]
+            }
           }
         {% endif %}      
       ]

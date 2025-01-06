@@ -11,7 +11,8 @@
         "filename": "LKAAT/LKAAT.json",
         "bundle": false,
         "tables": {
-            "lkaat": "LKAAT/241206_LKAAT_Leistungskatalog_ambulante_Arzttarife_1.0a_DE.xlsx;LKAAT 2024 dataonly"
+            "lkaat": "LKAAT/241206_LKAAT_Leistungskatalog_ambulante_Arzttarife_1.0a_DE.xlsx;LKAAT 2024 dataonly",
+            "lkaat_fr": "LKAAT/241206_LKAAT_Leistungskatalog_ambulante_Arzttarife_1.0a_FR.xlsx;CPTMA dataonly"
         }
     }]
   }
