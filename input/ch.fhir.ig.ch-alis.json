@@ -225,13 +225,19 @@
 					"reference": "CodeSystem/ch-alis-persontyp"
 				},
 				"exampleBoolean": false
-      },
+	        },
 			{
 				"reference": {
 					"reference": "CodeSystem/ch-alis-paramtyp"
 				},
 				"exampleBoolean": false
 			},
+			{
+				"reference": {
+					"reference": "CodeSystem/LKAAT"
+				},
+				"exampleBoolean": false
+	        },
 			{
 				"reference": {
 					"reference": "ValueSet/ch-alis-persontyp"
@@ -390,10 +396,6 @@
 			{
 				"code": "copyrightyear",
 				"value": "2020+"
-			},
-			{
-				"code": "test-data-factories",
-				"value": "factories.json"
 			}
 		]
 	}
