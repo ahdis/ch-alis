@@ -56,7 +56,7 @@
   "concept" : [
     {% assign h1 = 'l1' %}
     {% assign h2 = 'l2' %}
-    {% for row in lkaat.rowIndexes() %}  
+    {% for row in lkaat.rows %}  
       {% assign h1row = lkaat.cell(row, 1).substring(0,lkaat.cell(row, 1).indexOf('.')) %}
       {% assign h2row = lkaat.cell(row, 1).substring(lkaat.cell(row, 1).indexOf('.')+1,2) %}
       {% if h1 != h1row %}        
@@ -108,7 +108,7 @@
         },
         {
           "language" : "fr-CH",
-          "value" : "{{ lkaat_fr.lookup(1, lkaat.cell(row, 1), 3).replace('\u00a0', ' ').trim() }}"
+          "value" : "{{ lookup('lkaat_fr', 1, lkaat.cell(row, 1), 3).replace('\u00a0', ' ').trim() }}"
         }
       ],
       "property": [
@@ -144,7 +144,7 @@
                   },
                   {
                     "url": "content",
-                    "valueString": "{{ lkaat_fr.lookup(1, lkaat.cell(row, 1), 4).replace('\"','\\"').replace('\\+','\\\\+').trim() }}"
+                    "valueString": "{{ lookup('lkaat_fr', 1, lkaat.cell(row, 1), 4).replace('\"','\\"').replace('\\+','\\\\+').trim() }}"
                   }
                 ],
                 "url": "http://hl7.org/fhir/StructureDefinition/translation"
