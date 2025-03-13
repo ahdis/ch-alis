@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="5.1" xsi:noNamespaceSchemaLocation="LeistungsschnittstelleV51.xsd">
+	<ReceivingApplication>TARDOC Test</ReceivingApplication>
+	<ReceivingFacility>1234</ReceivingFacility>
+	<ReceivingServiceCode>Radiologie</ReceivingServiceCode>
+	<SendingApplication>ALIS</SendingApplication>
+	<SendingFacility>4321</SendingFacility>
+	<SendingServiceCode>4321</SendingServiceCode>
+	<MessageControlID>1262557</MessageControlID>
+	<SoftwareReleaseNumber>1.1.0</SoftwareReleaseNumber>
+	<FileCreationDate>2024-04-05T10:06:44Z</FileCreationDate>
+	<Visit>
+		<VisitNumber>987654</VisitNumber>
+		<PatientID>102</PatientID>
+		<PatientName>Tester</PatientName>
+		<PatientGivenName>Paul</PatientGivenName>
+		<PatientBirthDate>1982-03-22</PatientBirthDate>
+		<PatientGender>M</PatientGender>
+		<Service Transaction="insert">
+			<ServiceDate>2025-03-04T09:00:00Z</ServiceDate>
+			<SessionID>1</SessionID>
+			<OrderID>2025403-1</OrderID>
+			<ReferrerID>007</ReferrerID>
+			<ServiceType>Pauschalen_1.0</ServiceType>
+			<ServiceItem>C30.30E</ServiceItem>
+			<EnteredDateTime>2025-05-05T10:05:36Z</EnteredDateTime>
+			<ProviderID>2400</ProviderID>
+			<EnteredBy>7653253256988</EnteredBy>
+			<ItemNumber>45678</ItemNumber>
+			<Quantity>1</Quantity>
+			<TPValue>0.85</TPValue>
+			<Diagnosis>
+				<DiagnosisCode>B01.2</DiagnosisCode>
+				<DiagnosisSystem>ICD10</DiagnosisSystem>
+				<DiagnosisVersion>2023</DiagnosisVersion>
+				<DiagnosisConfidential>0</DiagnosisConfidential>
+			</Diagnosis>				
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7653253256988</PersonID>
+			</PersonV40>			
+		</Service>
+	</Visit>
+</Header>
