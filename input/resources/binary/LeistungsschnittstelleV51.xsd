@@ -208,7 +208,7 @@
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-										<xs:element name="ServiceAssigment" minOccurs="0" >
+										<xs:element name="ServiceAssignment" minOccurs="0" >
 											<xs:complexType>
 												<xs:sequence>
 													<xs:element name="OrderingProviderID" type="xs:string" minOccurs="0" />

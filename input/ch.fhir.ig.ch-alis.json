@@ -310,8 +310,7 @@
 					"reference": "Binary/Alis5LKAAT"
 				},
 				"name": "ALIS 5.0 XML Alis5LKAAT",
-				"description": "LKAAT",
-				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
+				"description": "LKAAT"
 			},
 			{
 				"extension": [
@@ -324,7 +323,62 @@
 					"reference": "Binary/Alis5Analysenliste"
 				},
 				"name": "ALIS 5.0 XML Alis5Analysenliste",
-				"description": "Analysenliste mit OrderDate",
+				"description": "Analysenliste mit OrderDate"
+			},
+			{
+				"extension": [
+					{
+						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
+						"valueCode": "application/fhir+xml"
+					}
+				],
+				"reference": {
+					"reference": "Binary/Alis51LabServiceAssignment"
+				},
+				"name": "ALIS 5.1 XML Alis51LabServiceAssignment",
+				"description": "Alis51LabServiceAssignment",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
+			},
+			{
+				"extension": [
+					{
+						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
+						"valueCode": "application/fhir+xml"
+					}
+				],
+				"reference": {
+					"reference": "Binary/Alis51PauschaleKomplett"
+				},
+				"name": "ALIS 5.1 XML Alis51PauschaleKomplett",
+				"description": "Alis51PauschaleKomplett",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
+			},
+			{
+				"extension": [
+					{
+						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
+						"valueCode": "application/fhir+xml"
+					}
+				],
+				"reference": {
+					"reference": "Binary/Alis51TdIcd"
+				},
+				"name": "ALIS 5.1 XML Alis51TdIcd",
+				"description": "Alis51TdIcd",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
+			},
+			{
+				"extension": [
+					{
+						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
+						"valueCode": "application/fhir+xml"
+					}
+				],
+				"reference": {
+					"reference": "Binary/Alis51TdIcdSessionB"
+				},
+				"name": "ALIS 5.1 XML Alis51TdIcdSessionB",
+				"description": "Alis51TdIcdSessionB",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
 			}
 		],

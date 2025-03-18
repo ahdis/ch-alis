@@ -28,11 +28,11 @@
 			<EnteredBy>7653253256988</EnteredBy>
 			<ItemNumber>46784</ItemNumber>
 			<Quantity>1</Quantity>
-			<ServiceAssigment>
+			<ServiceAssignment>
 				<OrderingProviderID>7653253258966</OrderingProviderID>
 				<OrderReportDate>2025-03-04T10:05:36Z</OrderReportDate>
 				<FollowUpOrder>0</FollowUpOrder>
-			</ServiceAssigment>
+			</ServiceAssignment>
 		</Service>
 	</Visit>
 </Header>

@@ -13,7 +13,7 @@ Description: "This logical model describes the PersonV40 of 'Leistungsschnittste
 * ^contact.telecom.value = "https://www.alis-connect.ch/"
 * ^jurisdiction.coding.system = "urn:iso:std:iso:3166"
 * ^jurisdiction.coding.code = #CH
-* . ^definition = "3.15, PersonV40, Optional (0,N)"
-* PersonTyp 1..1 string "3.15.1, PersonTyp, Alphanum., Obligatorisch"
+* . ^definition = "3.20, PersonV40	Optional (0,N)"
+* PersonTyp 1..1 string "3.21.1	PersonTyp	Alphanum.		Obligatorisch"
 * PersonTyp ^representation = #xmlAttr
-* PersonID 1..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "3.15.2, PersonID, Alphanum., Obligatorisch"
+* PersonID 1..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "3.21.2	PersonID Alphanum.Obligatorisch"
