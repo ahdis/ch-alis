@@ -118,7 +118,6 @@
 												</xs:restriction>
 											</xs:simpleType>
 										</xs:element>
-										<!-- new in 5.1-->
 										<xs:element name="OrderDate" type="xs:dateTime" minOccurs="0" />
 										<xs:element name="ReferrerID" minOccurs="0">
 											<xs:simpleType>
@@ -135,8 +134,7 @@
 												</xs:restriction>
 											</xs:simpleType>
 										</xs:element>
-										<!-- optional Tarifposition in 5.1?-->
-										<xs:element name="ServiceItem" minOccurs="0">
+										<xs:element name="ServiceItem">
 											<xs:simpleType>
 												<xs:restriction base="xs:string">
 													<xs:minLength value="1" />
@@ -156,10 +154,8 @@
 											</xs:simpleType>
 										</xs:element>
 										<xs:element name="RefItemNumber" type="xs:string" minOccurs="0" />
-										<!-- 5.1 xs:float? optional in schema but not win word-->
-										<xs:element name="Quantity" type="xs:float" minOccurs="0" />
-										<!-- new in 5.1, xs:decimal ? -->
-										<xs:element name="TPValue" type="xs:float" minOccurs="0" />
+										<xs:element name="Quantity" type="xs:decimal"  />
+										<xs:element name="TPValue" type="xs:decimal" minOccurs="0" />
 										<xs:element name="ServiceItemErrorCode" type="xs:string" minOccurs="0" />
 										<!-- new in 5.1 -->
 										<xs:element name="SessionSectionB" minOccurs="0">

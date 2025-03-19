@@ -307,32 +307,6 @@
 					}
 				],
 				"reference": {
-					"reference": "Binary/Alis5LKAAT"
-				},
-				"name": "ALIS 5.0 XML Alis5LKAAT",
-				"description": "LKAAT"
-			},
-			{
-				"extension": [
-					{
-						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
-						"valueCode": "application/fhir+xml"
-					}
-				],
-				"reference": {
-					"reference": "Binary/Alis5Analysenliste"
-				},
-				"name": "ALIS 5.0 XML Alis5Analysenliste",
-				"description": "Analysenliste mit OrderDate"
-			},
-			{
-				"extension": [
-					{
-						"url": "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format",
-						"valueCode": "application/fhir+xml"
-					}
-				],
-				"reference": {
 					"reference": "Binary/Alis51LabServiceAssignment"
 				},
 				"name": "ALIS 5.1 XML Alis51LabServiceAssignment",
@@ -361,10 +335,10 @@
 					}
 				],
 				"reference": {
-					"reference": "Binary/Alis51TdIcd"
+					"reference": "Binary/Alis51LKAATIcd"
 				},
-				"name": "ALIS 5.1 XML Alis51TdIcd",
-				"description": "Alis51TdIcd",
+				"name": "ALIS 5.1 XML Alis51LKAATIcd",
+				"description": "Alis51LKAATIcd",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
 			},
 			{
@@ -375,10 +349,10 @@
 					}
 				],
 				"reference": {
-					"reference": "Binary/Alis51TdIcdSessionB"
+					"reference": "Binary/Alis51LKAATIcdSessionB"
 				},
-				"name": "ALIS 5.1 XML Alis51TdIcdSessionB",
-				"description": "Alis51TdIcdSessionB",
+				"name": "ALIS 5.1 XML Alis51LKAATIcdSessionB",
+				"description": "Alis51LKAATIcdSessionB",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/Header"
 			}
 		],

@@ -18,16 +18,19 @@
 		<PatientGender>M</PatientGender>
 		<Service Transaction="insert">
 			<ServiceDate>2025-03-05T09:00:00Z</ServiceDate>
-			<SessionID>1</SessionID>
 			<OrderID>20250305-1</OrderID>
 			<ReferrerID>007</ReferrerID>
-			<ServiceType>TARDOC</ServiceType>
+			<ServiceType>LKAAT</ServiceType>
 			<ServiceItem>GM.00.0140</ServiceItem>
 			<EnteredDateTime>2025-03-05T10:05:36Z</EnteredDateTime>
 			<ProviderID>2400</ProviderID>
 			<EnteredBy>7653253256988</EnteredBy>
 			<ItemNumber>45678</ItemNumber>
 			<Quantity>1</Quantity>
+			<SessionSectionB>
+				<SessionIDSectionB>28d92aa9-452a-459a-9baf-7c58910f2ab8</SessionIDSectionB>
+				<TrueSessionSectionB>1</TrueSessionSectionB>
+			</SessionSectionB>
 			<Diagnosis>
 				<DiagnosisCode>B01.2</DiagnosisCode>
 				<DiagnosisSystem>ICD</DiagnosisSystem>
@@ -42,10 +45,9 @@
 		</Service>
 		<Service>
 			<ServiceDate>2024-04-05T09:00:00Z</ServiceDate>
-			<SessionID>1</SessionID>
 			<OrderID>20250305-1</OrderID>
 			<ReferrerID>007</ReferrerID>
-			<ServiceType>TARDOC</ServiceType>
+			<ServiceType>LKAAT</ServiceType>
 			<ServiceItem>GM.10.0010</ServiceItem>
 			<EnteredDateTime>2025-03-05T10:05:36Z</EnteredDateTime>
 			<ProviderID>2400</ProviderID>
@@ -53,6 +55,10 @@
 			<ItemNumber>45679</ItemNumber>
 			<RefItemNumber>45678</RefItemNumber>
 			<Quantity>1</Quantity>
+			<SessionSectionB>
+				<SessionIDSectionB>28d92aa9-452a-459a-9baf-7c58910f2ab8</SessionIDSectionB>
+				<TrueSessionSectionB>1</TrueSessionSectionB>
+			</SessionSectionB>
 			<PersonV40 PersonTyp="ResponsiblePhysician">
 				<PersonID>7653253256988</PersonID>
 			</PersonV40>
@@ -62,10 +68,9 @@
 		</Service>
 		<Service>
 			<ServiceDate>2024-04-05T09:00:00Z</ServiceDate>
-			<SessionID>1</SessionID>
 			<OrderID>20250305-1</OrderID>
 			<ReferrerID>007</ReferrerID>
-			<ServiceType>TARDOC</ServiceType>
+			<ServiceType>LKAAT</ServiceType>
 			<ServiceItem>GM.15.0020</ServiceItem>
 			<EnteredDateTime>2025-03-05T10:05:36Z</EnteredDateTime>
 			<ProviderID>2400</ProviderID>
@@ -73,6 +78,10 @@
 			<ItemNumber>45680</ItemNumber>
 			<RefItemNumber>45678</RefItemNumber>
 			<Quantity>20</Quantity>
+			<SessionSectionB>
+				<SessionIDSectionB>28d92aa9-452a-459a-9baf-7c58910f2ab8</SessionIDSectionB>
+				<TrueSessionSectionB>1</TrueSessionSectionB>
+			</SessionSectionB>
 			<PersonV40 PersonTyp="ResponsiblePhysician">
 				<PersonID>7653253256988</PersonID>
 			</PersonV40>

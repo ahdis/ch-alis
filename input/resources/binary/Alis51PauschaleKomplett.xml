@@ -21,8 +21,8 @@
 			<SessionID>1</SessionID>
 			<OrderID>2025403-1</OrderID>
 			<ReferrerID>007</ReferrerID>
-			<ServiceType>Pauschalen_1.0</ServiceType>
-			<ServiceItem>C30.30E</ServiceItem>
+			<ServiceType>LKAAT</ServiceType>
+			<ServiceItem>C02.CP.0010</ServiceItem>
 			<EnteredDateTime>2025-05-05T10:05:36Z</EnteredDateTime>
 			<ProviderID>2400</ProviderID>
 			<EnteredBy>7653253256988</EnteredBy>

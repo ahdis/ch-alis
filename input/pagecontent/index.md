@@ -7,7 +7,7 @@ This implementation guide is provided to support the use of FHIR<sup>&reg;&copy;
 This document is a working specification that is expected to be implemented and tested by FHIR<sup>&reg;&copy;</sup> system producers to enable feedback to improve the 
     
 * define extensions that are necessary for local use covering needed ALIS-connect purposes
-* covering the requirements from the existing ALIS-Connect XML specification version 4.3 and upcoming version 5.0
+* covering the requirements from the existing ALIS-Connect XML specification version 4.3 and upcoming version 5.1
 * define data elements from [FHIR finance module](https://www.hl7.org/fhir/financial-module.html) in FHIR ALIS-connect profiles
 
 Please add your feedback via the 'Propose a change'-link in the footer of the page.
