@@ -1,6 +1,6 @@
-map "http://fhir.ch/ig/ch-alis/StructureMap/Alis43ToBundle" = "Alis43ToBundle"
+map "http://fhir.ch/ig/ch-alis/StructureMap/Alis51ToBundle" = "Alis51ToBundle"
 
-// Convert ALIS43 XML to a Bundle according to the CH ALIS implmementation guide,
+// Convert ALIS51 XML to a Bundle according to the CH ALIS implmementation guide,
 // 2020-12-03 by Oliver Egger, copyright ahdis ag, Apache License, 
 // FHIR: http://hl7.org/fhir/r4/.
 
@@ -41,6 +41,8 @@ uses "http://fhir.ch/ig/ch-alis/StructureDefinition/ParameterV40" alias Paramete
 uses "http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup" alias DiagGroup as source
 uses "http://fhir.ch/ig/ch-alis/StructureDefinition/LeistungsschnittstelleProcedure" alias Proc as source
 uses "http://fhir.ch/ig/ch-alis/StructureDefinition/Diagnosis" alias Diagnosis as source
+uses "http://fhir.ch/ig/ch-alis/StructureDefinition/SessionSectionB" alias SessionSectionB as source
+uses "http://fhir.ch/ig/ch-alis/StructureDefinition/ServiceAssignment" alias ServiceAssignment as source
 
 uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as target
 uses "http://hl7.org/fhir/StructureDefinition/ChargeItem" alias ChargeItem as target
@@ -52,7 +54,7 @@ uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as targ
 uses "http://hl7.org/fhir/StructureDefinition/Encounter" alias Encounter as target
 uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as target
 
-group Alis43ToBundle(source header : Header, target bundle : Bundle) {
+group Alis51ToBundle(source header : Header, target bundle : Bundle) {
   header ->  bundle.meta as meta,
              meta.profile as profile,
              profile.value = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message',
@@ -68,8 +70,8 @@ group Alis43ToBundle(source header : Header, target bundle : Bundle) {
              reference.type='Bundle', 
              reference.reference = append('urn:uuid:',uuid2)
             then {
-               header then Alis43ToMessageHeader(header, messageHeader) "messageHeader";
-               header then Alis43ToBundleTransaction(header, transactionBundle) "bundleTransaction";
+               header then Alis51ToMessageHeader(header, messageHeader) "messageHeader";
+               header then Alis51ToBundleTransaction(header, transactionBundle) "bundleTransaction";
              } "bundle";
     header -> bundle.type = 'message' "type";
     header.FileCreationDate as fileCreationDate then {
@@ -77,9 +79,9 @@ group Alis43ToBundle(source header : Header, target bundle : Bundle) {
     } "FileCreationDate";
 }
 
-group Alis43ToMessageHeader(source header : Header, target messageHeader: MessageHeader) {
+group Alis51ToMessageHeader(source header : Header, target messageHeader: MessageHeader) {
     // ISSUE1: should be link to a MessageDefinition or a code?
-    header -> messageHeader.event = create('uri') as value, value.value = 'http://fhir.ch/ig/ch-alis-43' "eventUri";
+    header -> messageHeader.event = create('uri') as value, value.value = 'http://fhir.ch/ig/ch-alis-51' "eventUri";
     // ISSUE2: MessageControlID cannot be id of entry, needs to be either fullUrl oder uuid, need to map this to an identifier
 
     header -> messageHeader.source as source then {
@@ -93,7 +95,7 @@ group Alis43ToMessageHeader(source header : Header, target messageHeader: Messag
     } "destination";
 }
 
-group Alis43ToBundleTransaction(source header : Header, target transactionBundle : Bundle) {
+group Alis51ToBundleTransaction(source header : Header, target transactionBundle : Bundle) {
     header -> transactionBundle.type = 'transaction' "transaction";
     header.Visit as visit then {
         visit.Service as service -> transactionBundle.entry as e, 
@@ -103,7 +105,12 @@ group Alis43ToBundleTransaction(source header : Header, target transactionBundle
 
 
 group ServiceToChargeItem(source service : Service, source visit : Visit, target chargeItem : ChargeItem, target entry) {
+
+    // TODO needs to be fixed
     service.ItemNumber as itemNumber -> chargeItem.id = (%itemNumber.data.lower()) as uuid, entry.fullUrl = append('urn:uuid:',uuid) "R3-11-Laufnummer-ItemNumber";
+    service.RefItemNumber as refItemNumber then {
+        refItemNumber.data as data -> chargeItem.partOf = create('Reference') as ref, ref.reference = ('urn:uuid:'+%data.lower()), ref.type='ChargeItem' "R3-12-Referenz-zu-Hauptleistung-RefItemNumber";
+    } "RefItemNumber";
 
     service -> chargeItem.contained = create('Patient') as patient, 
                                       patient.id = 'pat' as containedid, 
@@ -120,9 +127,9 @@ group ServiceToChargeItem(source service : Service, source visit : Visit, target
                                         service.Diagnosis as diag -> chargeItem.contained = create('Condition') as condition,  condition.id = uuid() as containedid,  encounter.diagnosis as diag, diag.condition = create('Reference') as ref, ref.reference= ('#'+%containedid) then DiagnosisToCondition(diag, condition) "DiagnosisToCondition";
                                       } "encounter";
 
-    visit.DiagGroup as diaggroup-> chargeItem.contained = create('Condition') as cond,
-                                      cond.id = 'cond' as containedid
-                                      then DiagGroupToCondition(diaggroup, cond) "DiagGroupToCondition";
+    // visit.DiagGroup as diaggroup-> chargeItem.contained = create('Condition') as cond,
+    //                                   cond.id = 'cond' as containedid
+    //                                   then DiagGroupToCondition(diaggroup, cond) "DiagGroupToCondition";
 
     service where (service.Transaction.exists()=false) -> entry.request as request, request.method = 'POST', request.url = 'ChargeItem' "POSTDEFAULT"; 
     service.Transaction where (service.Transaction='insert') -> entry.request as request, request.method = 'POST', request.url = 'ChargeItem' "POST"; 
@@ -139,9 +146,6 @@ group ServiceToChargeItem(source service : Service, source visit : Visit, target
 
     service -> chargeItem.status = 'billable' "billable";
 
-    service.RefItemNumber as refItemNumber then {
-        refItemNumber.data as data -> chargeItem.partOf = create('Reference') as ref, ref.reference = ('urn:uuid:'+%data.lower()), ref.type='ChargeItem' "R3-12-Referenz-zu-Hauptleistung-RefItemNumber";
-    } "RefItemNumber";
 
     service.ServiceItem as serviceItem then {
          serviceItem.data as data -> chargeItem.code = create('CodeableConcept') as cc, 
@@ -158,6 +162,8 @@ group ServiceToChargeItem(source service : Service, source visit : Visit, target
     service.ProviderID as providerID -> chargeItem.performingOrganization = create('Reference') as reference, reference.display = (%providerID.data) "R3-9-Erbringende-Organization-ProviderID";
     service.ReferrerID as referrerID -> chargeItem.costCenter = create('Reference') as reference, reference.display = (%referrerID.data) "R3-4-Auftraggebende-Kostenstelle-ReferrerID";
     service.Quantity as quantity -> chargeItem.quantity = create('Quantity') as q, q.value as value, value.value = (%quantity.data) "R3-13-Anzahl-Quantity";
+    service.TPValue as tpvalue -> chargeItem.extension as extension, extension.url = 'http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-tpvalue', extension.value = create('decimal') as value, value.value = (%tpvalue.data) "R3-3-Taxpunktwert";
+
     service.EnteredBy as enteredBy -> chargeItem.enterer = create('Reference') as reference, reference.display = (%enteredBy.data) "R3-10-Erfasser-EnteredBy";
     service.EnteredDateTime as enteredDateTime -> chargeItem.enteredDate = create('dateTime') as enteredDate, enteredDate.value = (%enteredDateTime.data) "R3-8-Erfassungsdatum-EnteredDateTime";
 
@@ -167,6 +173,11 @@ group ServiceToChargeItem(source service : Service, source visit : Visit, target
     service.Costweight as costweight then {
       costweight.data as data -> chargeItem.factorOverride = data "Costweight";
     } "costweight";
+
+    service.SessionSectionB as sessionSectionB -> chargeItem.extension as ext, ext.url='http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionannexb' then SessionAnnexBToExtension(sessionSectionB, ext) "SessionAnnexBToExtension";
+    service.ServiceAssignment as serviceAssignment -> chargeItem.extension as ext, ext.url='http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-serviceassignment' then ServiceAssignmentToExtension(serviceAssignment, ext) "ServiceAssignmentToExtension";
+
+    
 }
 
 group PersonV40ToPerformer(source personV40: PersonV40, target performer) {
@@ -285,17 +296,27 @@ group DiagnosisToCondition(source diagnosis : Diagnosis, target cond : Condition
         identifier.data as data -> cond.identifier as identifier, identifier.value = data "identifier";
     } "Identifier";
 
-    diagnosis.Code as code -> cond.code = create('CodeableConcept') as cc, 
-    cc.coding = create('Coding') as coding, coding.code = (%code.data), 
-    coding.display = (%diagnosis.Display.data) then {
-        diagnosis.Category as category then {
+    diagnosis.DiagnosisCode as code -> cond.code = create('CodeableConcept') as cc, 
+    cc.coding = create('Coding') as coding, coding.code = (%code.data) then {
+        diagnosis.DiagnosisSystem as category then {
             category.data as data where (startsWith('ICD')) -> coding.system = 'http://hl7.org/fhir/sid/icd-10';
         } "serviceType";    
+        diagnosis.DiagnosisVersion as version -> coding.version = (%version.data) "version";
+
     } "R3-16-Prozedurcode-Code";
 
     // TODO system is not yet correct
 
-    diagnosis.OnsetDateTime as onsetDateTime -> cond.onset = (%onsetDateTime.data) "onsetDateTime";
+    diagnosis.DiagnosisConfidential as DiagnosisConfidential then {
+        DiagnosisConfidential.data as data -> cond.extension as ext1, ext1.url='http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-diagnosis', ext1.value = create('boolean') as value then {
+            data where data='1' -> value.value = true "DiagnosisConfidential";
+            data where data='0' -> value.value = false "DiagnosisConfidential";
+            data where data='true' -> value.value = true "DiagnosisConfidential";
+            data where data='false' -> value.value = false "DiagnosisConfidential";
+        } "truefalse01";
+    } "DiagnosisConfidential";
+
+    diagnosis.OnSetDateTime as onsetDateTime -> cond.onset = (%onsetDateTime.data) "onsetDateTime";
     diagnosis.Laterality as laterality then {
     laterality.data as v -> cond.bodySite = create('CodeableConcept') as cc, 
         cc.coding = create('Coding') as coding, coding.code = translate(v, '#laterality', 'code') , coding.system = 'http://snomed.info/sct',
@@ -345,6 +366,40 @@ group DiagGroupToCondition(source diagGroup : DiagGroup, target cond : Condition
 //                            </contained>
 }
 
+
+group ServiceAssignmentToExtension(source serviceAssignment: ServiceAssignment, target ext:Extension) {
+    serviceAssignment.OrderingProviderID as OrderingProviderID then {
+        OrderingProviderID.data as data -> ext.extension as ext1, ext1.url='OrderingProviderID', ext1.value = create('string') as string, string.value = (%data) "OrderingProviderID"; 
+    } "SessionIDSectionB";
+    serviceAssignment.OrderReportDate as OrderReportDate then {
+        OrderReportDate.data as data -> ext.extension as ext1, ext1.url='OrderReportDate', ext1.value = create('dateTime') as datetime, datetime.value = (%data) "AssignedSessionSectionB"; 
+    } "AssignedSessionSectionB";
+    serviceAssignment.FollowUpOrder as FollowUpOrder then {
+        FollowUpOrder.data as data -> ext.extension as ext1, ext1.url='FollowUpOrder', ext1.value = create('boolean') as value then {
+            data where data='1' -> value.value = true "FollowUpOrder";
+            data where data='0' -> value.value = false "FollowUpOrder";
+            data where data='true' -> value.value = true "FollowUpOrder";
+            data where data='false' -> value.value = false "FollowUpOrder";
+        } "truefalse01";
+    } "FollowUpOrder";
+}
+
+group SessionAnnexBToExtension(source sessionb: SessionSectionB, target ext:Extension) {
+    sessionb.SessionIDSectionB as SessionIDSectionB then {
+        SessionIDSectionB.data as data -> ext.extension as ext1, ext1.url='SessionIDSectionB', ext1.value = create('uuid') as uuid, uuid.value = ('urn:uuid:'+%data) "SessionIDSectionB"; 
+    } "SessionIDSectionB";
+    sessionb.AssignedSessionSectionB as AssignedSessionSectionB then {
+        AssignedSessionSectionB.data as data -> ext.extension as ext1, ext1.url='AssignedSessionSectionB', ext1.value = create('uuid') as uuid, uuid.value = ('urn:uuid:'+%data) "AssignedSessionSectionB"; 
+    } "AssignedSessionSectionB";
+    sessionb.TrueSessionSectionB as TrueSessionSectionB then {
+        TrueSessionSectionB.data as data -> ext.extension as ext1, ext1.url='TrueSessionSectionB', ext1.value = create('boolean') as value then {
+            data where data='1' -> value.value = true "TrueSessionSectionB";
+            data where data='0' -> value.value = false "TrueSessionSectionB";
+            data where data='true' -> value.value = true "TrueSessionSectionB";
+            data where data='false' -> value.value = false "TrueSessionSectionB";
+        } "truefalse01";
+    } "AssignedSessionSectionB";
+}
 
 group TerminationToExtension(source visit: Visit, target ext:Extension) {
     visit.TerminationVisit as visit then {

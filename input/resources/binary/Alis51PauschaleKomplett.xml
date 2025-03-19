@@ -34,6 +34,8 @@
 				<DiagnosisSystem>ICD10</DiagnosisSystem>
 				<DiagnosisVersion>2023</DiagnosisVersion>
 				<DiagnosisConfidential>0</DiagnosisConfidential>
+				<OnSetDateTime>2025-03-04T09:00:00Z</OnSetDateTime>
+				<Laterality>l</Laterality>
 			</Diagnosis>				
 			<PersonV40 PersonTyp="ResponsiblePhysician">
 				<PersonID>7653253256988</PersonID>

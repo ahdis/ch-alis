@@ -1,0 +1,3783 @@
+<StructureMap 
+  xmlns="http://hl7.org/fhir">
+  <id value="Alis51ToBundle"/>
+  <meta>
+    <lastUpdated value="2025-03-19T18:00:03.613+01:00"/>
+  </meta>
+  <text>
+    <status value="generated"/>
+    <div 
+      xmlns="http://www.w3.org/1999/xhtml">
+      <pre>/// url = &quot;http://fhir.ch/ig/ch-alis/StructureMap/Alis51ToBundle&quot;
+/// name = &quot;Alis51ToBundle&quot;
+/// title = &quot;null&quot;
+/// status = &quot;draft&quot;
+
+/// description = &quot;&quot;&quot;
+Convert ALIS51 XML to a Bundle according to the CH ALIS implmementation guide,
+2020-12-03 by Oliver Egger, copyright ahdis ag, Apache License,
+FHIR: http://hl7.org/fhir/r4/.
+ISSUE7: what are the URL&apos;s oid&apos;s we have to define.
+&quot;&quot;&quot;
+conceptmap &quot;serviceMap&quot; {
+  prefix s = &quot;http://fhir.ch/ig/ch-alis&quot;
+  prefix t = &quot;http://hl7.org/fhir&quot;
+
+  s:TARMED == t:&quot;urn:oid:2.16.756.5.30.1.129.1.4&quot;
+  s:ICD10 == t:&quot;urn:oid:2.16.756.5.30.1.126.3.2&quot;
+  s:ICD10_2023 == t:&quot;http://hl7.org/fhir/sid/icd-10&quot;
+}
+
+conceptmap &quot;gender&quot; {
+  prefix s = &quot;http://fhir.ch/ig/ch-alis&quot;
+  prefix t = &quot;http://hl7.org/fhir/ValueSet/administrative-gender&quot;
+
+  s:M == t:male
+  s:F == t:female
+}
+
+conceptmap &quot;laterality&quot; {
+  prefix s = &quot;http://fhir.ch/ig/ch-alis&quot;
+  prefix t = &quot;http://snomed.info/sct&quot;
+
+  s:l == t:&quot;7771000&quot;
+  s:r == t:&quot;24028007&quot;
+  s:b == t:&quot;51440002&quot;
+}
+
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/Header&quot; alias Header as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/Visit&quot; alias Visit as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/Service&quot; alias Service as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/PersonV40&quot; alias PersonV40 as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/ParameterV40&quot; alias ParameterV40 as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup&quot; alias DiagGroup as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/LeistungsschnittstelleProcedure&quot; alias Proc as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/Diagnosis&quot; alias Diagnosis as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/SessionSectionB&quot; alias SessionSectionB as source
+uses &quot;http://fhir.ch/ig/ch-alis/StructureDefinition/ServiceAssignment&quot; alias ServiceAssignment as source
+uses &quot;http://hl7.org/fhir/StructureDefinition/Bundle&quot; alias Bundle as target
+uses &quot;http://hl7.org/fhir/StructureDefinition/ChargeItem&quot; alias ChargeItem as target
+uses &quot;http://hl7.org/fhir/StructureDefinition/Extension&quot; alias Extension as target
+uses &quot;http://hl7.org/fhir/StructureDefinition/MessageHeader&quot; alias MessageHeader as target
+uses &quot;http://hl7.org/fhir/StructureDefinition/BackboneElement&quot; alias BackboneElement as target
+uses &quot;http://hl7.org/fhir/StructureDefinition/HumanName&quot; alias HumanName as target
+uses &quot;http://hl7.org/fhir/StructureDefinition/Condition&quot; alias Condition as target
+uses &quot;http://hl7.org/fhir/StructureDefinition/Encounter&quot; alias Encounter as target
+uses &quot;http://hl7.org/fhir/StructureDefinition/Procedure&quot; alias Procedure as target
+
+group Alis51ToBundle(source header : Header, target bundle : Bundle) {
+  header -&gt;  bundle.meta as meta,  meta.profile as profile,  profile.value = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message&apos;,  bundle.entry as e,  e.resource = create(&apos;MessageHeader&apos;) as messageHeader,  messageHeader.id = uuid() as uuid,  e.fullUrl = append(&apos;urn:uuid:&apos;, uuid),  bundle.entry as e2,  e2.resource = create(&apos;Bundle&apos;) as transactionBundle,  transactionBundle.id = uuid() as uuid2,  e2.fullUrl = append(&apos;urn:uuid:&apos;, uuid2),  messageHeader.focus = create(&apos;Reference&apos;) as reference,  reference.type = &apos;Bundle&apos;,  reference.reference = append(&apos;urn:uuid:&apos;, uuid2) then {
+    header then Alis51ToMessageHeader(header, messageHeader) &quot;messageHeader&quot;;
+    header then Alis51ToBundleTransaction(header, transactionBundle) &quot;bundleTransaction&quot;;
+  } &quot;bundle&quot;;
+  header -&gt; bundle.type = &apos;message&apos; &quot;type&quot;;
+  header.FileCreationDate as fileCreationDate then {
+    fileCreationDate.data as date -&gt; bundle.timestamp = date &quot;date&quot;;
+  };
+}
+
+group Alis51ToMessageHeader(source header : Header, target messageHeader : MessageHeader) {
+  // ISSUE1: should be link to a MessageDefinition or a code?
+  header -&gt;  messageHeader.event = create(&apos;uri&apos;) as value,  value.value = &apos;http://fhir.ch/ig/ch-alis-51&apos; &quot;eventUri&quot;;
+  // ISSUE2: MessageControlID cannot be id of entry, needs to be either fullUrl oder uuid, need to map this to an identifier
+  header -&gt; messageHeader.source as source then {
+    header.SoftwareReleaseNumber as version -&gt; source.version = (%version.data) &quot;version&quot;;
+    // ISSUE3: &quot; : &quot;urn:SendingApplication:SendingFacility:SendingServiceCode&quot; -&gt; add urn: in example/docu
+    header -&gt; source.endpoint = (&apos;urn:&apos; + %header.SendingApplication.data + &apos;:&apos; + %header.SendingFacility.data + &apos;:&apos; + %header.SendingServiceCode.data) &quot;endpoint&quot;;
+  } &quot;source&quot;;
+  header -&gt; messageHeader.destination as destination then {
+    // ISSUE4: &quot; : &quot;urn:ReceivingApplication, ReceivingFacility, ReceivingServiceCode&quot; -&gt; add urn: in example/docu
+    header -&gt; destination.endpoint = (&apos;urn:&apos; + %header.ReceivingApplication.data + &apos;:&apos; + %header.ReceivingFacility.data + &apos;:&apos; + %header.ReceivingServiceCode.data) &quot;endpoint&quot;;
+  } &quot;destination&quot;;
+}
+
+group Alis51ToBundleTransaction(source header : Header, target transactionBundle : Bundle) {
+  header -&gt; transactionBundle.type = &apos;transaction&apos; &quot;transaction&quot;;
+  header.Visit as visit then {
+    visit.Service as service -&gt;  transactionBundle.entry as e,  e.resource = create(&apos;ChargeItem&apos;) as chargeItem then ServiceToChargeItem(service, visit, chargeItem, e) &quot;ServiceToChargeItem&quot;;
+  };
+}
+
+group ServiceToChargeItem(source service : Service, source visit : Visit, target chargeItem : ChargeItem, target entry) {
+  service.ItemNumber as itemNumber -&gt;  chargeItem.id = (%itemNumber.data.lower()) as uuid,  entry.fullUrl = append(&apos;urn:uuid:&apos;, uuid) &quot;R311LaufnummerItemNumber&quot;;
+  service -&gt;  chargeItem.contained = create(&apos;Patient&apos;) as patient,  patient.id = &apos;pat&apos; as containedid,  chargeItem.subject = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;#&apos; + %containedid) then ServiceToPatient(service, visit, patient) &quot;patient&quot;;
+  visit -&gt;  chargeItem.contained = create(&apos;Encounter&apos;) as encounter,  encounter.id = &apos;enc&apos; as containedid,  chargeItem.context = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;#&apos; + %containedid) then {
+    visit then VisitToEncounter(visit, encounter) &quot;VisitToEncounter&quot;;
+    service.Diagnosis as diag -&gt;  chargeItem.contained = create(&apos;Condition&apos;) as condition,  condition.id = uuid() as containedid,  encounter.diagnosis as diag,  diag.condition = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;#&apos; + %containedid) then DiagnosisToCondition(diag, condition) &quot;DiagnosisToCondition&quot;;
+  } &quot;encounter&quot;;
+  // visit.DiagGroup as diaggroup-&gt; chargeItem.contained = create(&apos;Condition&apos;) as cond,
+  service where (service.Transaction.exists() = false) -&gt;  entry.request as request,  request.method = &apos;POST&apos;,  request.url = &apos;ChargeItem&apos; &quot;POSTDEFAULT&quot;;
+  service.Transaction where (service.Transaction = &apos;insert&apos;) -&gt;  entry.request as request,  request.method = &apos;POST&apos;,  request.url = &apos;ChargeItem&apos; &quot;POST&quot;;
+  service.Transaction where (service.Transaction = &apos;update&apos;) -&gt;  entry.request as request,  request.method = &apos;PUT&apos;,  request.url = &apos;ChargeItem&apos; &quot;UPDATE&quot;;
+  service.Transaction where (service.Transaction = &apos;delete&apos;) -&gt;  entry.request as request,  request.method = &apos;DELETE&apos;,  request.url = &apos;ChargeItem&apos; &quot;DELETE&quot;;
+  service.SessionID as sessionID -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid&apos;,  extension.value = create(&apos;string&apos;) as value,  value.value = (%sessionID.data) &quot;R32SitzungSessionID&quot;;
+  service.OrderID as orderID -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid&apos;,  extension.value = create(&apos;string&apos;) as value,  value.value = (%orderID.data) &quot;R33AuftragsnummerOrderID&quot;;
+  service.OrderDate as orderDate -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderdate&apos;,  extension.value = create(&apos;dateTime&apos;) as value,  value.value = (%orderDate.data) &quot;R33AuftragsnummerOrderID&quot;;
+  service.Form as form -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form&apos;,  extension.value = create(&apos;string&apos;) as value,  value.value = (%form.data) &quot;R37FormularbezeichnungForm&quot;;
+  service.ParameterV40 as parameterV40 -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40&apos; then ParameterV40ToExtension(parameterV40, extension) &quot;R4ParamterV40ParameterV40&quot;;
+  service -&gt; chargeItem.status = &apos;billable&apos; &quot;billable&quot;;
+  service.RefItemNumber as refItemNumber then {
+    refItemNumber.data as data -&gt;  chargeItem.partOf = create(&apos;Reference&apos;) as ref,  ref.reference = (&apos;urn:uuid:&apos; + %data.lower()),  ref.type = &apos;ChargeItem&apos; &quot;R312ReferenzzuHauptleistungRefItemNumber&quot;;
+  };
+  service.ServiceItem as serviceItem then {
+    serviceItem.data as data -&gt;  chargeItem.code = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = data then {
+      service.ServiceType as serviceType then {
+        serviceType.data as data -&gt; coding.system = translate(data, &apos;#serviceMap&apos;, &apos;code&apos;) &quot;R35KatalogServiceType&quot;;
+      } &quot;servicType&quot;;
+    } &quot;R36TarifpositionServiceItem&quot;;
+  } &quot;R36Tarifposition&quot;;
+  service.ServiceDate as serviceData -&gt;  chargeItem.occurrence = create(&apos;dateTime&apos;) as occurrence,  occurrence.value = (%serviceData.data) &quot;R31LeistungsdatumServiceDate&quot;;
+  service.PersonV40 as personV40 -&gt; chargeItem.performer = create(&apos;BackboneElement&apos;) as performer then PersonV40ToPerformer(personV40, performer) &quot;R315PersonV40PersonV40&quot;;
+  service.ProviderID as providerID -&gt;  chargeItem.performingOrganization = create(&apos;Reference&apos;) as reference,  reference.display = (%providerID.data) &quot;R39ErbringendeOrganizationProviderID&quot;;
+  service.ReferrerID as referrerID -&gt;  chargeItem.costCenter = create(&apos;Reference&apos;) as reference,  reference.display = (%referrerID.data) &quot;R34AuftraggebendeKostenstelleReferrerID&quot;;
+  service.Quantity as quantity -&gt;  chargeItem.quantity = create(&apos;Quantity&apos;) as q,  q.value as value,  value.value = (%quantity.data) &quot;R313AnzahlQuantity&quot;;
+  service.TPValue as tpvalue -&gt;  chargeItem.extension as extension,  extension.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-tpvalue&apos;,  extension.value = create(&apos;decimal&apos;) as value,  value.value = (%tpvalue.data) &quot;R33Taxpunktwert&quot;;
+  service.EnteredBy as enteredBy -&gt;  chargeItem.enterer = create(&apos;Reference&apos;) as reference,  reference.display = (%enteredBy.data) &quot;R310ErfasserEnteredBy&quot;;
+  service.EnteredDateTime as enteredDateTime -&gt;  chargeItem.enteredDate = create(&apos;dateTime&apos;) as enteredDate,  enteredDate.value = (%enteredDateTime.data) &quot;R38ErfassungsdatumEnteredDateTime&quot;;
+  service.PatientContactID as patientContactID then {
+    patientContactID.data as data -&gt;  chargeItem.identifier = create(&apos;Identifier&apos;) as identifier,  identifier.value = data &quot;PatientContactID&quot;;
+  } &quot;patientContactID&quot;;
+  service.Costweight as costweight then {
+    costweight.data as data -&gt; chargeItem.factorOverride = data &quot;Costweight&quot;;
+  } &quot;costweight&quot;;
+  service.SessionSectionB as sessionSectionB -&gt;  chargeItem.extension as ext,  ext.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionannexb&apos; then SessionAnnexBToExtension(sessionSectionB, ext) &quot;SessionAnnexBToExtension&quot;;
+  service.ServiceAssignment as serviceAssignment -&gt;  chargeItem.extension as ext,  ext.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-serviceassignment&apos; then ServiceAssignmentToExtension(serviceAssignment, ext) &quot;ServiceAssignmentToExtension&quot;;
+}
+
+group PersonV40ToPerformer(source personV40 : PersonV40, target performer) {
+  personV40.PersonTyp as personTyp -&gt;  performer.function as cc,  cc.coding as coding,  coding.system as system,  system.value = &apos;http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp&apos;,  coding.code as code,  code.value = personTyp &quot;R3152PersonIDPersonID&quot;;
+  personV40.PersonID as personId -&gt;  performer.actor = create(&apos;Reference&apos;) as reference,  reference.display = (%personId.data) &quot;R3152PersonIDPersonID&quot;;
+}
+
+group ParameterV40ToExtension(source parameterV40 : ParameterV40, target extension : Extension) {
+  parameterV40.ParamTyp as paramTyp -&gt; extension.extension as extInner then InnerExtensionParamTyp(paramTyp, extInner);
+  parameterV40.ParamValue as paramValue then {
+    paramValue.data as data -&gt; extension.extension as extInner then InnerExtensionParamValue(data, extInner);
+  };
+}
+
+group InnerExtensionParamTyp(source src, target ext : Extension) {
+  src -&gt; ext.url = &apos;ParamTyp&apos; &quot;url&quot;;
+  src -&gt;  ext.value = create(&apos;CodeableConcept&apos;) as cc,  cc.text as text,  text.value = src &quot;string&quot;;
+}
+
+group InnerExtensionParamValue(source src, target ext : Extension) {
+  src -&gt; ext.url = &apos;ParamValue&apos; &quot;url&quot;;
+  src -&gt;  ext.value = create(&apos;string&apos;) as string,  string.value = src &quot;string&quot;;
+}
+
+group ServiceToPatientName(source visit : Visit, target name : HumanName) {
+  visit.PatientName as patientName then {
+    patientName.data as data -&gt; name.family = data &quot;R23PatientNamePatientName&quot;;
+  } &quot;patientName&quot;;
+  visit.PatientGivenName as patientGivenName then {
+    patientGivenName.data as data -&gt; name.given = data &quot;R24PatientVornamePatientGivenName&quot;;
+  } &quot;patientGivenName&quot;;
+}
+
+group ServiceToPatient(source service : Service, source visit : Visit, target patient : Patient) {
+  visit.PatientID as patientID then {
+    patientID.data as patId -&gt;  patient.identifier as identifier,  identifier.value as value,  value.value = patId,  identifier.system as idsystem,  idsystem.value = &apos;http://www.example.ch/patienteniddomain&apos;,  identifier.type as type,  type.coding as coding,  coding.system as system,  system.value = &apos;http://terminology.hl7.org/CodeSystem/v2-0203&apos;,  coding.code as code,  code.value = &apos;MR&apos; &quot;R22PatientPIDPatientID&quot;;
+  } &quot;patientID&quot;;
+  // &lt;!-- 2.2 Patient.PID (PatientID) --&gt;
+  visit where (visit.PatientName or visit.PatientGivenName) -&gt; patient.name as name then ServiceToPatientName(visit, name) &quot;ServiceToPatient&quot;;
+  visit.PatientGender as gender then {
+    gender.data as v -&gt; patient.gender = translate(v, &apos;#gender&apos;, &apos;code&apos;) &quot;gender&quot;;
+  } &quot;R26PatientGeschlechtPatientGender&quot;;
+  visit.PatientBirthDate as birthDate then {
+    birthDate.data as v -&gt; patient.birthDate = v &quot;birthDate&quot;;
+  } &quot;R25PatientGebDatumPatientBirthDate&quot;;
+}
+
+group DiagnosisToCondition(source diagnosis : Diagnosis, target cond : Condition) {
+  diagnosis -&gt;  cond.subject = create(&apos;Reference&apos;) as ref,  ref.reference = &apos;#pat&apos; &quot;containedpatient&quot;;
+  // * Identifier 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text &quot;TODO&quot;
+  diagnosis.Identifier as identifier then {
+    identifier.data as data -&gt;  cond.identifier as identifier,  identifier.value = data &quot;identifier&quot;;
+  };
+  diagnosis.DiagnosisCode as code -&gt;  cond.code = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = (%code.data) then {
+    diagnosis.DiagnosisSystem as category then {
+      category.data as data where (startsWith(&apos;ICD&apos;)) -&gt; coding.system = &apos;http://hl7.org/fhir/sid/icd-10&apos;;
+    } &quot;serviceType&quot;;
+    diagnosis.DiagnosisVersion as version -&gt; coding.version = (%version.data) &quot;version&quot;;
+  } &quot;R316ProzedurcodeCode&quot;;
+  // TODO system is not yet correct
+  diagnosis.DiagnosisConfidential as DiagnosisConfidential then {
+    DiagnosisConfidential.data as data -&gt;  cond.extension as ext1,  ext1.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-diagnosis&apos;,  ext1.value = create(&apos;boolean&apos;) as value then {
+      data where data = &apos;1&apos; -&gt; value.value = &apos;true&apos; &quot;DiagnosisConfidential&quot;;
+      data where data = &apos;0&apos; -&gt; value.value = &apos;false&apos; &quot;DiagnosisConfidential&quot;;
+      data where data = &apos;true&apos; -&gt; value.value = &apos;true&apos; &quot;DiagnosisConfidential&quot;;
+      data where data = &apos;false&apos; -&gt; value.value = &apos;false&apos; &quot;DiagnosisConfidential&quot;;
+    } &quot;truefalse01&quot;;
+  };
+  diagnosis.OnSetDateTime as onsetDateTime -&gt; cond.onset = (%onsetDateTime.data) &quot;onsetDateTime&quot;;
+  diagnosis.Laterality as laterality then {
+    laterality.data as v -&gt;  cond.bodySite = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = translate(v, &apos;#laterality&apos;, &apos;code&apos;),  coding.system = &apos;http://snomed.info/sct&apos;,  coding.display = (%diagnosis.LateralityDisplay.data) &quot;R318SeiteLaterality&quot;;
+  } &quot;laterality&quot;;
+}
+
+group DiagGroupToCondition(source diagGroup : DiagGroup, target cond : Condition) {
+  diagGroup -&gt;  cond.subject = create(&apos;Reference&apos;) as ref,  ref.reference = &apos;#pat&apos; &quot;containedpatient&quot;;
+  diagGroup.DiagCode as data -&gt;  cond.code = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = data then {
+    diagGroup.DiagCatType as diagCatType then {
+      diagCatType.data as data -&gt; coding.system = translate(data, &apos;#serviceMap&apos;, &apos;code&apos;) &quot;R293KatalogtypDiagCatType&quot;;
+    } &quot;serviceType&quot;;
+  } &quot;R291DiagnosecodeDiagCode&quot;;
+  diagGroup.OnsetDateTime as performedDateTime -&gt; cond.recordedDate = (%performedDateTime.data) &quot;R317DatumZeitPerformedDateTime&quot;;
+  diagGroup.Laterality as laterality then {
+    laterality.data as v -&gt;  cond.bodySite = create(&apos;CodeableConcept&apos;) as cc,  cc.coding = create(&apos;Coding&apos;) as coding,  coding.code = translate(v, &apos;#laterality&apos;, &apos;code&apos;),  coding.system = &apos;http://snomed.info/sct&apos;,  coding.display = (%proc.LateralityDisplay.data) &quot;R318SeiteLaterality&quot;;
+  } &quot;laterality&quot;;
+}
+
+group ServiceAssignmentToExtension(source serviceAssignment : ServiceAssignment, target ext : Extension) {
+  serviceAssignment.OrderingProviderID as OrderingProviderID then {
+    OrderingProviderID.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;OrderingProviderID&apos;,  ext1.value = create(&apos;string&apos;) as string,  string.value = (%data) &quot;OrderingProviderID&quot;;
+  } &quot;SessionIDSectionB&quot;;
+  serviceAssignment.OrderReportDate as OrderReportDate then {
+    OrderReportDate.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;OrderReportDate&apos;,  ext1.value = create(&apos;dateTime&apos;) as datetime,  datetime.value = (%data) &quot;AssignedSessionSectionB&quot;;
+  } &quot;AssignedSessionSectionB&quot;;
+  serviceAssignment.FollowUpOrder as FollowUpOrder then {
+    FollowUpOrder.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;FollowUpOrder&apos;,  ext1.value = create(&apos;boolean&apos;) as value then {
+      data where data = &apos;1&apos; -&gt; value.value = &apos;true&apos; &quot;FollowUpOrder&quot;;
+      data where data = &apos;0&apos; -&gt; value.value = &apos;false&apos; &quot;FollowUpOrder&quot;;
+      data where data = &apos;true&apos; -&gt; value.value = &apos;true&apos; &quot;FollowUpOrder&quot;;
+      data where data = &apos;false&apos; -&gt; value.value = &apos;false&apos; &quot;FollowUpOrder&quot;;
+    } &quot;truefalse01&quot;;
+  };
+}
+
+group SessionAnnexBToExtension(source sessionb : SessionSectionB, target ext : Extension) {
+  sessionb.SessionIDSectionB as SessionIDSectionB then {
+    SessionIDSectionB.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;SessionIDSectionB&apos;,  ext1.value = create(&apos;uuid&apos;) as uuid,  uuid.value = (&apos;urn:uuid:&apos; + %data) &quot;SessionIDSectionB&quot;;
+  };
+  sessionb.AssignedSessionSectionB as AssignedSessionSectionB then {
+    AssignedSessionSectionB.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;AssignedSessionSectionB&apos;,  ext1.value = create(&apos;uuid&apos;) as uuid,  uuid.value = (&apos;urn:uuid:&apos; + %data) &quot;AssignedSessionSectionB&quot;;
+  };
+  sessionb.TrueSessionSectionB as TrueSessionSectionB then {
+    TrueSessionSectionB.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;TrueSessionSectionB&apos;,  ext1.value = create(&apos;boolean&apos;) as value then {
+      data where data = &apos;1&apos; -&gt; value.value = &apos;true&apos; &quot;TrueSessionSectionB&quot;;
+      data where data = &apos;0&apos; -&gt; value.value = &apos;false&apos; &quot;TrueSessionSectionB&quot;;
+      data where data = &apos;true&apos; -&gt; value.value = &apos;true&apos; &quot;TrueSessionSectionB&quot;;
+      data where data = &apos;false&apos; -&gt; value.value = &apos;false&apos; &quot;TrueSessionSectionB&quot;;
+    } &quot;truefalse01&quot;;
+  } &quot;AssignedSessionSectionB&quot;;
+}
+
+group TerminationToExtension(source visit : Visit, target ext : Extension) {
+  visit.TerminationVisit as visit then {
+    visit.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;TerminationVisit&apos;,  ext1.value = create(&apos;date&apos;) as date,  date.value = data &quot;R27FallAbschlussTerminationVisit&quot;;
+  };
+  visit.TerminationReason as visit then {
+    visit.data as data -&gt;  ext.extension as ext1,  ext1.url = &apos;TerminationReason&apos;,  ext1.value = create(&apos;string&apos;) as string,  string.value = data &quot;R28FallAbschlussgrundTerminationReason&quot;;
+  } &quot;TerminationVisit&quot;;
+}
+
+group VisitToEncounter(source visit : Visit, target encounter : Encounter) {
+  visit where (visit.TerminationVisit or visit.TerminationReason) -&gt;  encounter.extension as ext,  ext.url = &apos;http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination&apos; then TerminationToExtension(visit, ext) &quot;TerminationToExtension&quot;;
+  visit.VisitNumber as visitNumber then {
+    // ISSUE8: what to do with falldomain? &lt;system value=&quot;http://www.example.ch/fallnummerdomain&quot;/&gt;
+    visitNumber.data as data -&gt;  encounter.identifier = create(&apos;Identifier&apos;) as identifier,  identifier.value as value,  value.value = data,  identifier.system as idsystem,  idsystem.value = &apos;http://www.example.ch/fallnummerdomain&apos;,  identifier.type as type,  type.coding as coding,  coding.system as system,  system.value = &apos;http://terminology.hl7.org/CodeSystem/v2-0203&apos;,  coding.code as code,  code.value = &apos;VN&apos; &quot;R21FallVisitNumber&quot;;
+  } &quot;encounterID&quot;;
+  visit -&gt; encounter.status = &apos;finished&apos; &quot;Finished&quot;;
+  visit -&gt;  encounter.class as coding,  coding.system as system,  system.value = &apos;http://terminology.hl7.org/CodeSystem/v3-ActCode&apos;,  coding.code as code,  code.value = &apos;IMP&apos;,  coding.display as display,  display.value = &apos;inpatient encounter&apos; &quot;R21FallVisitNumber&quot;;
+  visit -&gt;  encounter.subject = create(&apos;Reference&apos;) as ref,  ref.reference = &apos;#pat&apos; &quot;subject&quot;;
+  visit.DiagGroup as diaggroup -&gt;  encounter.diagnosis as diag,  diag.condition = create(&apos;Reference&apos;) as ref,  ref.reference = &apos;#cond&apos; then {
+    diaggroup.DiagType as diagType -&gt;  diag.use as use,  use.text = (%diagType.data) &quot;R292DiagnosetypDiagType&quot;;
+  } &quot;R29DiagnoseGruppeDiagGroup&quot;;
+}
+
+</pre>
+    </div>
+  </text>
+  <contained>
+    <ConceptMap 
+      xmlns="http://hl7.org/fhir">
+      <id value="serviceMap"/>
+      <status value="draft"/>
+      <group>
+        <source value="http://fhir.ch/ig/ch-alis"/>
+        <target value="http://hl7.org/fhir"/>
+        <element>
+          <code value="TARMED"/>
+          <target>
+            <code value="urn:oid:2.16.756.5.30.1.129.1.4"/>
+            <equivalence value="equivalent"/>
+          </target>
+        </element>
+        <element>
+          <code value="ICD10"/>
+          <target>
+            <code value="urn:oid:2.16.756.5.30.1.126.3.2"/>
+            <equivalence value="equivalent"/>
+          </target>
+        </element>
+        <element>
+          <code value="ICD10_2023"/>
+          <target>
+            <code value="http://hl7.org/fhir/sid/icd-10"/>
+            <equivalence value="equivalent"/>
+          </target>
+        </element>
+      </group>
+    </ConceptMap>
+  </contained>
+  <contained>
+    <ConceptMap 
+      xmlns="http://hl7.org/fhir">
+      <id value="gender"/>
+      <status value="draft"/>
+      <group>
+        <source value="http://fhir.ch/ig/ch-alis"/>
+        <target value="http://hl7.org/fhir/ValueSet/administrative-gender"/>
+        <element>
+          <code value="M"/>
+          <target>
+            <code value="male"/>
+            <equivalence value="equivalent"/>
+          </target>
+        </element>
+        <element>
+          <code value="F"/>
+          <target>
+            <code value="female"/>
+            <equivalence value="equivalent"/>
+          </target>
+        </element>
+      </group>
+    </ConceptMap>
+  </contained>
+  <contained>
+    <ConceptMap 
+      xmlns="http://hl7.org/fhir">
+      <id value="laterality"/>
+      <status value="draft"/>
+      <group>
+        <source value="http://fhir.ch/ig/ch-alis"/>
+        <target value="http://snomed.info/sct"/>
+        <element>
+          <code value="l"/>
+          <target>
+            <code value="7771000"/>
+            <equivalence value="equivalent"/>
+          </target>
+        </element>
+        <element>
+          <code value="r"/>
+          <target>
+            <code value="24028007"/>
+            <equivalence value="equivalent"/>
+          </target>
+        </element>
+        <element>
+          <code value="b"/>
+          <target>
+            <code value="51440002"/>
+            <equivalence value="equivalent"/>
+          </target>
+        </element>
+      </group>
+    </ConceptMap>
+  </contained>
+  <url value="http://fhir.ch/ig/ch-alis/StructureMap/Alis51ToBundle"/>
+  <name value="Alis51ToBundle"/>
+  <status value="draft"/>
+  <description value="Convert ALIS51 XML to a Bundle according to the CH ALIS implmementation guide,&#xd;&#xa;2020-12-03 by Oliver Egger, copyright ahdis ag, Apache License,&#xd;&#xa;FHIR: http://hl7.org/fhir/r4/.&#xd;&#xa;ISSUE7: what are the URL's oid's we have to define."/>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Header"/>
+    <mode value="source"/>
+    <alias value="Header"/>
+  </structure>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Visit"/>
+    <mode value="source"/>
+    <alias value="Visit"/>
+  </structure>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Service"/>
+    <mode value="source"/>
+    <alias value="Service"/>
+  </structure>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/PersonV40"/>
+    <mode value="source"/>
+    <alias value="PersonV40"/>
+  </structure>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/ParameterV40"/>
+    <mode value="source"/>
+    <alias value="ParameterV40"/>
+  </structure>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup"/>
+    <mode value="source"/>
+    <alias value="DiagGroup"/>
+  </structure>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/LeistungsschnittstelleProcedure"/>
+    <mode value="source"/>
+    <alias value="Proc"/>
+  </structure>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/Diagnosis"/>
+    <mode value="source"/>
+    <alias value="Diagnosis"/>
+  </structure>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/SessionSectionB"/>
+    <mode value="source"/>
+    <alias value="SessionSectionB"/>
+  </structure>
+  <structure>
+    <url value="http://fhir.ch/ig/ch-alis/StructureDefinition/ServiceAssignment"/>
+    <mode value="source"/>
+    <alias value="ServiceAssignment"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/Bundle"/>
+    <mode value="target"/>
+    <alias value="Bundle"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/ChargeItem"/>
+    <mode value="target"/>
+    <alias value="ChargeItem"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/Extension"/>
+    <mode value="target"/>
+    <alias value="Extension"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/MessageHeader"/>
+    <mode value="target"/>
+    <alias value="MessageHeader"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/BackboneElement"/>
+    <mode value="target"/>
+    <alias value="BackboneElement"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/HumanName"/>
+    <mode value="target"/>
+    <alias value="HumanName"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/Condition"/>
+    <mode value="target"/>
+    <alias value="Condition"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/Encounter"/>
+    <mode value="target"/>
+    <alias value="Encounter"/>
+  </structure>
+  <structure>
+    <url value="http://hl7.org/fhir/StructureDefinition/Procedure"/>
+    <mode value="target"/>
+    <alias value="Procedure"/>
+  </structure>
+  <group>
+    <name value="Alis51ToBundle"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="header"/>
+      <type value="Header"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="bundle"/>
+      <type value="Bundle"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="bundle"/>
+      <source>
+        <context value="header"/>
+      </source>
+      <target>
+        <context value="bundle"/>
+        <contextType value="variable"/>
+        <element value="meta"/>
+        <variable value="meta"/>
+      </target>
+      <target>
+        <context value="meta"/>
+        <contextType value="variable"/>
+        <element value="profile"/>
+        <variable value="profile"/>
+      </target>
+      <target>
+        <context value="profile"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="bundle"/>
+        <contextType value="variable"/>
+        <element value="entry"/>
+        <variable value="e"/>
+      </target>
+      <target>
+        <context value="e"/>
+        <contextType value="variable"/>
+        <element value="resource"/>
+        <variable value="messageHeader"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="MessageHeader"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="messageHeader"/>
+        <contextType value="variable"/>
+        <element value="id"/>
+        <variable value="uuid"/>
+        <transform value="uuid"/>
+      </target>
+      <target>
+        <context value="e"/>
+        <contextType value="variable"/>
+        <element value="fullUrl"/>
+        <transform value="append"/>
+        <parameter>
+          <valueString value="urn:uuid:"/>
+        </parameter>
+        <parameter>
+          <valueId value="uuid"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="bundle"/>
+        <contextType value="variable"/>
+        <element value="entry"/>
+        <variable value="e2"/>
+      </target>
+      <target>
+        <context value="e2"/>
+        <contextType value="variable"/>
+        <element value="resource"/>
+        <variable value="transactionBundle"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Bundle"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="transactionBundle"/>
+        <contextType value="variable"/>
+        <element value="id"/>
+        <variable value="uuid2"/>
+        <transform value="uuid"/>
+      </target>
+      <target>
+        <context value="e2"/>
+        <contextType value="variable"/>
+        <element value="fullUrl"/>
+        <transform value="append"/>
+        <parameter>
+          <valueString value="urn:uuid:"/>
+        </parameter>
+        <parameter>
+          <valueId value="uuid2"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="messageHeader"/>
+        <contextType value="variable"/>
+        <element value="focus"/>
+        <variable value="reference"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="reference"/>
+        <contextType value="variable"/>
+        <element value="type"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="Bundle"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="reference"/>
+        <contextType value="variable"/>
+        <element value="reference"/>
+        <transform value="append"/>
+        <parameter>
+          <valueString value="urn:uuid:"/>
+        </parameter>
+        <parameter>
+          <valueId value="uuid2"/>
+        </parameter>
+      </target>
+      <rule>
+        <name value="messageHeader"/>
+        <source>
+          <context value="header"/>
+        </source>
+        <dependent>
+          <name value="Alis51ToMessageHeader"/>
+          <variable value="header"/>
+          <variable value="messageHeader"/>
+        </dependent>
+      </rule>
+      <rule>
+        <name value="bundleTransaction"/>
+        <source>
+          <context value="header"/>
+        </source>
+        <dependent>
+          <name value="Alis51ToBundleTransaction"/>
+          <variable value="header"/>
+          <variable value="transactionBundle"/>
+        </dependent>
+      </rule>
+    </rule>
+    <rule>
+      <name value="type"/>
+      <source>
+        <context value="header"/>
+      </source>
+      <target>
+        <context value="bundle"/>
+        <contextType value="variable"/>
+        <element value="type"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="message"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="FileCreationDate"/>
+      <source>
+        <context value="header"/>
+        <element value="FileCreationDate"/>
+        <variable value="fileCreationDate"/>
+      </source>
+      <rule>
+        <name value="date"/>
+        <source>
+          <context value="fileCreationDate"/>
+          <element value="data"/>
+          <variable value="date"/>
+        </source>
+        <target>
+          <context value="bundle"/>
+          <contextType value="variable"/>
+          <element value="timestamp"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="date"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="Alis51ToMessageHeader"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="header"/>
+      <type value="Header"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="messageHeader"/>
+      <type value="MessageHeader"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="eventUri"/>
+      <source>
+        <context value="header"/>
+      </source>
+      <target>
+        <context value="messageHeader"/>
+        <contextType value="variable"/>
+        <element value="event"/>
+        <variable value="value"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="uri"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="value"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis-51"/>
+        </parameter>
+      </target>
+      <documentation value="ISSUE1: should be link to a MessageDefinition or a code?"/>
+    </rule>
+    <rule>
+      <name value="source"/>
+      <source>
+        <context value="header"/>
+      </source>
+      <target>
+        <context value="messageHeader"/>
+        <contextType value="variable"/>
+        <element value="source"/>
+        <variable value="source"/>
+      </target>
+      <rule>
+        <name value="version"/>
+        <source>
+          <context value="header"/>
+          <element value="SoftwareReleaseNumber"/>
+          <variable value="version"/>
+        </source>
+        <target>
+          <context value="source"/>
+          <contextType value="variable"/>
+          <element value="version"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="%version.data"/>
+          </parameter>
+        </target>
+      </rule>
+      <rule>
+        <name value="endpoint"/>
+        <source>
+          <context value="header"/>
+        </source>
+        <target>
+          <context value="source"/>
+          <contextType value="variable"/>
+          <element value="endpoint"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="'urn:' + %header.SendingApplication.data + ':' + %header.SendingFacility.data + ':' + %header.SendingServiceCode.data"/>
+          </parameter>
+        </target>
+        <documentation value="ISSUE3: &quot; : &quot;urn:SendingApplication:SendingFacility:SendingServiceCode&quot; -> add urn: in example/docu"/>
+      </rule>
+      <documentation value="ISSUE2: MessageControlID cannot be id of entry, needs to be either fullUrl oder uuid, need to map this to an identifier"/>
+    </rule>
+    <rule>
+      <name value="destination"/>
+      <source>
+        <context value="header"/>
+      </source>
+      <target>
+        <context value="messageHeader"/>
+        <contextType value="variable"/>
+        <element value="destination"/>
+        <variable value="destination"/>
+      </target>
+      <rule>
+        <name value="endpoint"/>
+        <source>
+          <context value="header"/>
+        </source>
+        <target>
+          <context value="destination"/>
+          <contextType value="variable"/>
+          <element value="endpoint"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="'urn:' + %header.ReceivingApplication.data + ':' + %header.ReceivingFacility.data + ':' + %header.ReceivingServiceCode.data"/>
+          </parameter>
+        </target>
+        <documentation value="ISSUE4: &quot; : &quot;urn:ReceivingApplication, ReceivingFacility, ReceivingServiceCode&quot; -> add urn: in example/docu"/>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="Alis51ToBundleTransaction"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="header"/>
+      <type value="Header"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="transactionBundle"/>
+      <type value="Bundle"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="transaction"/>
+      <source>
+        <context value="header"/>
+      </source>
+      <target>
+        <context value="transactionBundle"/>
+        <contextType value="variable"/>
+        <element value="type"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="transaction"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="Visit"/>
+      <source>
+        <context value="header"/>
+        <element value="Visit"/>
+        <variable value="visit"/>
+      </source>
+      <rule>
+        <name value="ServiceToChargeItem"/>
+        <source>
+          <context value="visit"/>
+          <element value="Service"/>
+          <variable value="service"/>
+        </source>
+        <target>
+          <context value="transactionBundle"/>
+          <contextType value="variable"/>
+          <element value="entry"/>
+          <variable value="e"/>
+        </target>
+        <target>
+          <context value="e"/>
+          <contextType value="variable"/>
+          <element value="resource"/>
+          <variable value="chargeItem"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="ChargeItem"/>
+          </parameter>
+        </target>
+        <dependent>
+          <name value="ServiceToChargeItem"/>
+          <variable value="service"/>
+          <variable value="visit"/>
+          <variable value="chargeItem"/>
+          <variable value="e"/>
+        </dependent>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="ServiceToChargeItem"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="service"/>
+      <type value="Service"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="visit"/>
+      <type value="Visit"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="chargeItem"/>
+      <type value="ChargeItem"/>
+      <mode value="target"/>
+    </input>
+    <input>
+      <name value="entry"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="R311LaufnummerItemNumber"/>
+      <source>
+        <context value="service"/>
+        <element value="ItemNumber"/>
+        <variable value="itemNumber"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="id"/>
+        <variable value="uuid"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%itemNumber.data.lower()"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="entry"/>
+        <contextType value="variable"/>
+        <element value="fullUrl"/>
+        <transform value="append"/>
+        <parameter>
+          <valueString value="urn:uuid:"/>
+        </parameter>
+        <parameter>
+          <valueId value="uuid"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="patient"/>
+      <source>
+        <context value="service"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="contained"/>
+        <variable value="patient"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Patient"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="patient"/>
+        <contextType value="variable"/>
+        <element value="id"/>
+        <variable value="containedid"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="pat"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="subject"/>
+        <variable value="ref"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="ref"/>
+        <contextType value="variable"/>
+        <element value="reference"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="'#' + %containedid"/>
+        </parameter>
+      </target>
+      <dependent>
+        <name value="ServiceToPatient"/>
+        <variable value="service"/>
+        <variable value="visit"/>
+        <variable value="patient"/>
+      </dependent>
+    </rule>
+    <rule>
+      <name value="encounter"/>
+      <source>
+        <context value="visit"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="contained"/>
+        <variable value="encounter"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Encounter"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="encounter"/>
+        <contextType value="variable"/>
+        <element value="id"/>
+        <variable value="containedid"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="enc"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="context"/>
+        <variable value="ref"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="ref"/>
+        <contextType value="variable"/>
+        <element value="reference"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="'#' + %containedid"/>
+        </parameter>
+      </target>
+      <rule>
+        <name value="VisitToEncounter"/>
+        <source>
+          <context value="visit"/>
+        </source>
+        <dependent>
+          <name value="VisitToEncounter"/>
+          <variable value="visit"/>
+          <variable value="encounter"/>
+        </dependent>
+      </rule>
+      <rule>
+        <name value="DiagnosisToCondition"/>
+        <source>
+          <context value="service"/>
+          <element value="Diagnosis"/>
+          <variable value="diag"/>
+        </source>
+        <target>
+          <context value="chargeItem"/>
+          <contextType value="variable"/>
+          <element value="contained"/>
+          <variable value="condition"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="Condition"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="condition"/>
+          <contextType value="variable"/>
+          <element value="id"/>
+          <variable value="containedid"/>
+          <transform value="uuid"/>
+        </target>
+        <target>
+          <context value="encounter"/>
+          <contextType value="variable"/>
+          <element value="diagnosis"/>
+          <variable value="diag"/>
+        </target>
+        <target>
+          <context value="diag"/>
+          <contextType value="variable"/>
+          <element value="condition"/>
+          <variable value="ref"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="Reference"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ref"/>
+          <contextType value="variable"/>
+          <element value="reference"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="'#' + %containedid"/>
+          </parameter>
+        </target>
+        <dependent>
+          <name value="DiagnosisToCondition"/>
+          <variable value="diag"/>
+          <variable value="condition"/>
+        </dependent>
+      </rule>
+    </rule>
+    <rule>
+      <name value="POSTDEFAULT"/>
+      <source>
+        <context value="service"/>
+        <condition value="(service.Transaction.exists() = false)"/>
+      </source>
+      <target>
+        <context value="entry"/>
+        <contextType value="variable"/>
+        <element value="request"/>
+        <variable value="request"/>
+      </target>
+      <target>
+        <context value="request"/>
+        <contextType value="variable"/>
+        <element value="method"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="POST"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="request"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="ChargeItem"/>
+        </parameter>
+      </target>
+      <documentation value="visit.DiagGroup as diaggroup-> chargeItem.contained = create('Condition') as cond,"/>
+    </rule>
+    <rule>
+      <name value="POST"/>
+      <source>
+        <context value="service"/>
+        <element value="Transaction"/>
+        <condition value="(service.Transaction = 'insert')"/>
+      </source>
+      <target>
+        <context value="entry"/>
+        <contextType value="variable"/>
+        <element value="request"/>
+        <variable value="request"/>
+      </target>
+      <target>
+        <context value="request"/>
+        <contextType value="variable"/>
+        <element value="method"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="POST"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="request"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="ChargeItem"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="UPDATE"/>
+      <source>
+        <context value="service"/>
+        <element value="Transaction"/>
+        <condition value="(service.Transaction = 'update')"/>
+      </source>
+      <target>
+        <context value="entry"/>
+        <contextType value="variable"/>
+        <element value="request"/>
+        <variable value="request"/>
+      </target>
+      <target>
+        <context value="request"/>
+        <contextType value="variable"/>
+        <element value="method"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="PUT"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="request"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="ChargeItem"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="DELETE"/>
+      <source>
+        <context value="service"/>
+        <element value="Transaction"/>
+        <condition value="(service.Transaction = 'delete')"/>
+      </source>
+      <target>
+        <context value="entry"/>
+        <contextType value="variable"/>
+        <element value="request"/>
+        <variable value="request"/>
+      </target>
+      <target>
+        <context value="request"/>
+        <contextType value="variable"/>
+        <element value="method"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="DELETE"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="request"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="ChargeItem"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R32SitzungSessionID"/>
+      <source>
+        <context value="service"/>
+        <element value="SessionID"/>
+        <variable value="sessionID"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="extension"/>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionid"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <variable value="value"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="string"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="value"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%sessionID.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R33AuftragsnummerOrderID"/>
+      <source>
+        <context value="service"/>
+        <element value="OrderID"/>
+        <variable value="orderID"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="extension"/>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderid"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <variable value="value"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="string"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="value"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%orderID.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R33AuftragsnummerOrderID"/>
+      <source>
+        <context value="service"/>
+        <element value="OrderDate"/>
+        <variable value="orderDate"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="extension"/>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-orderdate"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <variable value="value"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="dateTime"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="value"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%orderDate.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R37FormularbezeichnungForm"/>
+      <source>
+        <context value="service"/>
+        <element value="Form"/>
+        <variable value="form"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="extension"/>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-form"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <variable value="value"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="string"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="value"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%form.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R4ParamterV40ParameterV40"/>
+      <source>
+        <context value="service"/>
+        <element value="ParameterV40"/>
+        <variable value="parameterV40"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="extension"/>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-parameterv40"/>
+        </parameter>
+      </target>
+      <dependent>
+        <name value="ParameterV40ToExtension"/>
+        <variable value="parameterV40"/>
+        <variable value="extension"/>
+      </dependent>
+    </rule>
+    <rule>
+      <name value="billable"/>
+      <source>
+        <context value="service"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="status"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="billable"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="RefItemNumber"/>
+      <source>
+        <context value="service"/>
+        <element value="RefItemNumber"/>
+        <variable value="refItemNumber"/>
+      </source>
+      <rule>
+        <name value="R312ReferenzzuHauptleistungRefItemNumber"/>
+        <source>
+          <context value="refItemNumber"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="chargeItem"/>
+          <contextType value="variable"/>
+          <element value="partOf"/>
+          <variable value="ref"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="Reference"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ref"/>
+          <contextType value="variable"/>
+          <element value="reference"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="'urn:uuid:' + %data.lower()"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ref"/>
+          <contextType value="variable"/>
+          <element value="type"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="ChargeItem"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="R36Tarifposition"/>
+      <source>
+        <context value="service"/>
+        <element value="ServiceItem"/>
+        <variable value="serviceItem"/>
+      </source>
+      <rule>
+        <name value="R36TarifpositionServiceItem"/>
+        <source>
+          <context value="serviceItem"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="chargeItem"/>
+          <contextType value="variable"/>
+          <element value="code"/>
+          <variable value="cc"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="CodeableConcept"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="cc"/>
+          <contextType value="variable"/>
+          <element value="coding"/>
+          <variable value="coding"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="Coding"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="code"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="data"/>
+          </parameter>
+        </target>
+        <rule>
+          <name value="servicType"/>
+          <source>
+            <context value="service"/>
+            <element value="ServiceType"/>
+            <variable value="serviceType"/>
+          </source>
+          <rule>
+            <name value="R35KatalogServiceType"/>
+            <source>
+              <context value="serviceType"/>
+              <element value="data"/>
+              <variable value="data"/>
+            </source>
+            <target>
+              <context value="coding"/>
+              <contextType value="variable"/>
+              <element value="system"/>
+              <transform value="translate"/>
+              <parameter>
+                <valueId value="data"/>
+              </parameter>
+              <parameter>
+                <valueString value="#serviceMap"/>
+              </parameter>
+              <parameter>
+                <valueString value="code"/>
+              </parameter>
+            </target>
+          </rule>
+        </rule>
+      </rule>
+    </rule>
+    <rule>
+      <name value="R31LeistungsdatumServiceDate"/>
+      <source>
+        <context value="service"/>
+        <element value="ServiceDate"/>
+        <variable value="serviceData"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="occurrence"/>
+        <variable value="occurrence"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="dateTime"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="occurrence"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%serviceData.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R315PersonV40PersonV40"/>
+      <source>
+        <context value="service"/>
+        <element value="PersonV40"/>
+        <variable value="personV40"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="performer"/>
+        <variable value="performer"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="BackboneElement"/>
+        </parameter>
+      </target>
+      <dependent>
+        <name value="PersonV40ToPerformer"/>
+        <variable value="personV40"/>
+        <variable value="performer"/>
+      </dependent>
+    </rule>
+    <rule>
+      <name value="R39ErbringendeOrganizationProviderID"/>
+      <source>
+        <context value="service"/>
+        <element value="ProviderID"/>
+        <variable value="providerID"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="performingOrganization"/>
+        <variable value="reference"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="reference"/>
+        <contextType value="variable"/>
+        <element value="display"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%providerID.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R34AuftraggebendeKostenstelleReferrerID"/>
+      <source>
+        <context value="service"/>
+        <element value="ReferrerID"/>
+        <variable value="referrerID"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="costCenter"/>
+        <variable value="reference"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="reference"/>
+        <contextType value="variable"/>
+        <element value="display"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%referrerID.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R313AnzahlQuantity"/>
+      <source>
+        <context value="service"/>
+        <element value="Quantity"/>
+        <variable value="quantity"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="quantity"/>
+        <variable value="q"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Quantity"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="q"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <variable value="value"/>
+      </target>
+      <target>
+        <context value="value"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%quantity.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R33Taxpunktwert"/>
+      <source>
+        <context value="service"/>
+        <element value="TPValue"/>
+        <variable value="tpvalue"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="extension"/>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-tpvalue"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <variable value="value"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="decimal"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="value"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%tpvalue.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R310ErfasserEnteredBy"/>
+      <source>
+        <context value="service"/>
+        <element value="EnteredBy"/>
+        <variable value="enteredBy"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="enterer"/>
+        <variable value="reference"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="reference"/>
+        <contextType value="variable"/>
+        <element value="display"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%enteredBy.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R38ErfassungsdatumEnteredDateTime"/>
+      <source>
+        <context value="service"/>
+        <element value="EnteredDateTime"/>
+        <variable value="enteredDateTime"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="enteredDate"/>
+        <variable value="enteredDate"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="dateTime"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="enteredDate"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%enteredDateTime.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="patientContactID"/>
+      <source>
+        <context value="service"/>
+        <element value="PatientContactID"/>
+        <variable value="patientContactID"/>
+      </source>
+      <rule>
+        <name value="PatientContactID"/>
+        <source>
+          <context value="patientContactID"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="chargeItem"/>
+          <contextType value="variable"/>
+          <element value="identifier"/>
+          <variable value="identifier"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="Identifier"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="identifier"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="costweight"/>
+      <source>
+        <context value="service"/>
+        <element value="Costweight"/>
+        <variable value="costweight"/>
+      </source>
+      <rule>
+        <name value="Costweight"/>
+        <source>
+          <context value="costweight"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="chargeItem"/>
+          <contextType value="variable"/>
+          <element value="factorOverride"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="SessionAnnexBToExtension"/>
+      <source>
+        <context value="service"/>
+        <element value="SessionSectionB"/>
+        <variable value="sessionSectionB"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="ext"/>
+      </target>
+      <target>
+        <context value="ext"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-sessionannexb"/>
+        </parameter>
+      </target>
+      <dependent>
+        <name value="SessionAnnexBToExtension"/>
+        <variable value="sessionSectionB"/>
+        <variable value="ext"/>
+      </dependent>
+    </rule>
+    <rule>
+      <name value="ServiceAssignmentToExtension"/>
+      <source>
+        <context value="service"/>
+        <element value="ServiceAssignment"/>
+        <variable value="serviceAssignment"/>
+      </source>
+      <target>
+        <context value="chargeItem"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="ext"/>
+      </target>
+      <target>
+        <context value="ext"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-serviceassignment"/>
+        </parameter>
+      </target>
+      <dependent>
+        <name value="ServiceAssignmentToExtension"/>
+        <variable value="serviceAssignment"/>
+        <variable value="ext"/>
+      </dependent>
+    </rule>
+  </group>
+  <group>
+    <name value="PersonV40ToPerformer"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="personV40"/>
+      <type value="PersonV40"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="performer"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="R3152PersonIDPersonID"/>
+      <source>
+        <context value="personV40"/>
+        <element value="PersonTyp"/>
+        <variable value="personTyp"/>
+      </source>
+      <target>
+        <context value="performer"/>
+        <contextType value="variable"/>
+        <element value="function"/>
+        <variable value="cc"/>
+      </target>
+      <target>
+        <context value="cc"/>
+        <contextType value="variable"/>
+        <element value="coding"/>
+        <variable value="coding"/>
+      </target>
+      <target>
+        <context value="coding"/>
+        <contextType value="variable"/>
+        <element value="system"/>
+        <variable value="system"/>
+      </target>
+      <target>
+        <context value="system"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/CodeSystem/ch-alis-persontyp"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="coding"/>
+        <contextType value="variable"/>
+        <element value="code"/>
+        <variable value="code"/>
+      </target>
+      <target>
+        <context value="code"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueId value="personTyp"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R3152PersonIDPersonID"/>
+      <source>
+        <context value="personV40"/>
+        <element value="PersonID"/>
+        <variable value="personId"/>
+      </source>
+      <target>
+        <context value="performer"/>
+        <contextType value="variable"/>
+        <element value="actor"/>
+        <variable value="reference"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="reference"/>
+        <contextType value="variable"/>
+        <element value="display"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%personId.data"/>
+        </parameter>
+      </target>
+    </rule>
+  </group>
+  <group>
+    <name value="ParameterV40ToExtension"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="parameterV40"/>
+      <type value="ParameterV40"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="extension"/>
+      <type value="Extension"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="ParamTyp"/>
+      <source>
+        <context value="parameterV40"/>
+        <element value="ParamTyp"/>
+        <variable value="paramTyp"/>
+      </source>
+      <target>
+        <context value="extension"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="extInner"/>
+      </target>
+      <dependent>
+        <name value="InnerExtensionParamTyp"/>
+        <variable value="paramTyp"/>
+        <variable value="extInner"/>
+      </dependent>
+    </rule>
+    <rule>
+      <name value="ParamValue"/>
+      <source>
+        <context value="parameterV40"/>
+        <element value="ParamValue"/>
+        <variable value="paramValue"/>
+      </source>
+      <rule>
+        <name value="data"/>
+        <source>
+          <context value="paramValue"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="extension"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="extInner"/>
+        </target>
+        <dependent>
+          <name value="InnerExtensionParamValue"/>
+          <variable value="data"/>
+          <variable value="extInner"/>
+        </dependent>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="InnerExtensionParamTyp"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="src"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="ext"/>
+      <type value="Extension"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="url"/>
+      <source>
+        <context value="src"/>
+      </source>
+      <target>
+        <context value="ext"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="ParamTyp"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="string"/>
+      <source>
+        <context value="src"/>
+      </source>
+      <target>
+        <context value="ext"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <variable value="cc"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="CodeableConcept"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="cc"/>
+        <contextType value="variable"/>
+        <element value="text"/>
+        <variable value="text"/>
+      </target>
+      <target>
+        <context value="text"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueId value="src"/>
+        </parameter>
+      </target>
+    </rule>
+  </group>
+  <group>
+    <name value="InnerExtensionParamValue"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="src"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="ext"/>
+      <type value="Extension"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="url"/>
+      <source>
+        <context value="src"/>
+      </source>
+      <target>
+        <context value="ext"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="ParamValue"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="string"/>
+      <source>
+        <context value="src"/>
+      </source>
+      <target>
+        <context value="ext"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <variable value="string"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="string"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="string"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueId value="src"/>
+        </parameter>
+      </target>
+    </rule>
+  </group>
+  <group>
+    <name value="ServiceToPatientName"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="visit"/>
+      <type value="Visit"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="name"/>
+      <type value="HumanName"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="patientName"/>
+      <source>
+        <context value="visit"/>
+        <element value="PatientName"/>
+        <variable value="patientName"/>
+      </source>
+      <rule>
+        <name value="R23PatientNamePatientName"/>
+        <source>
+          <context value="patientName"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="name"/>
+          <contextType value="variable"/>
+          <element value="family"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="patientGivenName"/>
+      <source>
+        <context value="visit"/>
+        <element value="PatientGivenName"/>
+        <variable value="patientGivenName"/>
+      </source>
+      <rule>
+        <name value="R24PatientVornamePatientGivenName"/>
+        <source>
+          <context value="patientGivenName"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="name"/>
+          <contextType value="variable"/>
+          <element value="given"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="ServiceToPatient"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="service"/>
+      <type value="Service"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="visit"/>
+      <type value="Visit"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="patient"/>
+      <type value="Patient"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="patientID"/>
+      <source>
+        <context value="visit"/>
+        <element value="PatientID"/>
+        <variable value="patientID"/>
+      </source>
+      <rule>
+        <name value="R22PatientPIDPatientID"/>
+        <source>
+          <context value="patientID"/>
+          <element value="data"/>
+          <variable value="patId"/>
+        </source>
+        <target>
+          <context value="patient"/>
+          <contextType value="variable"/>
+          <element value="identifier"/>
+          <variable value="identifier"/>
+        </target>
+        <target>
+          <context value="identifier"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="value"/>
+        </target>
+        <target>
+          <context value="value"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="patId"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="identifier"/>
+          <contextType value="variable"/>
+          <element value="system"/>
+          <variable value="idsystem"/>
+        </target>
+        <target>
+          <context value="idsystem"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="http://www.example.ch/patienteniddomain"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="identifier"/>
+          <contextType value="variable"/>
+          <element value="type"/>
+          <variable value="type"/>
+        </target>
+        <target>
+          <context value="type"/>
+          <contextType value="variable"/>
+          <element value="coding"/>
+          <variable value="coding"/>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="system"/>
+          <variable value="system"/>
+        </target>
+        <target>
+          <context value="system"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="code"/>
+          <variable value="code"/>
+        </target>
+        <target>
+          <context value="code"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="MR"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="ServiceToPatient"/>
+      <source>
+        <context value="visit"/>
+        <condition value="(visit.PatientName or visit.PatientGivenName)"/>
+      </source>
+      <target>
+        <context value="patient"/>
+        <contextType value="variable"/>
+        <element value="name"/>
+        <variable value="name"/>
+      </target>
+      <dependent>
+        <name value="ServiceToPatientName"/>
+        <variable value="visit"/>
+        <variable value="name"/>
+      </dependent><documentation value="&lt;!-- 2.2 Patient.PID (PatientID) -->"/>
+    </rule>
+    <rule>
+      <name value="R26PatientGeschlechtPatientGender"/>
+      <source>
+        <context value="visit"/>
+        <element value="PatientGender"/>
+        <variable value="gender"/>
+      </source>
+      <rule>
+        <name value="gender"/>
+        <source>
+          <context value="gender"/>
+          <element value="data"/>
+          <variable value="v"/>
+        </source>
+        <target>
+          <context value="patient"/>
+          <contextType value="variable"/>
+          <element value="gender"/>
+          <transform value="translate"/>
+          <parameter>
+            <valueId value="v"/>
+          </parameter>
+          <parameter>
+            <valueString value="#gender"/>
+          </parameter>
+          <parameter>
+            <valueString value="code"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="R25PatientGebDatumPatientBirthDate"/>
+      <source>
+        <context value="visit"/>
+        <element value="PatientBirthDate"/>
+        <variable value="birthDate"/>
+      </source>
+      <rule>
+        <name value="birthDate"/>
+        <source>
+          <context value="birthDate"/>
+          <element value="data"/>
+          <variable value="v"/>
+        </source>
+        <target>
+          <context value="patient"/>
+          <contextType value="variable"/>
+          <element value="birthDate"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="v"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="DiagnosisToCondition"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="diagnosis"/>
+      <type value="Diagnosis"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="cond"/>
+      <type value="Condition"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="containedpatient"/>
+      <source>
+        <context value="diagnosis"/>
+      </source>
+      <target>
+        <context value="cond"/>
+        <contextType value="variable"/>
+        <element value="subject"/>
+        <variable value="ref"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="ref"/>
+        <contextType value="variable"/>
+        <element value="reference"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="#pat"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="Identifier"/>
+      <source>
+        <context value="diagnosis"/>
+        <element value="Identifier"/>
+        <variable value="identifier"/>
+      </source>
+      <rule>
+        <name value="identifier"/>
+        <source>
+          <context value="identifier"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="cond"/>
+          <contextType value="variable"/>
+          <element value="identifier"/>
+          <variable value="identifier"/>
+        </target>
+        <target>
+          <context value="identifier"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="data"/>
+          </parameter>
+        </target>
+      </rule>
+      <documentation value="* Identifier 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text &quot;TODO&quot;"/>
+    </rule>
+    <rule>
+      <name value="R316ProzedurcodeCode"/>
+      <source>
+        <context value="diagnosis"/>
+        <element value="DiagnosisCode"/>
+        <variable value="code"/>
+      </source>
+      <target>
+        <context value="cond"/>
+        <contextType value="variable"/>
+        <element value="code"/>
+        <variable value="cc"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="CodeableConcept"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="cc"/>
+        <contextType value="variable"/>
+        <element value="coding"/>
+        <variable value="coding"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Coding"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="coding"/>
+        <contextType value="variable"/>
+        <element value="code"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%code.data"/>
+        </parameter>
+      </target>
+      <rule>
+        <name value="serviceType"/>
+        <source>
+          <context value="diagnosis"/>
+          <element value="DiagnosisSystem"/>
+          <variable value="category"/>
+        </source>
+        <rule>
+          <name value="data"/>
+          <source>
+            <context value="category"/>
+            <element value="data"/>
+            <variable value="data"/>
+            <condition value="(startsWith('ICD'))"/>
+          </source>
+          <target>
+            <context value="coding"/>
+            <contextType value="variable"/>
+            <element value="system"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="http://hl7.org/fhir/sid/icd-10"/>
+            </parameter>
+          </target>
+        </rule>
+      </rule>
+      <rule>
+        <name value="version"/>
+        <source>
+          <context value="diagnosis"/>
+          <element value="DiagnosisVersion"/>
+          <variable value="version"/>
+        </source>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="version"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="%version.data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="DiagnosisConfidential"/>
+      <source>
+        <context value="diagnosis"/>
+        <element value="DiagnosisConfidential"/>
+        <variable value="DiagnosisConfidential"/>
+      </source>
+      <rule>
+        <name value="truefalse01"/>
+        <source>
+          <context value="DiagnosisConfidential"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="cond"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="ext1"/>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="url"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-diagnosis"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="value"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="boolean"/>
+          </parameter>
+        </target>
+        <rule>
+          <name value="DiagnosisConfidential"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = '1'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="true"/>
+            </parameter>
+          </target>
+        </rule>
+        <rule>
+          <name value="DiagnosisConfidential"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = '0'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="false"/>
+            </parameter>
+          </target>
+        </rule>
+        <rule>
+          <name value="DiagnosisConfidential"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = 'true'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="true"/>
+            </parameter>
+          </target>
+        </rule>
+        <rule>
+          <name value="DiagnosisConfidential"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = 'false'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="false"/>
+            </parameter>
+          </target>
+        </rule>
+      </rule>
+      <documentation value="TODO system is not yet correct"/>
+    </rule>
+    <rule>
+      <name value="onsetDateTime"/>
+      <source>
+        <context value="diagnosis"/>
+        <element value="OnSetDateTime"/>
+        <variable value="onsetDateTime"/>
+      </source>
+      <target>
+        <context value="cond"/>
+        <contextType value="variable"/>
+        <element value="onset"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%onsetDateTime.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="laterality"/>
+      <source>
+        <context value="diagnosis"/>
+        <element value="Laterality"/>
+        <variable value="laterality"/>
+      </source>
+      <rule>
+        <name value="R318SeiteLaterality"/>
+        <source>
+          <context value="laterality"/>
+          <element value="data"/>
+          <variable value="v"/>
+        </source>
+        <target>
+          <context value="cond"/>
+          <contextType value="variable"/>
+          <element value="bodySite"/>
+          <variable value="cc"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="CodeableConcept"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="cc"/>
+          <contextType value="variable"/>
+          <element value="coding"/>
+          <variable value="coding"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="Coding"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="code"/>
+          <transform value="translate"/>
+          <parameter>
+            <valueId value="v"/>
+          </parameter>
+          <parameter>
+            <valueString value="#laterality"/>
+          </parameter>
+          <parameter>
+            <valueString value="code"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="system"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="http://snomed.info/sct"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="display"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="%diagnosis.LateralityDisplay.data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="DiagGroupToCondition"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="diagGroup"/>
+      <type value="DiagGroup"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="cond"/>
+      <type value="Condition"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="containedpatient"/>
+      <source>
+        <context value="diagGroup"/>
+      </source>
+      <target>
+        <context value="cond"/>
+        <contextType value="variable"/>
+        <element value="subject"/>
+        <variable value="ref"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="ref"/>
+        <contextType value="variable"/>
+        <element value="reference"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="#pat"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R291DiagnosecodeDiagCode"/>
+      <source>
+        <context value="diagGroup"/>
+        <element value="DiagCode"/>
+        <variable value="data"/>
+      </source>
+      <target>
+        <context value="cond"/>
+        <contextType value="variable"/>
+        <element value="code"/>
+        <variable value="cc"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="CodeableConcept"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="cc"/>
+        <contextType value="variable"/>
+        <element value="coding"/>
+        <variable value="coding"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Coding"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="coding"/>
+        <contextType value="variable"/>
+        <element value="code"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueId value="data"/>
+        </parameter>
+      </target>
+      <rule>
+        <name value="serviceType"/>
+        <source>
+          <context value="diagGroup"/>
+          <element value="DiagCatType"/>
+          <variable value="diagCatType"/>
+        </source>
+        <rule>
+          <name value="R293KatalogtypDiagCatType"/>
+          <source>
+            <context value="diagCatType"/>
+            <element value="data"/>
+            <variable value="data"/>
+          </source>
+          <target>
+            <context value="coding"/>
+            <contextType value="variable"/>
+            <element value="system"/>
+            <transform value="translate"/>
+            <parameter>
+              <valueId value="data"/>
+            </parameter>
+            <parameter>
+              <valueString value="#serviceMap"/>
+            </parameter>
+            <parameter>
+              <valueString value="code"/>
+            </parameter>
+          </target>
+        </rule>
+      </rule>
+    </rule>
+    <rule>
+      <name value="R317DatumZeitPerformedDateTime"/>
+      <source>
+        <context value="diagGroup"/>
+        <element value="OnsetDateTime"/>
+        <variable value="performedDateTime"/>
+      </source>
+      <target>
+        <context value="cond"/>
+        <contextType value="variable"/>
+        <element value="recordedDate"/>
+        <transform value="evaluate"/>
+        <parameter>
+          <valueString value="%performedDateTime.data"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="laterality"/>
+      <source>
+        <context value="diagGroup"/>
+        <element value="Laterality"/>
+        <variable value="laterality"/>
+      </source>
+      <rule>
+        <name value="R318SeiteLaterality"/>
+        <source>
+          <context value="laterality"/>
+          <element value="data"/>
+          <variable value="v"/>
+        </source>
+        <target>
+          <context value="cond"/>
+          <contextType value="variable"/>
+          <element value="bodySite"/>
+          <variable value="cc"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="CodeableConcept"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="cc"/>
+          <contextType value="variable"/>
+          <element value="coding"/>
+          <variable value="coding"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="Coding"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="code"/>
+          <transform value="translate"/>
+          <parameter>
+            <valueId value="v"/>
+          </parameter>
+          <parameter>
+            <valueString value="#laterality"/>
+          </parameter>
+          <parameter>
+            <valueString value="code"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="system"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="http://snomed.info/sct"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="display"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="%proc.LateralityDisplay.data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="ServiceAssignmentToExtension"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="serviceAssignment"/>
+      <type value="ServiceAssignment"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="ext"/>
+      <type value="Extension"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="SessionIDSectionB"/>
+      <source>
+        <context value="serviceAssignment"/>
+        <element value="OrderingProviderID"/>
+        <variable value="OrderingProviderID"/>
+      </source>
+      <rule>
+        <name value="OrderingProviderID"/>
+        <source>
+          <context value="OrderingProviderID"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="ext"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="ext1"/>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="url"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="OrderingProviderID"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="string"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="string"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="string"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="%data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="AssignedSessionSectionB"/>
+      <source>
+        <context value="serviceAssignment"/>
+        <element value="OrderReportDate"/>
+        <variable value="OrderReportDate"/>
+      </source>
+      <rule>
+        <name value="AssignedSessionSectionB"/>
+        <source>
+          <context value="OrderReportDate"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="ext"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="ext1"/>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="url"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="OrderReportDate"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="datetime"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="dateTime"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="datetime"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="%data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="FollowUpOrder"/>
+      <source>
+        <context value="serviceAssignment"/>
+        <element value="FollowUpOrder"/>
+        <variable value="FollowUpOrder"/>
+      </source>
+      <rule>
+        <name value="truefalse01"/>
+        <source>
+          <context value="FollowUpOrder"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="ext"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="ext1"/>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="url"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="FollowUpOrder"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="value"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="boolean"/>
+          </parameter>
+        </target>
+        <rule>
+          <name value="FollowUpOrder"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = '1'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="true"/>
+            </parameter>
+          </target>
+        </rule>
+        <rule>
+          <name value="FollowUpOrder"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = '0'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="false"/>
+            </parameter>
+          </target>
+        </rule>
+        <rule>
+          <name value="FollowUpOrder"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = 'true'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="true"/>
+            </parameter>
+          </target>
+        </rule>
+        <rule>
+          <name value="FollowUpOrder"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = 'false'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="false"/>
+            </parameter>
+          </target>
+        </rule>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="SessionAnnexBToExtension"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="sessionb"/>
+      <type value="SessionSectionB"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="ext"/>
+      <type value="Extension"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="SessionIDSectionB"/>
+      <source>
+        <context value="sessionb"/>
+        <element value="SessionIDSectionB"/>
+        <variable value="SessionIDSectionB"/>
+      </source>
+      <rule>
+        <name value="SessionIDSectionB"/>
+        <source>
+          <context value="SessionIDSectionB"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="ext"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="ext1"/>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="url"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="SessionIDSectionB"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="uuid"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="uuid"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="uuid"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="'urn:uuid:' + %data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="AssignedSessionSectionB"/>
+      <source>
+        <context value="sessionb"/>
+        <element value="AssignedSessionSectionB"/>
+        <variable value="AssignedSessionSectionB"/>
+      </source>
+      <rule>
+        <name value="AssignedSessionSectionB"/>
+        <source>
+          <context value="AssignedSessionSectionB"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="ext"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="ext1"/>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="url"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="AssignedSessionSectionB"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="uuid"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="uuid"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="uuid"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="'urn:uuid:' + %data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="AssignedSessionSectionB"/>
+      <source>
+        <context value="sessionb"/>
+        <element value="TrueSessionSectionB"/>
+        <variable value="TrueSessionSectionB"/>
+      </source>
+      <rule>
+        <name value="truefalse01"/>
+        <source>
+          <context value="TrueSessionSectionB"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="ext"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="ext1"/>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="url"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="TrueSessionSectionB"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="value"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="boolean"/>
+          </parameter>
+        </target>
+        <rule>
+          <name value="TrueSessionSectionB"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = '1'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="true"/>
+            </parameter>
+          </target>
+        </rule>
+        <rule>
+          <name value="TrueSessionSectionB"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = '0'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="false"/>
+            </parameter>
+          </target>
+        </rule>
+        <rule>
+          <name value="TrueSessionSectionB"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = 'true'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="true"/>
+            </parameter>
+          </target>
+        </rule>
+        <rule>
+          <name value="TrueSessionSectionB"/>
+          <source>
+            <context value="data"/>
+            <condition value="data = 'false'"/>
+          </source>
+          <target>
+            <context value="value"/>
+            <contextType value="variable"/>
+            <element value="value"/>
+            <transform value="copy"/>
+            <parameter>
+              <valueString value="false"/>
+            </parameter>
+          </target>
+        </rule>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="TerminationToExtension"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="visit"/>
+      <type value="Visit"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="ext"/>
+      <type value="Extension"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="TerminationVisit"/>
+      <source>
+        <context value="visit"/>
+        <element value="TerminationVisit"/>
+        <variable value="visit"/>
+      </source>
+      <rule>
+        <name value="R27FallAbschlussTerminationVisit"/>
+        <source>
+          <context value="visit"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="ext"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="ext1"/>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="url"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="TerminationVisit"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="date"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="date"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="date"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+    <rule>
+      <name value="TerminationVisit"/>
+      <source>
+        <context value="visit"/>
+        <element value="TerminationReason"/>
+        <variable value="visit"/>
+      </source>
+      <rule>
+        <name value="R28FallAbschlussgrundTerminationReason"/>
+        <source>
+          <context value="visit"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="ext"/>
+          <contextType value="variable"/>
+          <element value="extension"/>
+          <variable value="ext1"/>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="url"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="TerminationReason"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="ext1"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="string"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="string"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="string"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+  </group>
+  <group>
+    <name value="VisitToEncounter"/>
+    <typeMode value="none"/>
+    <input>
+      <name value="visit"/>
+      <type value="Visit"/>
+      <mode value="source"/>
+    </input>
+    <input>
+      <name value="encounter"/>
+      <type value="Encounter"/>
+      <mode value="target"/>
+    </input>
+    <rule>
+      <name value="TerminationToExtension"/>
+      <source>
+        <context value="visit"/>
+        <condition value="(visit.TerminationVisit or visit.TerminationReason)"/>
+      </source>
+      <target>
+        <context value="encounter"/>
+        <contextType value="variable"/>
+        <element value="extension"/>
+        <variable value="ext"/>
+      </target>
+      <target>
+        <context value="ext"/>
+        <contextType value="variable"/>
+        <element value="url"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-ext-termination"/>
+        </parameter>
+      </target>
+      <dependent>
+        <name value="TerminationToExtension"/>
+        <variable value="visit"/>
+        <variable value="ext"/>
+      </dependent>
+    </rule>
+    <rule>
+      <name value="encounterID"/>
+      <source>
+        <context value="visit"/>
+        <element value="VisitNumber"/>
+        <variable value="visitNumber"/>
+      </source>
+      <rule>
+        <name value="R21FallVisitNumber"/>
+        <source>
+          <context value="visitNumber"/>
+          <element value="data"/>
+          <variable value="data"/>
+        </source>
+        <target>
+          <context value="encounter"/>
+          <contextType value="variable"/>
+          <element value="identifier"/>
+          <variable value="identifier"/>
+          <transform value="create"/>
+          <parameter>
+            <valueString value="Identifier"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="identifier"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <variable value="value"/>
+        </target>
+        <target>
+          <context value="value"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueId value="data"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="identifier"/>
+          <contextType value="variable"/>
+          <element value="system"/>
+          <variable value="idsystem"/>
+        </target>
+        <target>
+          <context value="idsystem"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="http://www.example.ch/fallnummerdomain"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="identifier"/>
+          <contextType value="variable"/>
+          <element value="type"/>
+          <variable value="type"/>
+        </target>
+        <target>
+          <context value="type"/>
+          <contextType value="variable"/>
+          <element value="coding"/>
+          <variable value="coding"/>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="system"/>
+          <variable value="system"/>
+        </target>
+        <target>
+          <context value="system"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+          </parameter>
+        </target>
+        <target>
+          <context value="coding"/>
+          <contextType value="variable"/>
+          <element value="code"/>
+          <variable value="code"/>
+        </target>
+        <target>
+          <context value="code"/>
+          <contextType value="variable"/>
+          <element value="value"/>
+          <transform value="copy"/>
+          <parameter>
+            <valueString value="VN"/>
+          </parameter>
+        </target>
+        <documentation value="ISSUE8: what to do with falldomain? &lt;system value=&quot;http://www.example.ch/fallnummerdomain&quot;/>"/>
+      </rule>
+    </rule>
+    <rule>
+      <name value="Finished"/>
+      <source>
+        <context value="visit"/>
+      </source>
+      <target>
+        <context value="encounter"/>
+        <contextType value="variable"/>
+        <element value="status"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="finished"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R21FallVisitNumber"/>
+      <source>
+        <context value="visit"/>
+      </source>
+      <target>
+        <context value="encounter"/>
+        <contextType value="variable"/>
+        <element value="class"/>
+        <variable value="coding"/>
+      </target>
+      <target>
+        <context value="coding"/>
+        <contextType value="variable"/>
+        <element value="system"/>
+        <variable value="system"/>
+      </target>
+      <target>
+        <context value="system"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="http://terminology.hl7.org/CodeSystem/v3-ActCode"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="coding"/>
+        <contextType value="variable"/>
+        <element value="code"/>
+        <variable value="code"/>
+      </target>
+      <target>
+        <context value="code"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="IMP"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="coding"/>
+        <contextType value="variable"/>
+        <element value="display"/>
+        <variable value="display"/>
+      </target>
+      <target>
+        <context value="display"/>
+        <contextType value="variable"/>
+        <element value="value"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="inpatient encounter"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="subject"/>
+      <source>
+        <context value="visit"/>
+      </source>
+      <target>
+        <context value="encounter"/>
+        <contextType value="variable"/>
+        <element value="subject"/>
+        <variable value="ref"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="ref"/>
+        <contextType value="variable"/>
+        <element value="reference"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="#pat"/>
+        </parameter>
+      </target>
+    </rule>
+    <rule>
+      <name value="R29DiagnoseGruppeDiagGroup"/>
+      <source>
+        <context value="visit"/>
+        <element value="DiagGroup"/>
+        <variable value="diaggroup"/>
+      </source>
+      <target>
+        <context value="encounter"/>
+        <contextType value="variable"/>
+        <element value="diagnosis"/>
+        <variable value="diag"/>
+      </target>
+      <target>
+        <context value="diag"/>
+        <contextType value="variable"/>
+        <element value="condition"/>
+        <variable value="ref"/>
+        <transform value="create"/>
+        <parameter>
+          <valueString value="Reference"/>
+        </parameter>
+      </target>
+      <target>
+        <context value="ref"/>
+        <contextType value="variable"/>
+        <element value="reference"/>
+        <transform value="copy"/>
+        <parameter>
+          <valueString value="#cond"/>
+        </parameter>
+      </target>
+      <rule>
+        <name value="R292DiagnosetypDiagType"/>
+        <source>
+          <context value="diaggroup"/>
+          <element value="DiagType"/>
+          <variable value="diagType"/>
+        </source>
+        <target>
+          <context value="diag"/>
+          <contextType value="variable"/>
+          <element value="use"/>
+          <variable value="use"/>
+        </target>
+        <target>
+          <context value="use"/>
+          <contextType value="variable"/>
+          <element value="text"/>
+          <transform value="evaluate"/>
+          <parameter>
+            <valueString value="%diagType.data"/>
+          </parameter>
+        </target>
+      </rule>
+    </rule>
+  </group>
+</StructureMap>

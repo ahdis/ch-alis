@@ -24,13 +24,19 @@ Description: "Base definition for the ChargeItem resource in the context of ALIS
     ChAlisExtensionOrderId named OrderID 0..1 and
     ChAlisExtensionOrderDate named OrderDate 0..1 and
     ChAlisExtensionForm named Form 0..1 and
+    ChAlisExtensionTPValue named TPValue 0..1 and
+    ChAlisExtensionSessionAnnexB named SessionAnnexB 0..1 and
+    ChAlisExtensionServiceAssignment named ServiceAssignment 0..1 and
     ChAlisExtensionParameterV40 named ParameterV40 0..*
 * extension[SessionID] ^short = "SessionID"
 * extension[PatientContactID] ^short = "PatientContactID"
 * extension[OrderID] ^short = "OrderID"
 * extension[OrderDate] ^short = "OrderDate"
+* extension[TPValue] ^short = "TPValue"
+* extension[SessionAnnexB] ^short = "SessionAnnexB"
 * extension[Form] ^short = "Form"
 * extension[ParameterV40] ^short = "ParameterV40"
+* extension[ServiceAssignment] ^short = "ServiceAssignment"
 * identifier ^short = "PatientContactID"
 * status ^short = "billable | not-billable"
 * partOf ..1

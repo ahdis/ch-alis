@@ -8,6 +8,7 @@ Source: ChAlisChargeItem
 * extension[SessionID] -> "SessionID"
 * extension[OrderID] -> "OrderID"
 * extension[OrderDate] -> "OrderDate"
+* extension[TPValue] -> "TPValue"
 * extension[Form] -> "Form"
 * extension[ParameterV40] -> "ParameterV40"
 * identifier -> "PatientContactID"

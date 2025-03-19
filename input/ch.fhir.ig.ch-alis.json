@@ -68,18 +68,34 @@
 			},
 			{
 				"reference": {
-					"reference": "Bundle/Alis5LKAAT"
+					"reference": "Bundle/Alis51LabServiceAssignment"
 				},
-				"name": "ALIS 5.0 FHIR Bundle Alis5LKAAT",
-				"description": "LKAAT",
+				"name": "ALIS 5.1 FHIR Bundle Alis51LabServiceAssignment",
+				"description": "Alis51LabServiceAssignment",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
 			},
 			{
 				"reference": {
-					"reference": "Bundle/Alis5Analysenliste"
+					"reference": "Bundle/Alis51LKAATIcd"
 				},
-				"name": "ALIS 5.0 FHIR Bundle Alis5Analysenliste",
-				"description": "Analysenliste mit OrderDate",
+				"name": "ALIS 5.1 FHIR Bundle Alis51LKAATIcd",
+				"description": "Alis51LKAATIcd",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
+			},
+			{
+				"reference": {
+					"reference": "Bundle/Alis51LKAATIcdSessionB"
+				},
+				"name": "ALIS 5.1 FHIR Bundle Alis51LKAATIcdSessionB",
+				"description": "Alis51LKAATIcdSessionB",
+				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
+			},
+			{
+				"reference": {
+					"reference": "Bundle/Alis51PauschaleKomplett"
+				},
+				"name": "ALIS 5.1 FHIR Bundle Alis51PauschaleKomplett",
+				"description": "Alis51PauschaleKomplett",
 				"exampleCanonical": "http://fhir.ch/ig/ch-alis/StructureDefinition/ch-alis-message"
 			},
 			{
@@ -252,10 +268,10 @@
 			},
 			{
 				"reference": {
-					"reference": "StructureMap/Alis43ToBundle"
+					"reference": "StructureMap/Alis51ToBundle"
 				},
 				"name": "Alis43ToBundle",
-				"description": "Convert ALIS43 XML to a Bundle according to the CH ALIS implementation guide."
+				"description": "Convert ALIS51 XML to a Bundle according to the CH ALIS implementation guide."
 			},
 			{
 				"extension": [
