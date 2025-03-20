@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Header xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="5.1" xsi:noNamespaceSchemaLocation="LeistungsschnittstelleV51.xsd">
+	<ReceivingApplication>TARDOC Test</ReceivingApplication>
+	<ReceivingFacility>1234</ReceivingFacility>
+	<ReceivingServiceCode>Radiologie</ReceivingServiceCode>
+	<SendingApplication>ALIS</SendingApplication>
+	<SendingFacility>4321</SendingFacility>
+	<SendingServiceCode>4321</SendingServiceCode>
+	<MessageControlID>1262557</MessageControlID>
+	<SoftwareReleaseNumber>1.1.0</SoftwareReleaseNumber>
+	<FileCreationDate>2024-04-05T10:06:44Z</FileCreationDate>
+	<Visit>
+		<VisitNumber>987654</VisitNumber>
+		<PatientID>102</PatientID>
+		<PatientName>Tester</PatientName>
+		<PatientGivenName>Paul</PatientGivenName>
+		<PatientBirthDate>1982-03-22</PatientBirthDate>
+		<PatientGender>M</PatientGender>
+		<Service Transaction="insert">
+			<ServiceDate>2025-03-05T09:00:00Z</ServiceDate>
+			<OrderID>20250305-1</OrderID>
+			<ReferrerID>007</ReferrerID>
+			<ServiceType>LKAAT</ServiceType>
+			<ServiceItem>GM.00.0140</ServiceItem>
+			<EnteredDateTime>2025-03-05T10:05:36Z</EnteredDateTime>
+			<ProviderID>2400</ProviderID>
+			<EnteredBy>7653253256988</EnteredBy>
+			<ItemNumber>45678</ItemNumber>
+			<Quantity>1</Quantity>
+			<SessionSectionB>
+				<SessionIDSectionB>28d92aa9-452a-459a-9baf-7c58910f2ab8</SessionIDSectionB>
+				<TrueSessionSectionB>1</TrueSessionSectionB>
+			</SessionSectionB>
+			<Diagnosis>
+				<DiagnosisCode>B01.2</DiagnosisCode>
+				<DiagnosisSystem>ICD</DiagnosisSystem>
+				<DiagnosisVersion>2023</DiagnosisVersion>
+			</Diagnosis>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7653253256988</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7653253256988</PersonID>
+			</PersonV40>
+		</Service>
+		<Service>
+			<ServiceDate>2024-04-05T09:00:00Z</ServiceDate>
+			<OrderID>20250305-1</OrderID>
+			<ReferrerID>007</ReferrerID>
+			<ServiceType>LKAAT</ServiceType>
+			<ServiceItem>GM.10.0010</ServiceItem>
+			<EnteredDateTime>2025-03-05T10:05:36Z</EnteredDateTime>
+			<ProviderID>2400</ProviderID>
+			<EnteredBy>7653253256988</EnteredBy>
+			<ItemNumber>45679</ItemNumber>
+			<RefItemNumber>45678</RefItemNumber>
+			<Quantity>1</Quantity>
+			<SessionSectionB>
+				<SessionIDSectionB>28d92aa9-452a-459a-9baf-7c58910f2ab8</SessionIDSectionB>
+				<TrueSessionSectionB>1</TrueSessionSectionB>
+			</SessionSectionB>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7653253256988</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7653253256988</PersonID>
+			</PersonV40>
+		</Service>
+		<Service>
+			<ServiceDate>2024-04-05T09:00:00Z</ServiceDate>
+			<OrderID>20250305-1</OrderID>
+			<ReferrerID>007</ReferrerID>
+			<ServiceType>LKAAT</ServiceType>
+			<ServiceItem>GM.15.0020</ServiceItem>
+			<EnteredDateTime>2025-03-05T10:05:36Z</EnteredDateTime>
+			<ProviderID>2400</ProviderID>
+			<EnteredBy>7653253256988</EnteredBy>
+			<ItemNumber>45680</ItemNumber>
+			<RefItemNumber>45678</RefItemNumber>
+			<Quantity>20</Quantity>
+			<SessionSectionB>
+				<SessionIDSectionB>28d92aa9-452a-459a-9baf-7c58910f2ab8</SessionIDSectionB>
+				<TrueSessionSectionB>1</TrueSessionSectionB>
+			</SessionSectionB>
+			<PersonV40 PersonTyp="ResponsiblePhysician">
+				<PersonID>7653253256988</PersonID>
+			</PersonV40>
+			<PersonV40 PersonTyp="ProvidingPhysician">
+				<PersonID>7653253256988</PersonID>
+			</PersonV40>
+		</Service>
+	</Visit>
+</Header>

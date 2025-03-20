@@ -22,5 +22,5 @@ Description: "This logical model describes the Visit of 'Leistungsschnittstelle 
 * PatientGender 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "M|F" "2.6, Patient Geschlecht, 1 Zeichen, Geschlecht, Optional M,F"
 * TerminationVisit 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Date "2.7, Fall Abschluss, XML-Format date, Optional"
 * TerminationReason 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/Text "2.8, Fall Abschlussgrund, Alphanum., Grunde des Fallabschlusses, Optional"
-* DiagGroup 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup "2.9, Diagnosegruppe, Optional"
+* DiagGroup 0..1 http://fhir.ch/ig/ch-alis/StructureDefinition/DiagGroup "- (compatibility with 4.3, not in 5.1) Diagnosegruppe, Optional"
 * Service 1..* http://fhir.ch/ig/ch-alis/StructureDefinition/Service "3, Leistung, Leistungen stehen zum Patient im Verhltnis 1:N"

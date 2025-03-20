@@ -12,7 +12,11 @@ Description: "Base definition for the Condition resource in the context of ALIS-
 * ^contact.telecom.value = "https://www.alis-connect.ch/"
 * ^jurisdiction = urn:iso:std:iso:3166#CH
 * . ^short = "CH ALIS Condition"
-* code 1..
+* extension ^slicing.discriminator.type = #value
+* extension ^slicing.discriminator.path = "url"
+* extension ^slicing.rules = #open
+* extension contains
+    ChAlisExtensionDiagnosisConfidential named DiagnosisConfidential 0..1 
 * code.coding 1..
 * code.coding.system ^short = "DiagCatType"
 * code.coding.code 1..

@@ -1,0 +1,50 @@
+### @host = https://test.ahdis.ch/matchbox/fhir
+@host = http://localhost:8080/matchboxv3/fhir
+
+
+GET {{host}}/metadata HTTP/1.1
+Accept: application/fhir+xml
+
+### 1. POST Alis51ToBundle.map
+GET {{host}}/StructureMap HTTP/1.1
+Accept: application/fhir+xml;fhirVersion=4.0
+
+
+### 1. POST Alis51ToBundle.map
+POST {{host}}/StructureMap HTTP/1.1
+Accept: application/fhir+xml;fhirVersion=4.0
+Content-Type: text/fhir-mapping
+
+< ./maps/Alis51ToBundle.map
+
+
+
+
+### Alis51LabServiceAssignment
+POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis51ToBundle
+Accept: application/fhir+xml;fhirVersion=4.0
+Content-Type: application/fhir+xml;fhirVersion=4.0
+
+< ./input/resources/binary/Alis51LabServiceAssignment.xml
+
+
+### Alis51LKAATIcd.xml
+POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis51ToBundle
+Accept: application/fhir+xml;fhirVersion=4.0
+Content-Type: application/fhir+xml;fhirVersion=4.0
+
+< ./input/resources/binary/Alis51LKAATIcd.xml
+
+### Alis51LKAATIcdSessionB.xml
+POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis51ToBundle
+Accept: application/fhir+xml;fhirVersion=4.0
+Content-Type: application/fhir+xml;fhirVersion=4.0
+
+< ./input/resources/binary/Alis51LKAATIcdSessionB.xml
+
+### Alis51PauschaleKomplett.xml
+POST {{host}}/StructureMap/$transform?source=http://fhir.ch/ig/ch-alis/StructureMap/Alis51ToBundle
+Accept: application/fhir+xml;fhirVersion=4.0
+Content-Type: application/fhir+xml;fhirVersion=4.0
+
+< ./input/resources/binary/Alis51PauschaleKomplett.xml
