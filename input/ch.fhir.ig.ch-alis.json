@@ -6,10 +6,10 @@
 		"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      Implementation Guide for ALIS-Connect (R4)\n    </div>"
 	},
 	"url": "http://fhir.ch/ig/ch-alis/ImplementationGuide/ch.fhir.ig.ch-alis",
-	"version": "0.3.0",
+	"version": "0.3.0-draft",
 	"name": "CH_ALIS",
 	"title": "CH ALIS (R4)",
-	"status": "active",
+	"status": "draft",
 	"experimental": false,
 	"date": "2021-02-06",
 	"publisher": "ALIS-Connect",
